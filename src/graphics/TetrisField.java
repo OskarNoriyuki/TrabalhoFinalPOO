@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.DebugGraphics;
 import javax.swing.JPanel;
 
-public class TetrisField extends JPanel implements Runnable{
+public class TetrisField extends JPanel{
 	private final static int tamanhoCuboOriginal = 20; //20x20 pixels
 	private final static int upScale = 2;				
 	private final static int tamanhoCubo = tamanhoCuboOriginal*upScale; //20x20 pixels
@@ -18,18 +18,15 @@ public class TetrisField extends JPanel implements Runnable{
 	private int larguraCampo;
 	private int alturaCampo;
 	
-	Thread tetrisThread;
+	//Thread tetrisThread;
 	LeTeclado comandoTeclado;
 	
-	//engine - teste
+	//engine - teste do cubo
 	private int posX;
 	private int posY;
 	private int velocidade;
 	
-	//timer - teste
-	private final long targetFPS = 60;
-	private final long loopInterval = 1000000000/targetFPS; //nanos
-	
+	//construtor do painel principal do jogo
 	public TetrisField(int lin, int col) {
 		this.numColunas = col;
 		this.numLinhas = lin;
@@ -52,38 +49,9 @@ public class TetrisField extends JPanel implements Runnable{
 		this.velocidade = 1;
 	
 	}
-
-	public void iniciaTetris() {
-		tetrisThread = new Thread(this);
-		tetrisThread.start();
-	}
 	
-
-	public void run() {
-		while(tetrisThread != null) {
-			
-			long startTime = System.nanoTime();
-			long endTime = startTime + this.loopInterval;
-			//***********************trabalho útil do loop começa aqui********************************
-			//teste
-			System.out.println("Use as teclas W,S,A,D para controlar o cubo!");
-			//System.out.println("X: "+this.posX+"    Y: "+this.posY);
-			//processamento do jogo
-			update();
-			//atualizacao dos elementos graficos
-			repaint();
-			//**************************************loop_end*******************************************
-			long sleepTime = (long)(endTime - System.nanoTime())/1000000;
-			try {
-				Thread.sleep(sleepTime);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public void update() {
+	//teste, engine do jogo
+	public void updateCube() {
 		if(comandoTeclado.pressedDown) {
 			this.posY += this.velocidade;
 			if(posY > (this.numLinhas - 1)) {
@@ -110,6 +78,7 @@ public class TetrisField extends JPanel implements Runnable{
 		}
 	}
 	
+	//configs graficas do painel
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
@@ -117,9 +86,8 @@ public class TetrisField extends JPanel implements Runnable{
 		Graphics2D g2 = (Graphics2D)g;
 		
 		g2.setColor(Color.white);
-		g2.fillRect(posX*this.tamanhoCubo, posY*this.tamanhoCubo, this.tamanhoCubo, this.tamanhoCubo);
+		g2.fillRect(posX*tamanhoCubo, posY*tamanhoCubo, tamanhoCubo, tamanhoCubo);
 		
 		g2.dispose();	//para não acumular lixo na memória
-		
 	}
 }
