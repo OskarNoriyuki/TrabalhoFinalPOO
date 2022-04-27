@@ -3,17 +3,23 @@ package graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import engine.Tetris;
+
 
 public class LeTeclado implements KeyListener{
 	
-	public boolean pressedUp, pressedDown, pressedLeft, pressedRight; 
+	public boolean pressedUp, pressedDown, pressedLeft, pressedRight, pressedRL, pressedRR; 
+	Tetris jogoTeste;
 	
-	public void LeTeclado() {
+	public LeTeclado(Tetris jogoTeste) {
 		this.pressedDown = false;
 		this.pressedUp = false;
 		this.pressedLeft = false;
 		this.pressedRight = false;
+		this.pressedRL = false;
+		this.pressedRR = false;
 		
+		this.jogoTeste = jogoTeste;
 	}
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -36,6 +42,12 @@ public class LeTeclado implements KeyListener{
 		}
 		if(teclaPressionada == KeyEvent.VK_D) {
 			pressedRight = true;
+		}
+		if(teclaPressionada == KeyEvent.VK_J) {
+			jogoTeste.rotateCW();
+		}
+		if(teclaPressionada == KeyEvent.VK_K) {
+			jogoTeste.rotateCCW();
 		}
 		
 	}

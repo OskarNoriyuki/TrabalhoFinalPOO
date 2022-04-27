@@ -1,5 +1,6 @@
 package graphics;
 
+import engine.Tetris;
 import java.awt.*;
 import java.awt.Dimension;
 import java.awt.Color;
@@ -21,10 +22,8 @@ public class TetrisField extends JPanel{
 	//Thread tetrisThread;
 	LeTeclado comandoTeclado;
 	
-	//engine - teste do cubo
-	private int posX;
-	private int posY;
-	private int velocidade;
+	//engine - teste da peça
+	private Tetris jogoTeste;
 	
 	//construtor do painel principal do jogo
 	public TetrisField(int lin, int col) {
@@ -38,43 +37,29 @@ public class TetrisField extends JPanel{
 		this.setBackground(Color.black);
 		this.setDoubleBuffered(true);
 		
+		//engine
+		jogoTeste = new Tetris(lin, col);
+		
 		//entradas
-		comandoTeclado = new LeTeclado();
+		comandoTeclado = new LeTeclado(jogoTeste);
 		this.addKeyListener(comandoTeclado);
 		this.setFocusable(true);
-		
-		//engine
-		this.posX = 0;
-		this.posY = 0;
-		this.velocidade = 1;
 	
 	}
 	
-	//teste, engine do jogo
-	public void updateCube() {
+	//teste, jogo
+	public void updateT() {
 		if(comandoTeclado.pressedDown) {
-			this.posY += this.velocidade;
-			if(posY > (this.numLinhas - 1)) {
-				this.posY = (this.numLinhas - 1);
-			}
+			jogoTeste.stepDown();
 		}
 		if(comandoTeclado.pressedUp) {
-			this.posY -= this.velocidade;
-			if(posY < 0) {
-				this.posY = 0;
-			}
-		}
-		if(comandoTeclado.pressedRight) {
-			this.posX += this.velocidade;
-			if(posX > (this.numColunas - 1)) {
-				this.posX = (this.numColunas - 1);
-			}
+			jogoTeste.stepUp();
 		}
 		if(comandoTeclado.pressedLeft) {
-			this.posX -= this.velocidade;
-			if(posX < 0) {
-				this.posX = 0;
-			}
+			jogoTeste.stepLeft();
+		}
+		if(comandoTeclado.pressedRight) {
+			jogoTeste.stepRight();
 		}
 	}
 	
@@ -84,9 +69,14 @@ public class TetrisField extends JPanel{
 		
 		//faremos uso de alguns metodos importantes de Graphics2D
 		Graphics2D g2 = (Graphics2D)g;
+
+		//teste do tetromino T:
+		for(int x = 0; x < this.numColunas; x++) {
+			for(int y = 0; y < this.numLinhas; y++) {
+				g2.drawImage(jogoTeste.getCubeImg(x, y), x*tamanhoCubo, y*tamanhoCubo, tamanhoCubo, tamanhoCubo, null);
+			}
+		}
 		
-		g2.setColor(Color.white);
-		g2.fillRect(posX*tamanhoCubo, posY*tamanhoCubo, tamanhoCubo, tamanhoCubo);
 		
 		g2.dispose();	//para não acumular lixo na memória
 	}

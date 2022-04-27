@@ -39,10 +39,9 @@ public class Timer implements Runnable{
 			//print de debug:
 			String dutyCyclePerc = String.format("%.2f", this.dutyCycle*100.0);
  			if(loopCount%(targetFPS/debugMessageFreq) == 0)
- 				System.out.println("Use as teclas W,S,A,D para controlar o cubo! \nUso de cpu: "+dutyCyclePerc+"%");
+ 				System.out.println("Use W,S,A,D para mover. Use J, K para rotacionar. \nCiclo ativo medio nos ultimos "+(this.targetFPS/this.debugMessageFreq)+" frames: "+dutyCyclePerc+"%");
 
- 			
-			campoTetris.updateCube(); //processamento do jogo
+ 			campoTetris.updateT(); //processamento (teste)
 			campoTetris.repaint(); //atualizacao dos elementos graficos
 			//****************************************************loop_end*********************************************************
 			this.loopCount++;
