@@ -1,4 +1,4 @@
-package peças;
+package pecas;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

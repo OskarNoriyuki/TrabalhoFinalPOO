@@ -1,4 +1,4 @@
-package peças;
+package pecas;
 
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
@@ -11,7 +11,7 @@ public class TetrominoI extends Tetromino{
 	public TetrominoI() {
 		this.cor = "azul_claro";
 		this.ladoMatriz = 4;
-		//todas as peças começam deitadas
+		//todas as peï¿½as comeï¿½am deitadas
 		this.matriz = new boolean[][] 
 				{	{	false, 	true, 	false, 	false	},
 					{	false, 	true, 	false, 	false	},

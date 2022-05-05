@@ -4,14 +4,14 @@ package engine;
 
 import java.util.ArrayList;
 import java.util.Random;
-import peças.Tetromino;
-import peças.TetrominoI;
-import peças.TetrominoJ;
-import peças.TetrominoL;
-import peças.TetrominoO;
-import peças.TetrominoS;
-import peças.TetrominoT;
-import peças.TetrominoZ;
+import pecas.Tetromino;
+import pecas.TetrominoI;
+import pecas.TetrominoJ;
+import pecas.TetrominoL;
+import pecas.TetrominoO;
+import pecas.TetrominoS;
+import pecas.TetrominoT;
+import pecas.TetrominoZ;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -357,7 +357,7 @@ public class Tetris {
 
 /***************************************** CUBOS *****************************************/
 	public BufferedImage getCubeImg(int posX, int posY) {
-		//se faz parte da peça
+		//se faz parte da peï¿½a
 		if(pecaPresente(posX, posY)) {
 			return pecas[proximaPeca[0]].getImage();
 		}else {

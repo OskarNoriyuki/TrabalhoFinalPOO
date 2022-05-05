@@ -1,4 +1,4 @@
-package peças;
+package pecas;
 
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
@@ -6,18 +6,18 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class TetrominoZ extends Tetromino{
-	public TetrominoZ() {
-		this.cor = "vermelho";
+public class TetrominoS extends Tetromino{
+	public TetrominoS() {
+		this.cor = "verde";
 		this.ladoMatriz = 3;
-		//todas as peças começam deitadas
+		//todas as peï¿½as comeï¿½am deitadas
 		this.matriz = new boolean[][] 
-				{	{	false, 	false, 	true	},
+				{	{	false, 	true, 	false	},
 					{	false, 	true, 	true	},
-					{	false, 	true, 	false	}};
-					/* Tetromino Z:
-										2| # # -
-										1| - # #
+					{	false, 	false, 	true	}};
+					/* Tetromino S:
+										2| - # #
+										1| # # -
 										0| - - - 
 										y|______
 										 x 0 1 2
@@ -30,7 +30,7 @@ public class TetrominoZ extends Tetromino{
 	@Override
 	public BufferedImage getImage() {
 		try {
-			this.cube = ImageIO.read(new FileInputStream("src/img/cubes/cube_red.png"));
+			this.cube = ImageIO.read(new FileInputStream("src/img/cubes/cube_green.png"));
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -48,6 +48,6 @@ public class TetrominoZ extends Tetromino{
 	}
 	
 	public char toChar() {
-		return 'Z';
+		return 'S';
 	}
 }
