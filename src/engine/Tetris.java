@@ -17,6 +17,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+import graphics.GameWindow;
+
 public class Tetris {
 	/*atributos gerais*/
 	private boolean perdeu;
@@ -92,11 +94,14 @@ public class Tetris {
 
 	
 	//faz a peca atual cair mais uma linha. se colidiu, atualiza o mapa e demais detalhes
-	public void updateGame(String acao) {
+	public boolean updateGame(String acao) {
 		//classe que armazena infos da colisao
 		Colisao colisao;
 		if(perdeu) {
+			//chama window de game over
+			//GameWindow.fecharTetris();
 			System.err.println("PERDEEUUU!");
+			return true;
 		}else if(acao.equals("rotateCW") || acao.equals("rotateCCW")) {
 			if(acao.equals("rotateCW")){
 				this.pecas[this.proximaPeca[0]].rotacionar("CW");
@@ -236,7 +241,7 @@ public class Tetris {
 				this.pecas[this.proximaPeca[0]].y = 0;
 			}
 		}
-
+		return false;
 	}
 	
 	private void updateMap() {

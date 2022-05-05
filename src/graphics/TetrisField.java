@@ -23,7 +23,7 @@ public class TetrisField extends JPanel{
 	//Thread tetrisThread;
 	LeTeclado comandoTeclado;
 	
-	//engine - teste da peça
+	//engine - teste da peï¿½a
 	private Tetris jogoTeste;
 	
 	//construtor do painel principal do jogo
@@ -48,8 +48,8 @@ public class TetrisField extends JPanel{
 	
 	}
 	
-	public void oneStepDown() {
-		jogoTeste.updateGame("goDown");
+	public boolean oneStepDown() {
+		return jogoTeste.updateGame("goDown");
 	}
 	
 	public void debug() {
@@ -71,6 +71,6 @@ public class TetrisField extends JPanel{
 		}
 		
 		
-		g2.dispose();	//para não acumular lixo na memória
+		g2.dispose();	//para nï¿½o acumular lixo na memï¿½ria
 	}
 }

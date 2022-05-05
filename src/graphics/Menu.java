@@ -16,7 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import teste.Aplicacao;;
+import teste.Aplicacao;
 
 public class Menu extends JFrame implements ActionListener {
     private JButton JButtonPlay;
@@ -38,7 +38,8 @@ public class Menu extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e){
 		//Caso o botão clicado seja resetar
 		if (e.getActionCommand().equals("iniciar")) {
-            Aplicacao.IniciaTetris();
+            //Aplicacao.IniciaTetris();
+            GameWindow jogo = new GameWindow();
         }
     }
 

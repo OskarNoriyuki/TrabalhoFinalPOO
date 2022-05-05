@@ -3,6 +3,9 @@ package tempo;
 import java.io.IOException;
 
 import graphics.TetrisField;
+import graphics.GameWindow;
+
+import javax.swing.JFrame;
 
 public class Timer implements Runnable{
 	
@@ -14,11 +17,14 @@ public class Timer implements Runnable{
 	private long loopCount = 0;
 	private long loopTime[] = new long[60];
 	private final int debugMessageFreq = 3; //usar apenas divisores perfeitos de fps
+	private boolean fimdejogo = false;
+	private JFrame janela;
 	
 	//construtor da classe gerenciadora do loop do jogo
-	public Timer(TetrisField campoTetris, int fps) {
+	public Timer(TetrisField campoTetris, int fps, JFrame janela) {
 		//referencia para o painel do jogo
 		this.campoTetris = campoTetris;
+		this.janela=janela;
 		
 		//seta o FPS maximo
 		this.targetFPS = fps;
@@ -31,18 +37,24 @@ public class Timer implements Runnable{
 		tetrisThread.start();
 	}
 
+	//Finaliza a Thread do game
+	public void finalizaTetris() {
+		janela.dispose();
+	}
+
 	public void run() {
-		while(tetrisThread != null) {
+		//while(tetrisThread != null) {
+		while(!fimdejogo){
 			
 			long startTime = System.nanoTime();
-			//*************************************trabalho útil do loop começa aqui**********************************************
+			//*************************************trabalho ï¿½til do loop comeï¿½a aqui**********************************************
 			//print de debug:
 			String dutyCyclePerc = String.format("%.2f", this.dutyCycle*100.0);
  			if(loopCount%(targetFPS/debugMessageFreq) == 0) {
  				System.out.println("Use W,S,A,D para mover. Use J, K para rotacionar. \nCiclo ativo medio nos ultimos "+(this.targetFPS/this.debugMessageFreq)+" frames: "+dutyCyclePerc+"%");
  				campoTetris.debug();
- 				campoTetris.oneStepDown(); //roda uma iteracao do jogo, a peca cai uma casa
- 			}
+ 				fimdejogo=campoTetris.oneStepDown(); //roda uma iteracao do jogo, a peca cai uma casa e testa se perdeu
+			}
 			campoTetris.repaint(); //atualizacao dos elementos graficos
 			//****************************************************loop_end*********************************************************
 			this.loopCount++;
@@ -61,10 +73,14 @@ public class Timer implements Runnable{
 			try {
 				Thread.sleep(sleepTime);
 			} catch (InterruptedException | IllegalArgumentException e) {
-				System.out.println("Não consigo dormir!");
+				System.out.println("Nï¿½o consigo dormir!");
 				//e.printStackTrace();
 			}
+			
 		}
+
+		janela.dispose();
+
 	}
 	
 	//nao usar
