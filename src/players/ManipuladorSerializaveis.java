@@ -2,6 +2,7 @@
     Classe ManipuladorSerializaveis
     Autor: Allan Ferreira
 */
+package players;
 
 import java.io.*;
 

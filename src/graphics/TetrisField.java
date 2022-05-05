@@ -1,5 +1,6 @@
 package graphics;
 
+import engine.LeTeclado;
 import engine.Tetris;
 import java.awt.*;
 import java.awt.Dimension;
@@ -47,20 +48,12 @@ public class TetrisField extends JPanel{
 	
 	}
 	
-	//teste, jogo
-	public void updateT() {
-		if(comandoTeclado.pressedDown) {
-			jogoTeste.stepDown();
-		}
-		if(comandoTeclado.pressedUp) {
-			jogoTeste.stepUp();
-		}
-		if(comandoTeclado.pressedLeft) {
-			jogoTeste.stepLeft();
-		}
-		if(comandoTeclado.pressedRight) {
-			jogoTeste.stepRight();
-		}
+	public void oneStepDown() {
+		jogoTeste.updateGame("goDown");
+	}
+	
+	public void debug() {
+		jogoTeste.printdebug();
 	}
 	
 	//configs graficas do painel

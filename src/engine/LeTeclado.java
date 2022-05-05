@@ -1,9 +1,7 @@
-package graphics;
+package engine;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
-import engine.Tetris;
 
 
 public class LeTeclado implements KeyListener{
@@ -32,22 +30,26 @@ public class LeTeclado implements KeyListener{
 		int teclaPressionada = e.getKeyCode();
 		
 		if(teclaPressionada == KeyEvent.VK_W) {
-			pressedUp = true;
+			//pressedUp = true;
+			jogoTeste.updateGame("goUp");
 		}
 		if(teclaPressionada == KeyEvent.VK_S) {
-			pressedDown = true;
+			//pressedDown = true;
+			jogoTeste.updateGame("goDown");
 		}
 		if(teclaPressionada == KeyEvent.VK_A) {
-			pressedLeft = true;
+			//pressedLeft = true;
+			jogoTeste.updateGame("goLeft");
 		}
 		if(teclaPressionada == KeyEvent.VK_D) {
-			pressedRight = true;
+			//pressedRight = true;
+			jogoTeste.updateGame("goRight");
 		}
 		if(teclaPressionada == KeyEvent.VK_J) {
-			jogoTeste.rotateCW();
+			jogoTeste.updateGame("rotateCCW");
 		}
 		if(teclaPressionada == KeyEvent.VK_K) {
-			jogoTeste.rotateCCW();
+			jogoTeste.updateGame("rotateCW");
 		}
 		
 	}

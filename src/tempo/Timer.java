@@ -38,10 +38,11 @@ public class Timer implements Runnable{
 			//*************************************trabalho útil do loop começa aqui**********************************************
 			//print de debug:
 			String dutyCyclePerc = String.format("%.2f", this.dutyCycle*100.0);
- 			if(loopCount%(targetFPS/debugMessageFreq) == 0)
+ 			if(loopCount%(targetFPS/debugMessageFreq) == 0) {
  				System.out.println("Use W,S,A,D para mover. Use J, K para rotacionar. \nCiclo ativo medio nos ultimos "+(this.targetFPS/this.debugMessageFreq)+" frames: "+dutyCyclePerc+"%");
-
- 			campoTetris.updateT(); //processamento (teste)
+ 				campoTetris.debug();
+ 				campoTetris.oneStepDown(); //roda uma iteracao do jogo, a peca cai uma casa
+ 			}
 			campoTetris.repaint(); //atualizacao dos elementos graficos
 			//****************************************************loop_end*********************************************************
 			this.loopCount++;

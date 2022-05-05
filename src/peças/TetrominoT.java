@@ -21,6 +21,8 @@ public class TetrominoT extends Tetromino{
 										y|______
 										 x 0 1 2
 					 */
+		this.angle = 0;
+		this.reset();
 		this.getImage();
 	}
 
@@ -32,5 +34,19 @@ public class TetrominoT extends Tetromino{
 			e.printStackTrace();
 		}
 		return this.cube;
+	}
+	
+	public void reset() {
+		while(this.angle > 0) {
+			this.rotacionar("cw");
+		}
+		this.x = default_X;
+		this.y = default_Y;
+		this.x_kick = 0;
+		this.y_kick = 0;
+	}
+	
+	public char toChar() {
+		return 'T';
 	}
 }

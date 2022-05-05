@@ -25,6 +25,8 @@ public class TetrominoI extends Tetromino{
 										y|________
 										 x 0 1 2 3
 					 */
+		this.angle = 0;
+		this.reset();
 		this.getImage();
 	}
 
@@ -37,6 +39,19 @@ public class TetrominoI extends Tetromino{
 		}
 		return this.cube;
 	}
-
+	
+	public void reset() {
+		while(this.angle > 0) {
+			this.rotacionar("cw");
+		}
+		this.x = default_X - 1;
+		this.y = default_Y;
+		this.x_kick = 0;
+		this.y_kick = 0;
+	}
+	
+	public char toChar() {
+		return 'I';
+	}
 
 }
