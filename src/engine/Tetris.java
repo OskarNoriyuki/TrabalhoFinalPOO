@@ -266,6 +266,7 @@ public class Tetris {
 		//registra quantas linhas foram formadas, e onde (o maximo sao 4, pois a peca mais comprida eh a TetrominoeI)
 		for(int y = (this.maxY-1); y > 0; y--) {
 			linhaFormada = true;
+			//se algum cubo da linha for mapa, a linha nao esta completa
 			for(int x = 0; x < this.maxX; x++) {
 				if(map[y][x] == 'B')
 					linhaFormada = false;
@@ -275,15 +276,18 @@ public class Tetris {
 				tetrisCount++;
 			}
 		}
+		
 		//limpa as linhas formadas
+		System.err.println("----TETRIS_COUNT--- "+ tetrisCount);
 		for(int i = 0; i < tetrisCount; i++) {
 			//limpa a linha e desloca o mapa inteiro a partir dela, para baixo
-			for(int y = alturaLinFormada[i]; y > 1; y--) {
+			for(int y = alturaLinFormada[0]; y > 1; y--) {
 				for(int x = 0; x < this.maxX; x++) {
 					map[y][x] = map[y-1][x] ;
 				}
 			}
 		}
+		
 		//no caso de 4 linhas ao mesmo tempo, TETRIS!
 		if(tetrisCount == 4) {
 			System.err.println("----TETRIS!---TETRIS!---TETRIS!---TETRIS!---");
