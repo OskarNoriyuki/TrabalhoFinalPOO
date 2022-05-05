@@ -8,12 +8,15 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 import graphics.TetrisField;
+import graphics.Menu;
 import tempo.Timer;
 
 import java.awt.event.*;
 
 public class Aplicacao{
-	public static void main (String[] args) {
+
+	static public void IniciaTetris() {
+
 		JFrame janela = new JFrame();
 		janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		janela.setResizable(false);
@@ -27,5 +30,10 @@ public class Aplicacao{
 		janela.pack();
 		janela.setLocationRelativeTo(null);
 		janela.setVisible(true);
+
+	}
+
+	public static void main (String[] args) {
+		Menu menu = new Menu();
 	}
 }
