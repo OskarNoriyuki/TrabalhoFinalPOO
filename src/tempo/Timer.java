@@ -13,10 +13,15 @@ public class Timer implements Runnable{
 	private final long targetFPS;
 	private final long loopInterval_ns; //nanossegundos
 	private TetrisField campoTetris;
-	private double dutyCycle = 0.0;
-	private long loopCount = 0;
+	private double dutyCycle;
+	private long loopCount;
 	private long loopTime[] = new long[60];
 	private final int debugMessageFreq = 3; //usar apenas divisores perfeitos de fps
+	//a velocidade maxima eh atingida no nivel 23 (stepDownPeriod[23]), 60 casas por segundo, 1 por frame
+	private final int stepDownPeriod[] = {60,60,50,42,35,29,24,20,17,14,12,10,8,7,6,5,4,3,3,2,2,2,1,1,1};
+	private int periodIndex;
+	private int dropCount;
+	
 	private boolean fimdejogo = false;
 	private JFrame janela;
 	
@@ -25,6 +30,12 @@ public class Timer implements Runnable{
 		//referencia para o painel do jogo
 		this.campoTetris = campoTetris;
 		this.janela=janela;
+		
+		//inicializa variaveis
+		this.dutyCycle = 0.0;
+		this.loopCount = 0;
+		this.dropCount = 0;
+		this.periodIndex = 0;
 		
 		//seta o FPS maximo
 		this.targetFPS = fps;
@@ -47,15 +58,29 @@ public class Timer implements Runnable{
 		while(!fimdejogo){
 			
 			long startTime = System.nanoTime();
-			//*************************************trabalho �til do loop come�a aqui**********************************************
+			//*************************************trabalho util do loop aqui**********************************************
 			//print de debug:
 			String dutyCyclePerc = String.format("%.2f", this.dutyCycle*100.0);
  			if(loopCount%(targetFPS/debugMessageFreq) == 0) {
  				System.out.println("Use W,S,A,D para mover. Use J, K para rotacionar. \nCiclo ativo medio nos ultimos "+(this.targetFPS/this.debugMessageFreq)+" frames: "+dutyCyclePerc+"%");
- 				campoTetris.debug();
- 				fimdejogo=campoTetris.oneStepDown(); //roda uma iteracao do jogo, a peca cai uma casa e testa se perdeu
 			}
-			campoTetris.repaint(); //atualizacao dos elementos graficos
+ 			
+ 			//processamento do game
+ 			//loopCount nao eh adequado para guiar os stepDowns, pois podem ocorrer erros nas trocas de frequencia
+ 			this.dropCount++;
+ 			if(dropCount == stepDownPeriod[periodIndex]) {
+ 				//roda uma iteracao do jogo, a peca cai uma casa e testa se perdeu
+ 				fimdejogo=campoTetris.oneStepDown();
+ 				//reseta o contador
+ 				this.dropCount = 0;
+ 				//atualiza a frequencia de acordo com o nivel
+ 				periodIndex= campoTetris.getLevel();
+ 	 			if(periodIndex > 23)
+ 	 				periodIndex = 23;
+ 			}
+ 			
+ 			//atualizacao dos elementos graficos
+			campoTetris.repaint();
 			//****************************************************loop_end*********************************************************
 			this.loopCount++;
 			//armazena duracoes de loops anteriores:
@@ -73,7 +98,7 @@ public class Timer implements Runnable{
 			try {
 				Thread.sleep(sleepTime);
 			} catch (InterruptedException | IllegalArgumentException e) {
-				System.out.println("N�o consigo dormir!");
+				System.out.println("Nao consigo dormir!");
 				//e.printStackTrace();
 			}
 			

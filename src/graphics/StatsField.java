@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.DebugGraphics;
 import javax.swing.JPanel;
 
-public class TetrisField extends JPanel{
+public class StatsField extends JPanel{
 	private final static int tamanhoCuboOriginal = 20; //20x20 pixels
 	private final static int upScale = 2;				
 	private final static int tamanhoCubo = tamanhoCuboOriginal*upScale; //20x20 pixels
@@ -20,20 +20,14 @@ public class TetrisField extends JPanel{
 	private int larguraCampo;
 	private int alturaCampo;
 	
-	//Thread tetrisThread;
-	LeTeclado comandoTeclado;
-	
-	//engine
 	private Tetris jogo;
 	
 	//construtor do painel principal do jogo
-	public TetrisField(Tetris jogo) {
-		//engine
-		this.jogo = jogo;
-		
-		this.numColunas = this.jogo.getSizeX();
-		this.numLinhas = this.jogo.getSizeY();
-		this.larguraCampo = tamanhoCubo*numColunas;
+	public StatsField(Tetris jogo) {
+
+		this.numColunas = jogo.getSizeX();
+		this.numLinhas = jogo.getSizeY();
+		this.larguraCampo = tamanhoCubo*numColunas/2;
 		this.alturaCampo = tamanhoCubo*numLinhas;
 		
 		//painel
@@ -41,24 +35,9 @@ public class TetrisField extends JPanel{
 		this.setBackground(Color.black);
 		this.setDoubleBuffered(true);
 		
-		//entradas
-		comandoTeclado = new LeTeclado(jogo);
-		this.addKeyListener(comandoTeclado);
-		this.setFocusable(true);
 	
 	}
 	
-	public boolean oneStepDown() {
-		return jogo.updateGame("goDown");
-	}
-	
-	public int getLevel() {
-		return jogo.getLevel();
-	}
-	/*
-	public void debug() {
-		jogoTeste.printdebug();
-	}*/
 	
 	//configs graficas do painel
 	public void paintComponent(Graphics g) {
@@ -66,7 +45,7 @@ public class TetrisField extends JPanel{
 		Graphics2D g2 = (Graphics2D)g;
 		for(int x = 0; x < this.numColunas; x++) {
 			for(int y = 0; y < this.numLinhas; y++) {
-				g2.drawImage(jogo.getCubeImg(x, y), x*tamanhoCubo, y*tamanhoCubo, tamanhoCubo, tamanhoCubo, null);
+				//g2.drawImage(jogoTeste.getCubeImg(x, y), x*tamanhoCubo, y*tamanhoCubo, tamanhoCubo, tamanhoCubo, null);
 			}
 		}
 		

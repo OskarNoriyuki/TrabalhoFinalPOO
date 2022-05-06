@@ -1,8 +1,13 @@
-//classe controladora
-
+/*
+Programa: Classe reponsavel pela logica do jogo Tetris.
+Objetivos: Exercicio da programacao orientada a objeto.
+Entradas: Tamanho do mapa, Acao/Movimento de cada iteracao.
+Saida: Cubos que compoem o mapa do tetris.
+Autor: Oskar Akama
+Atualizada em 06/05/2022
+*/
 package engine;
 
-import java.util.ArrayList;
 import java.util.Random;
 import pecas.Tetromino;
 import pecas.TetrominoI;
@@ -20,9 +25,11 @@ import javax.imageio.ImageIO;
 import graphics.GameWindow;
 
 public class Tetris {
-	/*atributos gerais*/
+	/**atributos gerais**/
 	private boolean perdeu;
-	/*atributos do mapa*/
+	private int pontuacao, linhas, nivel;
+	
+	/**atributos do mapa**/
 	private int maxX, maxY;
 	private char map[][];
 	/*
@@ -31,23 +38,31 @@ public class Tetris {
 	 * elementos 'I', 'J', 'L', 'O', 'S', 'T', 'Z' representam cubos das pecas que ja cairam
 	 * elemento 'U' = undefined
 	 */
-	/*atributos esteticos*/
+	
+	/**atributos esteticos**/
 	private BufferedImage backgroundTile;
 	private BufferedImage debugTile;
-	/*atributos de pecas*/
+	
+	/**atributos de pecas**/
 	private final int numTiposPecas = 7, numSorteadas = 4;
 	private Tetromino pecas[];
 	private int proximaPeca[]; 
 	/*
 	 * representadas por 'I', 'J', 'L', 'O', 'S', 'T', 'Z',
-	 * a peca ativa eh o indice [0], e as seguintes sao as
-	 * proximas a cair
+	 * proximaPeca[0] eh a peca ATUAL, e as seguintes sao as proximas a cair.
 	 */
+
+	/**********************************************************************************************/
+	/*************************************METODOS PUBLICOS*****************************************/
+	/**********************************************************************************************/
 	
-	//construtor
+	//construtor, recebe um tamanho de mapa, em cubos
 	public Tetris(int lin, int col) {
 		//geral
 		this.perdeu = false;
+		this.pontuacao = 0;
+		this.linhas = 0;
+		this.nivel = 1;
 		//tamanho do mapa
 		this.maxX = col;
 		this.maxY = lin;
@@ -67,18 +82,16 @@ public class Tetris {
 		pecas[4] = new TetrominoS();
 		pecas[5] = new TetrominoT();
 		pecas[6] = new TetrominoZ();
-
 		//eh possivel ver, fora a peca atual, as proximas 3 a cair. inicializa aleatoriamente
 		this.proximaPeca = new int[numSorteadas];
 		this.proximaPeca[0] = this.getPecaAleatoria(numTiposPecas); //primeira a cair
 		//nao caem 2 pecas iguais consecutivas
 		for(int i = 1; i < numSorteadas; i++) {
 			this.proximaPeca[i] = this.getPecaAleatoria(numTiposPecas, proximaPeca[i-1]);
-		}
-		
+		}	
 		//imagem do cubo de fundo
 		try {
-			this.backgroundTile = ImageIO.read(new FileInputStream("src/img/map/cube_map_white.png"));
+			this.backgroundTile = ImageIO.read(new FileInputStream("src/img/map/cube_map_dark.png"));
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -89,26 +102,25 @@ public class Tetris {
 			e.printStackTrace();
 		}
 	}
-
 	
-
-	
-	//faz a peca atual cair mais uma linha. se colidiu, atualiza o mapa e demais detalhes
+	//realiza um movimento/acao, calcula as consequencias e atualiza o jogo. deve ser chamado 1x por frame, e 1x por comando
 	public boolean updateGame(String acao) {
-		//classe que armazena infos da colisao
-		Colisao colisao;
+		Colisao colisao;	//classe que armazena infos da colisao
 		if(perdeu) {
 			//chama window de game over
 			//GameWindow.fecharTetris();
 			System.err.println("PERDEEUUU!");
 			return true;
 		}else if(acao.equals("rotateCW") || acao.equals("rotateCCW")) {
+			//faz a rotacao
 			if(acao.equals("rotateCW")){
 				this.pecas[this.proximaPeca[0]].rotacionar("CW");
 			}else {
 				this.pecas[this.proximaPeca[0]].rotacionar("CCW");
 			}
+			//apos rotacionar, verifica se ocasionou em colisao
 			colisao = this.testaColisao();
+			//se sim, verifica se eh possivel adaptar a posicao da peca, a fim de permitir a rotacao sem colisoes. se nao, desfaz a rotacao 
 			if(colisao.paredeEsq || colisao.paredeDir ||colisao.peca ||colisao.chao) {
 				//print debug
 				if(colisao.peca) System.err.println("BATEU NOUTRA PECA! DEPTH_R="+colisao.profundidadeDir+" DEPTH_L="+colisao.profundidadeEsq+" DEPTH_INF="+colisao.profundidadeInf);
@@ -127,6 +139,7 @@ public class Tetris {
 						this.pecas[this.proximaPeca[0]].x_kick--;
 						colisao = this.testaColisao();
 						if(colisao.peca) {
+							//se bate com outra peca simultaneamente, desiste
 							desistir = true;
 						}else if(colisao.paredeDir) {
 							//tenta chutar mais uma casa pra esquerda
@@ -145,6 +158,7 @@ public class Tetris {
 						this.pecas[this.proximaPeca[0]].x_kick++;
 						colisao = this.testaColisao();
 						if(colisao.peca) {
+							//se bate com outra peca simultaneamente, desiste
 							desistir = true;
 						}else if(colisao.paredeEsq) {
 							//tenta chutar mais uma casa pra direita
@@ -163,6 +177,7 @@ public class Tetris {
 						this.pecas[this.proximaPeca[0]].y_kick--;
 						colisao = this.testaColisao();
 						if(colisao.peca) {
+							//se bate com outra peca simultaneamente, desiste
 							desistir = true;
 						}else if(colisao.chao) {
 							//tenta chutar mais uma casa pra cima
@@ -175,10 +190,10 @@ public class Tetris {
 						}
 					}
 				}else {
-					//se bateu com peca, nem tenta
+					//se eh colisao com peca, nem tenta
 					desistir = true;
 				}
-				
+
 				if(desistir) {
 					//desfaz os chutes
 					this.pecas[this.proximaPeca[0]].x -= this.pecas[this.proximaPeca[0]].x_kick;
@@ -194,8 +209,10 @@ public class Tetris {
 				}
 				
 			}
-		}else if(acao.equals("goDown")) {
+		}else if(acao.equals("goDown") || acao.equals("goDownExtra")) {
+			//desce uma casa. essa acao pode ocasionar em atualizacoes no mapa (linha formada, peca terminou de cair) ou ate mesmo o fim de jogo
 			this.pecas[this.proximaPeca[0]].y++;
+			//testa colisao, as duas colisoes relevantes sao: colisao com o chao; colisao com pecas
 			colisao = this.testaColisao();
 			if(colisao.chao || colisao.peca) {
 				//print debug
@@ -205,17 +222,23 @@ public class Tetris {
 				this.pecas[this.proximaPeca[0]].y--;
 				//salva os cubos no mapa
 				this.updateMap();
-				//se der para continuar...
+				//se nenhuma parte da peca ficou fora do mapa, o jogo continua
 				if(!colisao.foraDoMapa) {
 					//reseta a peca, ativa a proxima e sorteia mais uma
 					atualizaProxPecas();
 				}else {
-					//se a peca bateu para baixo e continua fora do mapa, fim de jogo
+					//se a peca bateu e uma parte dela ficou extrapolando o mapa, fim de jogo
 					this.perdeu = true;
 				}
+			}else {
+				//se nao aterrissou, adiciona um ponto para cada cada adiantada
+				if(acao.equals("goDownExtra"))
+					this.pontuacao++;
 			}
 		}else if(acao.equals("goRight")) {
+			//uma casa para a direita
 			this.pecas[this.proximaPeca[0]].x++;
+			//testa colisao, as duas colisoes relevantes sao: colisao com parede direita; colisao com pecas
 			colisao = this.testaColisao();
 			if(colisao.paredeDir || colisao.peca) {
 				//print debug
@@ -226,7 +249,9 @@ public class Tetris {
 			}
 
 		}else if(acao.equals("goLeft")) {
+			//uma casa para a esquerda
 			this.pecas[this.proximaPeca[0]].x--;
+			//testa colisao, as duas colisoes relevantes sao: colisao com parede esquerda; colisao com pecas
 			colisao = this.testaColisao();
 			if(colisao.paredeEsq || colisao.peca) {
 				//print debug
@@ -236,14 +261,48 @@ public class Tetris {
 				this.pecas[this.proximaPeca[0]].x++;
 			}
 		}else if(acao.equals("goUp")) {
+			//funcionalidade que sera desabilitada na versao final, subir a peca vai contra as regras do jogo
 			this.pecas[this.proximaPeca[0]].y--;
 			if(this.pecas[this.proximaPeca[0]].y < 0) {
 				this.pecas[this.proximaPeca[0]].y = 0;
 			}
 		}
+		//se chegou aqui, perdeu == false
 		return false;
 	}
 	
+	//retorna a figura correspondente ao cubo das coordenadas X, Y. util para a GUI
+	public BufferedImage getCubeImg(int posX, int posY) {
+		if(pecaPresente(posX, posY)) {
+			//se faz parte da regiao solida da peca ativa atual, retorna a figura da peca
+			return this.pecas[proximaPeca[0]].getImage();
+		}else {
+			//se nao, retorna um cubo do mapa, que inclui background ou pecas acumuladas
+			return this.getMapCubeImg(posX, posY);
+		}
+	}
+	
+	//getters
+	public int getScore() {
+		return this.pontuacao;
+	}	
+	public int getLines() {
+		return this.linhas;
+	}
+	public int getLevel() {
+		return this.nivel;
+	}
+	public int getSizeX() {
+		return this.maxX;
+	}
+	public int getSizeY() {
+		return this.maxY;
+	}
+	/**********************************************************************************************/
+	/******************************METODOS PRIVADOS (AUXILIARES)***********************************/
+	/**********************************************************************************************/
+	
+	//metodo que atualiza o mapa, necessariamente eh consequencia de uma aterrissagem de peca
 	private void updateMap() {
 		int ladoMatriz = this.pecas[proximaPeca[0]].getSize();
 		//salva a contribuicao da peca atual
@@ -260,29 +319,29 @@ public class Tetris {
 			}
 		}
 		
-		boolean linhaFormada;
-		int tetrisCount = 0;
-		int alturaLinFormada[] = new int[4];
+		int tetrisCount = 0; //armazena a quantia de linhas formadas de uma vez
+		int alturaLinFormada[] = new int[4]; //armazena onde as linhas foram formadas, para poder apaga-las depois
 		//registra quantas linhas foram formadas, e onde (o maximo sao 4, pois a peca mais comprida eh a TetrominoeI)
 		for(int y = (this.maxY-1); y > 0; y--) {
-			linhaFormada = true;
-			//se algum cubo da linha for mapa, a linha nao esta completa
+			boolean linhaFormada = true; //auxiliar, flag de linha completa
 			for(int x = 0; x < this.maxX; x++) {
+				//se algum cubo da linha for mapa, a linha nao esta completa
 				if(map[y][x] == 'B')
 					linhaFormada = false;
 			}
 			if(linhaFormada) {
+				//atualiza o local e quantidade de linhas formadas
 				alturaLinFormada[tetrisCount] = y;
 				tetrisCount++;
 			}
 		}
 		
 		//limpa as linhas formadas
-		System.err.println("----TETRIS_COUNT--- "+ tetrisCount);
 		for(int i = 0; i < tetrisCount; i++) {
 			//limpa a linha e desloca o mapa inteiro a partir dela, para baixo
 			for(int y = alturaLinFormada[0]; y > 1; y--) {
 				for(int x = 0; x < this.maxX; x++) {
+					//cada cubo recebe o que esta logo acima do mesmo
 					map[y][x] = map[y-1][x] ;
 				}
 			}
@@ -290,33 +349,60 @@ public class Tetris {
 		
 		//no caso de 4 linhas ao mesmo tempo, TETRIS!
 		if(tetrisCount == 4) {
-			System.err.println("----TETRIS!---TETRIS!---TETRIS!---TETRIS!---");
+			System.out.println("----TETRIS!---TETRIS!---TETRIS!---TETRIS!---");
+		}
+		
+		//atualiza status
+		this.updateScore(tetrisCount);
+	}
+	
+	//auxiliar para updateMap(), atualiza contagem de linhas, nivel e pontuacao
+	private void updateScore(int numLinhas) {
+		if(numLinhas > 0 && numLinhas < 5) {
+			//atualiza contagem de linhas
+			this.linhas += numLinhas;
+			//atualiza nivel
+			this.nivel = (int)(this.linhas/10) + 1;
+			//atualiza pontuacao
+			switch(numLinhas) {
+				case 1:
+					this.pontuacao += 100*this.nivel;
+					break;
+				case 2:
+					this.pontuacao += 300*this.nivel;
+					break;
+				case 3:
+					this.pontuacao += 500*this.nivel;
+					break;
+				case 4:
+					this.pontuacao += 800*this.nivel;
+					break;
+				default:
+					break;
+			}
 		}
 	}
 	
+	//metodo que testa possiveis colisoes da peca ativa atual com os elementos do mapa, retorna dados sobre a colisao
 	private Colisao testaColisao() {
+		//auxiliar, para escrever menos
 		int ladoMatriz = this.pecas[proximaPeca[0]].getSize();
+		//instancia que armazena dados sobre a colisao
 		Colisao retorno = new Colisao();
-		/*
-		 * "peca" para colisao com cubos acumulados
-		 * "chao" para colisao com o chao
-		 * "paredeDir" para colisao com a parede direita
-		 * "paredeEsq" para colisao com a parede esquerda
-		 * "foraDoMapa" para peca ainda fora do mapa
-		 */
+		//[FUNCIONALIDADE NAO UTILIZADA] "gaps" na matriz sao calculados para posterior calculo de profundidade de interseccao de colisao
 		int numColVaziaEsq = ladoMatriz, numColVaziaDir = ladoMatriz, numLinVaziaInf = ladoMatriz;
 		for(int i = 0; i < ladoMatriz; i++) {
 			for(int j = 0; j < ladoMatriz; j++) {
-				//se for um cubo ocupado
+				//se for um cubo ocupado, na matriz da peca
 				if(this.pecas[proximaPeca[0]].getCube(i, j)) {
-					//detecta a profundidade das bordas vazias de cada lado, exceto o superior
+					//[FUNCIONALIDADE NAO UTILIZADA] calcula as bordas vazias de cada lado, exceto superior
 					if(numColVaziaEsq > i)
 						numColVaziaEsq = i;
 					if(numColVaziaDir > (ladoMatriz - i - 1))
 						numColVaziaDir = (ladoMatriz - i - 1);
 					if(numLinVaziaInf > (ladoMatriz - j - 1))
 						numLinVaziaInf = (ladoMatriz - j - 1);	
-					
+					//enquanto i e j coordenadas referenciadas na matriz da PECA, x e y sao referenciadas na matriz do MAPA
 					int x = pecas[proximaPeca[0]].x + i;
 					int y = pecas[proximaPeca[0]].y + j;
 					//se o teste eh feito dentro do mapa
@@ -324,6 +410,7 @@ public class Tetris {
 						//se coincide com algo no mapa que nao seja o fundo vazio, eh colisao com pecas acumuladas
 						if(map[y][x] != 'B') {
 							retorno.peca = true;
+							//[FUNCIONALIDADE NAO UTILIZADA] calcula a profundidade de colisao referenciada nos extremos da matriz
 							if(retorno.profundidadeDir < (ladoMatriz - i))
 								retorno.profundidadeDir = (ladoMatriz - i);
 							if(retorno.profundidadeEsq < (i+1))
@@ -335,52 +422,38 @@ public class Tetris {
 						if(x < 0){
 							//colisao com a parede esquerda
 							retorno.paredeEsq = true;
-							//
+							//[FUNCIONALIDADE NAO UTILIZADA] calcula a profundidade de colisao referenciada nos extremos da matriz
 							if(retorno.profundidadeEsq < (i+1))
 								retorno.profundidadeEsq = (i+1);
 						}else if(x >= maxX){
 							//colisao com a parede direita
 							retorno.paredeDir = true;
+							//[FUNCIONALIDADE NAO UTILIZADA] calcula a profundidade de colisao referenciada nos extremos da matriz
 							if(retorno.profundidadeDir < (ladoMatriz - i))
 								retorno.profundidadeDir = (ladoMatriz - i);
 						}else if(y >= maxY){
 							//colisao com o chao
 							retorno.chao = true;
+							//[FUNCIONALIDADE NAO UTILIZADA] calcula a profundidade de colisao referenciada nos extremos da matriz
 							if(retorno.profundidadeInf < (ladoMatriz - j))
 								retorno.profundidadeInf = (ladoMatriz - j);
 						}else if(y < 0) {
+							//colisao com o teto
 							retorno.foraDoMapa = true;
 						}
-						//System.err.println("verificacao de colisao fora do mapa!");
 					}
 				}
 			}
 		}
-		//mantem as profundidades de colisao em relacao a area ocupada da matriz da peca
+		//[FUNCIONALIDADE NAO UTILIZADA] calcula a profundidade de colisao referenciada nos extremos da regiao solida da peca
 		retorno.profundidadeDir -= numColVaziaDir;
 		retorno.profundidadeEsq -= numColVaziaEsq;
 		retorno.profundidadeInf -= numLinVaziaInf;	
-		//System.err.println("gapL="+numColVaziaEsq+" gapR="+numColVaziaDir+" gapInf="+numLinVaziaInf);
+		//retorna os dados sobre a colisao
 		return retorno;
 	}
 
-/***************************************** CUBOS *****************************************/
-	public BufferedImage getCubeImg(int posX, int posY) {
-		//se faz parte da pe�a
-		if(pecaPresente(posX, posY)) {
-			return pecas[proximaPeca[0]].getImage();
-		}else {
-			/*
-			//debug
-			if(posX == 0 && posY == 0) {
-				return this.debugTile;
-			}else {
-				return this.getMapCubeImg(posX, posY);
-			}*/
-			return this.getMapCubeImg(posX, posY);
-		}
-	}
-	
+	//metodo que retorna a figura correspondente a coordenadas X, Y (referenciadas na matriz do mapa)
 	private BufferedImage getMapCubeImg(int posX, int posY) {
 		char cubo = map[posY][posX];
 		BufferedImage retorno = this.debugTile;
@@ -415,28 +488,28 @@ public class Tetris {
 		return retorno;
 	}
 	
-	//verifica se o cubo destas coordenadas no mapa esta ocupado pelo corpo de uma peca
+	//verifica se um cubo de coordenadas X, Y (referenciadas na matriz do mapa) esta ocupado pelo corpo de uma peca
 	private boolean pecaPresente(int posX, int posY) {
-		//int pecaAtiva = 0;
-		int pecaAtiva = this.proximaPeca[0];
 		boolean X_dentro = false, Y_dentro = false;
+		//verifica se esta dentro da faixa em X
 		if(posX >= pecas[proximaPeca[0]].x && posX <= (pecas[proximaPeca[0]].x + pecas[proximaPeca[0]].getSize() - 1)) X_dentro = true;
+		//verifica se esta dentro da faixa em Y
 		if(posY >= pecas[proximaPeca[0]].y && posY <= (pecas[proximaPeca[0]].y + pecas[proximaPeca[0]].getSize() - 1)) Y_dentro = true;
-		//se o ponto pertence a area da matriz da peca, usa getCube() para ver se eh cubo preenchido
+		//se o ponto ta dentro da matriz da peca ativa, usa getCube() para ver se eh cubo preenchido
 		if(X_dentro && Y_dentro) {
 			if(pecas[proximaPeca[0]].getCube(posX-pecas[proximaPeca[0]].x, posY-pecas[proximaPeca[0]].y)) {
 				return true;
 			}else {
-				//nao eh cubo ocupado
+				//nao eh cubo preenchido, eh transparente, mapa deve aparecer neste lugar.
 				return false;
 			}
 		}else {
-			//eh mapa
+			//fora da matriz da peca, eh mapa
 			return false;
 		}
 	}
 	
-	//desloca o vetor de proximas pecas para baixo em 1 un, sorteia proximaPeca[ultima]
+	//desloca o vetor de proximas pecas em 1 un, sorteia proximaPeca[ultima]
 	private void atualizaProxPecas() {
 		if(!this.perdeu) {
 			//reset da peca atual
@@ -454,62 +527,23 @@ public class Tetris {
 		}
 	}
 	
-	//retorna um caractere correspondente a uma peca
+	//retorna um valor de 0 a (numPecas - 1)
 	private int getPecaAleatoria(int numPecas) {
 		Random gerador = new Random();
 		return(gerador.nextInt(numPecas));
-		/*
-		int intRandom = gerador.nextInt(numPecas);
-		char retorno;
-		switch(intRandom) {
-			case 0: 
-				retorno = 'I';
-				break;
-			case 1: 
-				retorno = 'J';
-				break;
-			case 2: 
-				retorno = 'L';
-				break;
-			case 3: 
-				retorno = 'O';
-				break;
-			case 4: 
-				retorno = 'S';
-				break;
-			case 5: 
-				retorno = 'T';
-				break;
-			case 6: 
-				retorno = 'Z';
-				break;
-			default:
-				retorno = 'U';
-				break;
-		}
-		return retorno;
-		*/
 	}
 	
-	//retorna uma peca aleatoria que nao seja a excecao
+	//retorna um valor de 0 a (numPecas - 1), que nao seja a excecao
 	private int getPecaAleatoria(int numPecas, int excecao) {
 		int retorno = excecao;
 		while(retorno == excecao) {
 			retorno = getPecaAleatoria(numPecas);
 		}
 		return retorno;
-		/*
-		char retorno = excecao;
-		while(retorno == excecao) {
-			retorno = getPecaAleatoria(numPecas);
-		}
-		return retorno;
-		*/
 	}
 
-
+	//debug
 	public void printdebug() {
 		System.out.println("X: "+this.pecas[this.proximaPeca[0]].x+" Y: "+this.pecas[this.proximaPeca[0]].y);
 	}
-
 }
