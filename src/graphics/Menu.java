@@ -20,8 +20,23 @@ import teste.Aplicacao;
 
 public class Menu extends JFrame implements ActionListener {
     private JButton JButtonPlay;
-    private JPanel JPanelNorte;
+    private JFrame janela;
+    
     public Menu() {
+        JFrame janela = new JFrame();
+        janela.setResizable(false);
+		janela.setTitle("Tetris");
+
+        JButtonPlay = new JButton("Play!");
+        janela.add(JButtonPlay);
+
+        JButtonPlay.setActionCommand("iniciar");
+		JButtonPlay.addActionListener(this);
+
+        janela.pack();
+		janela.setLocationRelativeTo(null);
+		janela.setVisible(true);
+        /*
         super("Tetris");
         Container container = getContentPane();
 		container.setLayout(new BorderLayout());
@@ -33,14 +48,17 @@ public class Menu extends JFrame implements ActionListener {
         this.setVisible(true);
         JButtonPlay.setActionCommand("iniciar");
 		JButtonPlay.addActionListener(this);
+    */
     }
 
     public void actionPerformed(ActionEvent e){
 		//Caso o botão clicado seja resetar
 		if (e.getActionCommand().equals("iniciar")) {
             //Aplicacao.IniciaTetris();
+            
             GameWindow jogo = new GameWindow();
         }
+        janela.dispose();
     }
 
 }
