@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import engine.Tetris;
 import teste.Aplicacao;
 import tempo.Timer;
 
@@ -23,15 +24,18 @@ public class GameWindow extends JFrame{
 
     JFrame janela;
 	Timer gameLoop;
+	Tetris jogo;
 
     public GameWindow() {
 
+    	
 		JFrame janela = new JFrame();
         //janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		janela.setResizable(false);
 		janela.setTitle("Tetris");
 		
-		TetrisField campoTeste = new TetrisField(20, 10);
+		this.jogo = new Tetris(20,10);
+		TetrisField campoTeste = new TetrisField(jogo);
 		janela.add(campoTeste);
 		Timer gameLoop = new Timer(campoTeste, 60, janela); //60 fps
 		gameLoop.iniciaTetris();
