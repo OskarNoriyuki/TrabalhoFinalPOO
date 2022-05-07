@@ -11,10 +11,8 @@ import javax.swing.DebugGraphics;
 import javax.swing.JPanel;
 
 public class TetrisField extends JPanel{
-	private final static int tamanhoCuboOriginal = 20; //20x20 pixels
-	private final static int upScale = 2;				
-	private final static int tamanhoCubo = tamanhoCuboOriginal*upScale; //20x20 pixels
-	
+	//dimensoes
+	private int tamanhoCubo;
 	private int numColunas;
 	private int numLinhas;
 	private int larguraCampo;
@@ -31,13 +29,16 @@ public class TetrisField extends JPanel{
 		//engine
 		this.jogo = jogo;
 		
+		//dimensoes
+		this.tamanhoCubo = this.jogo.getCubeSize();
 		this.numColunas = this.jogo.getSizeX();
 		this.numLinhas = this.jogo.getSizeY();
 		this.larguraCampo = tamanhoCubo*numColunas;
 		this.alturaCampo = tamanhoCubo*numLinhas;
-		
+
 		//painel
 		this.setPreferredSize(new Dimension(this.larguraCampo, this.alturaCampo));
+		this.setLayout(new FlowLayout());
 		this.setBackground(Color.black);
 		this.setDoubleBuffered(true);
 		
@@ -48,18 +49,6 @@ public class TetrisField extends JPanel{
 	
 	}
 	
-	public boolean oneStepDown() {
-		return jogo.updateGame("goDown");
-	}
-	
-	public int getLevel() {
-		return jogo.getLevel();
-	}
-	/*
-	public void debug() {
-		jogoTeste.printdebug();
-	}*/
-	
 	//configs graficas do painel
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -69,7 +58,6 @@ public class TetrisField extends JPanel{
 				g2.drawImage(jogo.getCubeImg(x, y), x*tamanhoCubo, y*tamanhoCubo, tamanhoCubo, tamanhoCubo, null);
 			}
 		}
-		
 		g2.dispose();	//para não acumular lixo na memória
 	}
 }

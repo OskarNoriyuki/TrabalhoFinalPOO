@@ -11,31 +11,48 @@ import javax.swing.DebugGraphics;
 import javax.swing.JPanel;
 
 public class StatsField extends JPanel{
-	private final static int tamanhoCuboOriginal = 20; //20x20 pixels
-	private final static int upScale = 2;				
-	private final static int tamanhoCubo = tamanhoCuboOriginal*upScale; //20x20 pixels
-	
+	//dimensoes
+	private int tamanhoCubo;
 	private int numColunas;
 	private int numLinhas;
 	private int larguraCampo;
 	private int alturaCampo;
-	
+	//ref para o game
 	private Tetris jogo;
-	
-	//construtor do painel principal do jogo
+	//elementos graficos
+	Label pontuacao, nivel, linhas;
+	//construtor do painel auxiliar (mostrador de proximas pecas, pontuacao, nivel, etc)
 	public StatsField(Tetris jogo) {
-
+		//engine 
+		this.jogo = jogo;
+		
+		//dimensoes
+		this.tamanhoCubo = jogo.getCubeSize();
 		this.numColunas = jogo.getSizeX();
 		this.numLinhas = jogo.getSizeY();
-		this.larguraCampo = tamanhoCubo*numColunas/2;
+		this.larguraCampo = tamanhoCubo*numColunas/2; //painel auxiliar eh mais fino que o campo do jogo
 		this.alturaCampo = tamanhoCubo*numLinhas;
 		
 		//painel
 		this.setPreferredSize(new Dimension(this.larguraCampo, this.alturaCampo));
 		this.setBackground(Color.black);
 		this.setDoubleBuffered(true);
+		this.setLayout(new FlowLayout());
 		
+		//elementos diversos
+		this.pontuacao = new Label();
+		this.nivel = new Label();
+		this.linhas = new Label();
+		
+		this.pontuacao.setForeground(Color.YELLOW);
+		this.nivel.setForeground(Color.YELLOW);
+		this.linhas.setForeground(Color.YELLOW);
+		
+		this.add(pontuacao);
+		this.add(linhas);
+		this.add(nivel);
 	
+		
 	}
 	
 	
@@ -48,6 +65,10 @@ public class StatsField extends JPanel{
 				//g2.drawImage(jogoTeste.getCubeImg(x, y), x*tamanhoCubo, y*tamanhoCubo, tamanhoCubo, tamanhoCubo, null);
 			}
 		}
+		
+		this.pontuacao.setText(jogo.getScore() + " pontos");
+		this.nivel.setText("Nivel " + jogo.getLevel());
+		this.linhas.setText(jogo.getLines() + " linhas");
 		
 		g2.dispose();	//para não acumular lixo na memória
 	}
