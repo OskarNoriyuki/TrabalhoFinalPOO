@@ -5,7 +5,7 @@ import java.io.IOException;
 import graphics.TetrisField;
 import graphics.GameWindow;
 import graphics.StatsField;
-import graphics.FimdeJogo;
+import graphics.Ranking;
 
 import javax.swing.JFrame;
 
@@ -30,13 +30,15 @@ public class Timer implements Runnable{
 	
 	private boolean fimdejogo = false;
 	private JFrame janela;
+	private int dificuldade;
 	
 	//construtor da classe gerenciadora do loop do jogo
-	public Timer(Tetris jogo, int fps, TetrisField campoTetris, StatsField campoAux, JFrame janela) {
+	public Timer(Tetris jogo, int fps, TetrisField campoTetris, StatsField campoAux, JFrame janela, int dificuldade) {
 		//referencias para o painel do jogo
 		this.painelJogo = campoTetris;
 		this.painelAux = campoAux;
 		this.janela=janela;
+		this.dificuldade=dificuldade;
 		
 		//referencia do jogo
 		this.jogo = jogo;
@@ -117,7 +119,7 @@ public class Timer implements Runnable{
 		}
 
 		janela.dispose();
-		FimdeJogo janelafim = new FimdeJogo();
+		Ranking janelafim = new Ranking();
 
 	}
 	

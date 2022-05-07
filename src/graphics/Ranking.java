@@ -5,12 +5,12 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class FimdeJogo implements ActionListener{
+public class Ranking implements ActionListener{
 
     private JButton JButtonFechar;
     private JFrame janela;
 
-    public FimdeJogo(){
+    public Ranking(){
         JFrame janela = new JFrame();
         janela.setResizable(false);
         janela.setTitle("Tetris");

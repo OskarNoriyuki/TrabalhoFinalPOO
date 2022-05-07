@@ -34,7 +34,9 @@ public class Menu implements ActionListener {
     private static final int MARGENS = 300;
     private static final int ESPACAMENTO = 30;
     private static final int CABECALHO = 300;
-    private static final int RODAPE = 100;
+    private static final int RODAPE = 130;
+
+    private Opcoes opcoes;
 
 
     private JButton JButtonPlay;
@@ -74,21 +76,15 @@ public class Menu implements ActionListener {
         c.gridy = 0;
         //Tamanho
         c.gridwidth=2;
-        c.weightx=0.1;
-        //c.weighty=0.5;
+        c.weightx=1;
         c.fill = GridBagConstraints.HORIZONTAL;
         //Espaçamento
         c.insets = new Insets(CABECALHO,MARGENS,0,MARGENS);
-        //c.weightx=0.5;
-        //c.weighty=0.2;
-        //c.fill=GridBagConstraints.BOTH;
-        JButtonPlay.setBackground(Color.gray);
+        JButtonPlay.setBackground(Color.GRAY);
         label.add(JButtonPlay, c);
+        //Definindo Ações do Botão
         JButtonPlay.setActionCommand("iniciar");
         JButtonPlay.addActionListener(this);
-        //carregamento do ícone
-        //ImageIcon playicon = new ImageIcon("src/img/buttons/PlayBotao.png");
-        //JButtonPlay.setIcon(playicon);
 
         //BOTÃO RANKING
         JButtonRanking = new JButton();
@@ -96,8 +92,9 @@ public class Menu implements ActionListener {
         c.gridy = 1;
         c.gridwidth=2;
         c.insets = new Insets(ESPACAMENTO,MARGENS,0,MARGENS);
-        JButtonRanking.setBackground(Color.gray);
+        JButtonRanking.setBackground(Color.GRAY);
         label.add(JButtonRanking, c);
+        //Definindo Ações do Botão
         JButtonRanking.setActionCommand("ranking");
         JButtonRanking.addActionListener(this);
         
@@ -109,6 +106,9 @@ public class Menu implements ActionListener {
         c.gridwidth=1;
         c.insets = new Insets(ESPACAMENTO,MARGENS,RODAPE,0);
         label.add(JButtonOpcoes, c);
+        //Definindo Ações do Botão
+        JButtonOpcoes.setActionCommand("opcoes");
+        JButtonOpcoes.addActionListener(this);
 
         //BOTÃO SAIR
         JButtonSair = new JButton("Fechar");
@@ -117,37 +117,26 @@ public class Menu implements ActionListener {
         c.gridwidth=1;
         c.insets = new Insets(ESPACAMENTO,0,RODAPE,MARGENS);
         label.add(JButtonSair, c);
-        
-        
-
-        
+        //Definindo Ações do Botão
+        JButtonSair.setActionCommand("fechar");
+        JButtonSair.addActionListener(this);
 
         janela.add(label);
         janela.pack();
 		janela.setLocationRelativeTo(null);
 		janela.setVisible(true);
 
-        System.out.println(JButtonPlay.getWidth());
-        System.out.println(JButtonPlay.getHeight());
-
-        JButtonPlay.setHorizontalTextPosition(JButton.CENTER);
-        JButtonPlay.setVerticalTextPosition(JButton.CENTER);
-        JButtonPlay.setMargin(new Insets(0,0,0,0));
+        //BOTÃO PLAY
+        //carregamento do ícone
         ImageIcon playicon = new ImageIcon("src/img/buttons/PlayBotao.png");
+        JButtonPlay.setMargin(new Insets(0,0,0,0));
         JButtonPlay.setIcon(playicon);
-        //JButtonPlay.setPreferredSize(new Dimension(220, 5));
 
-        //Botão 2
+        //BOTÃO RANKING
         //carregamento do ícone
         ImageIcon rankingicon = new ImageIcon("src/img/buttons/RankingBotao.png");
         JButtonRanking.setIcon(rankingicon);
-        JButtonRanking.setMargin(new Insets(0,0,0,0));
-
-        System.out.println(JButtonPlay.getWidth());
-        System.out.println(JButtonPlay.getHeight());
-
-        
-        
+        JButtonRanking.setMargin(new Insets(0,0,0,0));        
         
     } catch (FileNotFoundException e) {
         e.printStackTrace();
@@ -160,17 +149,29 @@ public class Menu implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e){
-		//Caso o botão clicado seja resetar
+		//Caso o botão clicado seja o play
 		if (e.getActionCommand().equals("iniciar")) {
-            //Aplicacao.IniciaTetris();
-            
-            GameWindow jogo = new GameWindow();
+            GameWindow jogo = new GameWindow(opcoes.getDificuldade());
             janela.dispose();
         }
-    }
-
-    public void fecharJanela(){
-        janela.dispose();
+        //Caso o botão clicado seja o ranking
+		if (e.getActionCommand().equals("ranking")) {
+            Ranking rank = new Ranking();
+            janela.dispose();
+        }
+        //Caso o botão clicado seja o opcoes
+		if (e.getActionCommand().equals("opcoes")) {
+            if(opcoes==null) {
+                opcoes = new Opcoes();
+            }
+            else{
+                opcoes.MostrarOpcoes();
+            }
+        }
+        //Caso o botão clicado seja o fechar
+		if (e.getActionCommand().equals("fechar")) {
+            janela.dispose();
+        }
     }
 
 }
