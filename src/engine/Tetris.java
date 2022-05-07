@@ -40,6 +40,9 @@ public class Tetris {
 	 */
 	
 	/**atributos esteticos**/
+	private final static int tamanhoCuboOriginal = 20; //20x20 pixels
+	private final static int upScale = 2;				
+	private final static int tamanhoCubo = tamanhoCuboOriginal*upScale; //20x20 pixels
 	private BufferedImage backgroundTile;
 	private BufferedImage debugTile;
 	
@@ -283,6 +286,9 @@ public class Tetris {
 	}
 	
 	//getters
+	public int getCubeSize() {
+		return tamanhoCubo;
+	}
 	public int getScore() {
 		return this.pontuacao;
 	}	

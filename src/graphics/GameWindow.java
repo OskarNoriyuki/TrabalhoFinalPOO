@@ -25,6 +25,8 @@ public class GameWindow extends JFrame{
     JFrame janela;
 	Timer gameLoop;
 	Tetris jogo;
+	TetrisField painelJogo;
+	StatsField painelAux;
 
     public GameWindow() {
     	
@@ -32,17 +34,24 @@ public class GameWindow extends JFrame{
         janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		janela.setResizable(false);
 		janela.setTitle("Tetris");
-		
+		janela.setLayout(new FlowLayout());
 		this.jogo = new Tetris(20,10);
-		TetrisField campoTeste = new TetrisField(jogo);
-		janela.add(campoTeste);
-		Timer gameLoop = new Timer(campoTeste, 60, janela); //60 fps
+		painelJogo = new TetrisField(jogo);
+		painelAux = new StatsField(jogo);
+		janela.add(painelJogo);
+		janela.add(painelAux);
+		Timer gameLoop = new Timer(jogo, 60, painelJogo, painelAux, janela); //60 fps
 		gameLoop.iniciaTetris();
 		
 		janela.pack();
 		janela.setLocationRelativeTo(null);
 		janela.setVisible(true);
 
+    }
+    
+    public void repaint() {
+    	painelJogo.repaint();
+    	painelAux.repaint();
     }
 
 	public void fecharJanela(){
