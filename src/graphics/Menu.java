@@ -10,17 +10,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-
+import javax.swing.border.EmptyBorder;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.*;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 import teste.Aplicacao;
 
@@ -32,7 +36,6 @@ public class Menu implements ActionListener {
     private JButton JButtonSair;
 
     public  JFrame janela = new JFrame();
-    GridBagConstraints gbc = new GridBagConstraints();
     
     public Menu() {
         
@@ -41,39 +44,72 @@ public class Menu implements ActionListener {
         janela.setPreferredSize(new Dimension(800, 600));
         janela.setResizable(false);
 		janela.setTitle("Tetris");
-        janela.setLayout(new GridBagLayout());
-        
-        //Configurações do Play
+        janela.setLayout(new GridLayout(0, 1));
+        BufferedImage myImage;
+        try {
+            myImage = ImageIO.read(new FileInputStream("src/img/background/TetrisMenu.jpg"));
+            //janela.setContentPane(new ImagemFundo(myImage));
+            JLabel label = new JLabel( new ImageIcon(myImage));
+            label.setLayout( new FlowLayout() );
+
+
+            janela.add(label);
+            label.setLayout(new GridBagLayout());
+            GridBagConstraints c = new GridBagConstraints();
+
+        JPanel panelPlay = new JPanel();
         JButtonPlay = new JButton("Play!");
-        gbc.gridx=0;
-        gbc.gridy=0;
-        janela.add(JButtonPlay, gbc);
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth=2;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        //Código para os Panels ocuparem todo o espaço disponível
+        c.insets = new Insets(250,300,0,300);
+        c.weightx=1;
+        c.weighty=1;
+        c.fill=GridBagConstraints.BOTH;
+        JButtonPlay.setBackground(Color.green);
+        label.add(JButtonPlay, c);
 
-        //Configurações do Ranking
-        JButtonRanking = new JButton("Ranking");
-        gbc.gridx=0;
-        gbc.gridy=1;
-        janela.add(JButtonRanking, gbc);
+        JPanel panelRanking = new JPanel();
+        JButtonRanking = new JButton("Ranking!");
+        c.gridx = 0;
+        c.gridy = 1;
+        c.gridwidth=2;
+        c.insets = new Insets(50,300,0,300);
+        label.add(JButtonRanking, c);
 
-        //Configurações do Opcoes
-        JButtonOpcoes = new JButton("Opções");
-        gbc.gridx=0;
-        gbc.gridy=3;
-        janela.add(JButtonOpcoes, gbc);
+        JButtonOpcoes = new JButton("Opções!");
+        c.gridx = 0;
+        c.gridy = 3;
+        c.gridwidth=1;
+        c.insets = new Insets(50,300,100,0);
+        label.add(JButtonOpcoes, c);
 
-        //Configurações do Sair
-        JButtonSair = new JButton("Sair");
-        gbc.gridx=0;
-        gbc.gridy=3;
-        janela.add(JButtonSair, gbc);
+        JButtonSair = new JButton("Fechar");
+        c.gridx = 1;
+        c.gridy = 3;
+        c.gridwidth=1;
+        c.insets = new Insets(50,0,100,300);
+        label.add(JButtonSair, c);
 
 
+        JButtonPlay.setActionCommand("iniciar");
+		JButtonRanking.setActionCommand("ranking");
+		 
+		JButtonPlay.addActionListener(this);
+		JButtonRanking.addActionListener(this);
+        
+        janela.add(label);
         janela.pack();
 		janela.setLocationRelativeTo(null);
 		janela.setVisible(true);
-
-        JButtonPlay.setActionCommand("iniciar");
-		JButtonPlay.addActionListener(this);
+        
+    } catch (FileNotFoundException e) {
+        e.printStackTrace();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
 
         
         
