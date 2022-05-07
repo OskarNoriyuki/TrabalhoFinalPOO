@@ -151,7 +151,12 @@ public class Menu implements ActionListener {
     public void actionPerformed(ActionEvent e){
 		//Caso o botão clicado seja o play
 		if (e.getActionCommand().equals("iniciar")) {
-            GameWindow jogo = new GameWindow(opcoes.getDificuldade());
+            if(opcoes==null){
+                GameWindow jogo = new GameWindow(1);
+            }
+            else{
+                GameWindow jogo = new GameWindow(opcoes.getDificuldade());
+            }
             janela.dispose();
         }
         //Caso o botão clicado seja o ranking
