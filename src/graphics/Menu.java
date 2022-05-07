@@ -16,39 +16,67 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import javax.swing.*;
+import java.awt.event.*;
+
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+
 import teste.Aplicacao;
 
-public class Menu extends JFrame implements ActionListener {
+public class Menu implements ActionListener {
+    
     private JButton JButtonPlay;
-    private JFrame janela;
+    private JButton JButtonRanking;
+    private JButton JButtonOpcoes;
+    private JButton JButtonSair;
+
+    public  JFrame janela = new JFrame();
+    GridBagConstraints gbc = new GridBagConstraints();
     
     public Menu() {
-        JFrame janela = new JFrame();
+        
+        //Configurações da janela
+        janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        janela.setPreferredSize(new Dimension(800, 600));
         janela.setResizable(false);
 		janela.setTitle("Tetris");
-
+        janela.setLayout(new GridBagLayout());
+        
+        //Configurações do Play
         JButtonPlay = new JButton("Play!");
-        janela.add(JButtonPlay);
+        gbc.gridx=0;
+        gbc.gridy=0;
+        janela.add(JButtonPlay, gbc);
 
-        JButtonPlay.setActionCommand("iniciar");
-		JButtonPlay.addActionListener(this);
+        //Configurações do Ranking
+        JButtonRanking = new JButton("Ranking");
+        gbc.gridx=0;
+        gbc.gridy=1;
+        janela.add(JButtonRanking, gbc);
+
+        //Configurações do Opcoes
+        JButtonOpcoes = new JButton("Opções");
+        gbc.gridx=0;
+        gbc.gridy=3;
+        janela.add(JButtonOpcoes, gbc);
+
+        //Configurações do Sair
+        JButtonSair = new JButton("Sair");
+        gbc.gridx=0;
+        gbc.gridy=3;
+        janela.add(JButtonSair, gbc);
+
 
         janela.pack();
 		janela.setLocationRelativeTo(null);
 		janela.setVisible(true);
-        /*
-        super("Tetris");
-        Container container = getContentPane();
-		container.setLayout(new BorderLayout());
-        JPanelNorte = new JPanel();
-        container.add(JPanelNorte,BorderLayout.NORTH);
-        JButtonPlay = new JButton("Play!");
-        JPanelNorte.add(JButtonPlay);
-        this.pack();
-        this.setVisible(true);
+
         JButtonPlay.setActionCommand("iniciar");
 		JButtonPlay.addActionListener(this);
-    */
+
+        
+        
     }
 
     public void actionPerformed(ActionEvent e){
@@ -57,7 +85,11 @@ public class Menu extends JFrame implements ActionListener {
             //Aplicacao.IniciaTetris();
             
             GameWindow jogo = new GameWindow();
+            janela.dispose();
         }
+    }
+
+    public void fecharJanela(){
         janela.dispose();
     }
 

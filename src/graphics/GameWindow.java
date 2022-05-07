@@ -27,10 +27,9 @@ public class GameWindow extends JFrame{
 	Tetris jogo;
 
     public GameWindow() {
-
     	
 		JFrame janela = new JFrame();
-        //janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		janela.setResizable(false);
 		janela.setTitle("Tetris");
 		

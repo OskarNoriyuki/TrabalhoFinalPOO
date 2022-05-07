@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import graphics.TetrisField;
 import graphics.GameWindow;
+import graphics.FimdeJogo;
 
 import javax.swing.JFrame;
 
@@ -105,6 +106,7 @@ public class Timer implements Runnable{
 		}
 
 		janela.dispose();
+		FimdeJogo janelafim = new FimdeJogo();
 
 	}
 	
