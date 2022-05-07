@@ -45,11 +45,12 @@ public class Menu implements ActionListener {
         janela.setResizable(false);
 		janela.setTitle("Tetris");
         janela.setLayout(new GridLayout(0, 1));
-        BufferedImage myImage;
+        BufferedImage ImagemdeFundo=null;
+        
         try {
-            myImage = ImageIO.read(new FileInputStream("src/img/background/TetrisMenu.jpg"));
-            //janela.setContentPane(new ImagemFundo(myImage));
-            JLabel label = new JLabel( new ImageIcon(myImage));
+            ImagemdeFundo = ImageIO.read(new FileInputStream("src/img/background/TetrisMenu.png"));
+            JLabel label = new JLabel();
+            label.setIcon(new ImageIcon(new ImageIcon(ImagemdeFundo).getImage().getScaledInstance(800, 600, ImagemdeFundo.SCALE_DEFAULT)));
             label.setLayout( new FlowLayout() );
 
 
