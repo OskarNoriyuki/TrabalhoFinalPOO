@@ -27,6 +27,10 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
+import sounds.SoundPlayer;
+
+import javax.swing.*;
+
 import teste.Aplicacao;
 
 public class Menu implements ActionListener {
@@ -150,21 +154,34 @@ public class Menu implements ActionListener {
     public void actionPerformed(ActionEvent e){
 		//Caso o botão clicado seja o play
 		if (e.getActionCommand().equals("iniciar")) {
+            
+            //Tocar som
+            SoundPlayer.tocarSom("buttonclick.wav");
+
             if(opcoes==null){
                 GameWindow jogo = new GameWindow(1);
             }
             else{
                 GameWindow jogo = new GameWindow(opcoes.getDificuldade());
             }
+            
             janela.dispose();
         }
         //Caso o botão clicado seja o ranking
 		if (e.getActionCommand().equals("ranking")) {
+
+            //Tocar som
+            SoundPlayer.tocarSom("buttonclick.wav");
+
             Ranking rank = new Ranking();
             janela.dispose();
         }
         //Caso o botão clicado seja o opcoes
 		if (e.getActionCommand().equals("opcoes")) {
+
+            //Tocar som
+            SoundPlayer.tocarSom("buttonclick.wav");
+
             if(opcoes==null) {
                 opcoes = new Opcoes();
             }
@@ -174,6 +191,10 @@ public class Menu implements ActionListener {
         }
         //Caso o botão clicado seja o fechar
 		if (e.getActionCommand().equals("fechar")) {
+
+            //Tocar som
+            SoundPlayer.tocarSom("buttonclick.wav");
+
             janela.dispose();
         }
     }

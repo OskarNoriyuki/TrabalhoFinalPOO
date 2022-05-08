@@ -5,6 +5,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import sounds.SoundPlayer;
+
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -42,10 +45,12 @@ public class Ranking implements ActionListener{
     public void actionPerformed(ActionEvent e){
 		//Caso o botão clicado seja resetar
 		if (e.getActionCommand().equals("Fechar")) {
+            SoundPlayer.tocarSom("buttonclick.wav");
             //Finaliza Jogo
             System.exit(0);
         }
         if (e.getActionCommand().equals("Menu")) {
+            SoundPlayer.tocarSom("buttonclick.wav");
             //Volta ao Menu
             Menu menu = new Menu();
             janela.dispose();
