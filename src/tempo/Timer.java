@@ -77,7 +77,8 @@ public class Timer implements Runnable{
 			String dutyCyclePerc = String.format("%.2f", this.dutyCycle*100.0);
  			if(loopCount%(targetFPS/debugMessageFreq) == 0) {
  				//System.out.println("Use W,S,A,D para mover. Use J, K para rotacionar. \nCiclo ativo medio nos ultimos "+(this.targetFPS/this.debugMessageFreq)+" frames: "+dutyCyclePerc+"%");
- 				System.out.println("Nivel: "+jogo.getLevel()+" Linhas: "+jogo.getLines()+" Pontos: "+jogo.getScore());
+ 				//System.out.println("Nivel: "+jogo.getLevel()+" Linhas: "+jogo.getLines()+" Pontos: "+jogo.getScore());
+ 				this.painelAux.setThreadCycleIndicator(dutyCyclePerc);
  			}
  			
  			//processamento do game

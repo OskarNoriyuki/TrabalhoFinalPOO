@@ -38,13 +38,18 @@ public class Tetris {
 	 * elementos 'I', 'J', 'L', 'O', 'S', 'T', 'Z' representam cubos das pecas que ja cairam
 	 * elemento 'U' = undefined
 	 */
+	private char preview[][];
+	private int previewColNum, previewLinNum;
 	
 	/**atributos esteticos**/
 	private final static int tamanhoCuboOriginal = 20; //20x20 pixels
 	private final static int upScale = 2;				
-	private final static int tamanhoCubo = tamanhoCuboOriginal*upScale; //20x20 pixels
+	private final static int tamanhoCubo = tamanhoCuboOriginal*upScale; //40x40 pixels
+	private final static int previewDownScale = 1; 
+	private final static int tamanhoCuboPreview = tamanhoCuboOriginal/previewDownScale; //20x20 pixels
 	private BufferedImage backgroundTile;
 	private BufferedImage debugTile;
+	private BufferedImage previewBgTile;
 	
 	/**atributos de pecas**/
 	private final int numTiposPecas = 7, numSorteadas = 4;
@@ -76,6 +81,16 @@ public class Tetris {
 				map[i][j] = 'B';
 			}
 		}
+		//tamanho do mapa de proximas pecas
+		this.previewColNum = 6;
+		this.previewLinNum = 6*this.numSorteadas;
+		this.preview = new char[previewLinNum][previewColNum];
+		//inicializa o mapa de proximas pecas
+		for(int i = 0; i<previewLinNum; i++) {
+			for(int j = 0; j<previewColNum; j++) { 
+				preview[i][j] = 'B';
+			}
+		}
 		//instancia uma peca de cada
 		pecas = new Tetromino[numTiposPecas];
 		pecas[0] = new TetrominoI();
@@ -104,6 +119,14 @@ public class Tetris {
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
+		//imagem do cubo de fundo de preview
+		try {
+			this.previewBgTile = ImageIO.read(new FileInputStream("src/img/map/cube_map_white.png"));
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+		//atualiza o mapa de proximas pecas
+		this.updatePreview();
 	}
 	
 	//realiza um movimento/acao, calcula as consequencias e atualiza o jogo. deve ser chamado 1x por frame, e 1x por comando
@@ -228,7 +251,9 @@ public class Tetris {
 				//se nenhuma parte da peca ficou fora do mapa, o jogo continua
 				if(!colisao.foraDoMapa) {
 					//reseta a peca, ativa a proxima e sorteia mais uma
-					atualizaProxPecas();
+					this.atualizaProxPecas();
+					//atualiza o mostrador de proximas pecas
+					this.updatePreview();
 				}else {
 					//se a peca bateu e uma parte dela ficou extrapolando o mapa, fim de jogo
 					this.perdeu = true;
@@ -285,9 +310,24 @@ public class Tetris {
 		}
 	}
 	
+	//metodo que retorna a figura correspondente a coordenadas X, Y (referenciadas na matriz do mapa de proximas pecas)
+	public BufferedImage getPreviewCubeImg(int posX, int posY) {
+		return this.getMapCubeImg(posX, posY, 1);
+		//return this.previewBgTile;
+	}
+	
 	//getters
 	public int getCubeSize() {
 		return tamanhoCubo;
+	}
+	public int getMiniCubeSize() {
+		return tamanhoCuboPreview;
+	}
+	public int getPreviewSizeX() {
+		return this.previewColNum;
+	}
+	public int getPreviewSizeY() {
+		return this.previewLinNum;
 	}
 	public int getScore() {
 		return this.pontuacao;
@@ -308,7 +348,7 @@ public class Tetris {
 	/******************************METODOS PRIVADOS (AUXILIARES)***********************************/
 	/**********************************************************************************************/
 	
-	//metodo que atualiza o mapa, necessariamente eh consequencia de uma aterrissagem de peca
+	//metodo que atualiza o mapa, deve ser chamado apos aterrissagem de peca
 	private void updateMap() {
 		int ladoMatriz = this.pecas[proximaPeca[0]].getSize();
 		//salva a contribuicao da peca atual
@@ -360,6 +400,32 @@ public class Tetris {
 		
 		//atualiza status
 		this.updateScore(tetrisCount);
+	}
+	
+	//auxiliar para updateMap(), atualiza o mostrador de proximas pecas
+	private void updatePreview() {
+		for(int i = 0; i<previewLinNum; i++) {
+			for(int j = 0; j<previewColNum; j++) { 
+				preview[i][j] = 'B';
+			}
+		}
+		for(int k = 0; k < this.numSorteadas; k++) {
+			//[numSorteadas] pecas ja sorteadas
+			int ladoMatriz = this.pecas[proximaPeca[k]].getSize();
+			//transfere a matriz da peca para o mapa de preview
+			for(int i = 0; i < ladoMatriz; i++) {
+				for(int j = 0; j < ladoMatriz; j++) {
+					if(this.pecas[proximaPeca[k]].getCube(i, j)) {
+						int x = 1 + i;
+						int y = k*6 + 1 + j;
+						//so salva o que pode de fato aparecer na GUI
+						if(x < this.previewColNum && y < this.previewLinNum && x >= 0 && y >= 0) {
+							preview[y][x] = pecas[proximaPeca[k]].toChar();
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	//auxiliar para updateMap(), atualiza contagem de linhas, nivel e pontuacao
@@ -460,12 +526,23 @@ public class Tetris {
 	}
 
 	//metodo que retorna a figura correspondente a coordenadas X, Y (referenciadas na matriz do mapa)
-	private BufferedImage getMapCubeImg(int posX, int posY) {
-		char cubo = map[posY][posX];
+	private BufferedImage getMapCubeImg(int posX, int posY, int mapType) {
+		char cubo;
+		if(mapType == 0) {
+			//mapa principal
+			cubo = this.map[posY][posX];
+		}else {
+			//mapa de proximas pecas
+			cubo = this.preview[posY][posX];
+		}
 		BufferedImage retorno = this.debugTile;
 		switch(cubo) {
 			case 'B': 
-				retorno = this.backgroundTile;
+				if(mapType == 0) {
+					retorno = this.backgroundTile;
+				}else {
+					retorno = this.previewBgTile;
+				}
 				break;
 			case 'I': 
 				retorno = this.pecas[0].getImage();
@@ -492,6 +569,11 @@ public class Tetris {
 				break;
 		}
 		return retorno;
+	}
+
+	//Funcao polimorfa para simplificar a chamada da funcao acima
+	private BufferedImage getMapCubeImg(int posX, int posY) {
+		return getMapCubeImg(posX, posY, 0);
 	}
 	
 	//verifica se um cubo de coordenadas X, Y (referenciadas na matriz do mapa) esta ocupado pelo corpo de uma peca
