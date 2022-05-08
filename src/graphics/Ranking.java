@@ -77,8 +77,8 @@ public class Ranking implements ActionListener{
             JTextArea TextoRanking = new JTextArea();
             TextoRanking.setFont(TextoRanking.getFont().deriveFont(20f));
             TextoRanking.setEditable(false);
+            TextoRanking.setOpaque(false);
             TextoRanking.setText(StringRanking);;
-            TextoRanking.setBackground(Color.decode("#2d338c"));
             TextoRanking.setForeground(Color.white);
             c.gridx = 0;
             c.gridy = 0;
