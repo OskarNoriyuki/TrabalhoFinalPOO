@@ -7,6 +7,8 @@ import graphics.GameWindow;
 import graphics.StatsField;
 import graphics.Ranking;
 
+import javax.swing.JOptionPane;
+
 import javax.swing.JFrame;
 
 import engine.Tetris;
@@ -119,7 +121,9 @@ public class Timer implements Runnable{
 		}
 
 		janela.dispose();
-		Ranking janelafim = new Ranking();
+		String nomeJogador = "Digite o seu nome: ";
+		String input = JOptionPane.showInputDialog(null, nomeJogador);  
+		Ranking janelafim = new Ranking(input);
 
 	}
 	

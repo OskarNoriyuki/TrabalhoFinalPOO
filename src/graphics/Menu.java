@@ -38,7 +38,6 @@ public class Menu implements ActionListener {
 
     private Opcoes opcoes;
 
-
     private JButton JButtonPlay;
     private JButton JButtonRanking;
     private JButton JButtonOpcoes;
