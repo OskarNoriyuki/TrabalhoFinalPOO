@@ -51,6 +51,8 @@ public class MenuWindow implements ActionListener {
     
     public MenuWindow() {
         
+        opcoes = new Opcoes();
+
         //Configurações da janela
         janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         janela.setPreferredSize(new Dimension(800, 600));
@@ -182,13 +184,9 @@ public class MenuWindow implements ActionListener {
             //Tocar som
             SoundPlayer.tocarSom("buttonclick.wav");
 
-            if (opcoes == null) {
-                String playerName = JOptionPane.showInputDialog("Digite o nome do jogador: ");
+            String playerName = JOptionPane.showInputDialog("Digite o nome do jogador: ");
                 
-                GameWindow jogo = new GameWindow(1);
-            } else{
-                GameWindow jogo = new GameWindow(opcoes.getDificuldade());
-            }
+            GameWindow jogo = new GameWindow(opcoes.getDificuldade());
             
             janela.dispose();
         }
@@ -216,12 +214,7 @@ public class MenuWindow implements ActionListener {
             //Tocar som
             SoundPlayer.tocarSom("buttonclick.wav");
 
-            if(opcoes==null) {
-                opcoes = new Opcoes();
-            }
-            else{
-                opcoes.MostrarOpcoes();
-            }
+            opcoes.MostrarOpcoes();
         }
         //Caso o botão clicado seja o fechar
 		if (e.getActionCommand().equals("exit")) {

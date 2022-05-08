@@ -88,6 +88,26 @@ public class RankingWindow implements ActionListener{
             menu.setActionCommand("Menu");
             menu.addActionListener(this);
 
+            // Botão de novo jogo
+            buttonNewGame = new JButton();
+            //Posição na Matrix
+            c.gridx = 0;
+            c.gridy = 0;
+            //Tamanho
+            c.gridwidth=2;
+            c.weightx=1;
+            c.fill = GridBagConstraints.HORIZONTAL;
+            //Espaçamento
+            c.insets = new Insets(CABECALHO,MARGENS,0,MARGENS);
+            buttonNewGame.setBackground(Color.GRAY);
+            label.add(buttonNewGame, c);
+            // Ícone do botão
+            buttonNewGame.setMargin(new Insets(0,0,0,0));
+            buttonNewGame.setIcon(new ImageIcon("src/img/buttons/NewGameButton.png"));
+            //Definindo Ações do Botão
+            buttonNewGame.setActionCommand("new game");
+            buttonNewGame.addActionListener(this);
+
             //Botão para Fechar
             JButton Fechar  = new JButton("Sair");
             c.gridx = 1;

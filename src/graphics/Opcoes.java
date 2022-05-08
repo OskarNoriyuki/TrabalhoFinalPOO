@@ -46,7 +46,6 @@ public class Opcoes implements ActionListener{
 
         Dificuldade1.setSelected(true);
 
-        JOptionPane.showMessageDialog(null, panel, "Escolha a Dificuldade", JOptionPane.PLAIN_MESSAGE);
 
     }
 
