@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import engine.Tetris;
+import sounds.SoundPlayer;
 import teste.Aplicacao;
 import tempo.Timer;
 
@@ -44,6 +45,14 @@ public class GameWindow extends JFrame{
 		janela.add(painelAux);
 		Timer gameLoop = new Timer(jogo, 60, painelJogo, painelAux, janela, dificuldade); //60 fps
 		gameLoop.iniciaTetris();
+		
+		//tocarMúsicaTema
+		if(dificuldade==1)
+			SoundPlayer.tocarLoop("themeNoob.wav");
+		else if (dificuldade==2)
+			SoundPlayer.tocarLoop("themeIntermediario.wav");
+		else if (dificuldade==3)
+			SoundPlayer.tocarLoop("themePro.wav");
 
 		janela.pack();
 		janela.setLocationRelativeTo(null);

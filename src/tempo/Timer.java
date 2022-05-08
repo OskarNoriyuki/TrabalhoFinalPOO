@@ -125,6 +125,7 @@ public class Timer implements Runnable{
 			}
 			
 		}
+		SoundPlayer.pararLoop();
 		SoundPlayer.tocarSom("lose.wav");
 		janela.dispose();
 		String nomeJogador = "Digite o seu nome: ";
