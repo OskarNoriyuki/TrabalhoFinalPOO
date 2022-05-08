@@ -9,13 +9,14 @@ import java.io.Serializable;
 
 public class Player implements Serializable {
     private String name;
-    private double score;
+    private int score;
 
     private static final long serialVersionUID = 123L;
 
     // Construtor
     public Player(String name) {
         this.name = name;
+        this.score = 0;
     }
 
     // Getters and setters
@@ -23,11 +24,11 @@ public class Player implements Serializable {
         return this.name;
     }
 
-    public double getScore() {
+    public int getScore() {
         return this.score;
     }
 
-    public void setScore(double score) {
+    public void setScore(int score) {
         this.score = score;
     }
 }

@@ -3,10 +3,11 @@ package tempo;
 import java.io.IOException;
 
 import graphics.TetrisField;
+import players.Ranking;
 import sounds.SoundPlayer;
 import graphics.GameWindow;
 import graphics.StatsField;
-import graphics.Ranking;
+import graphics.RankingWindow;
 
 import javax.swing.JOptionPane;
 
@@ -130,7 +131,8 @@ public class Timer implements Runnable{
 		janela.dispose();
 		String nomeJogador = "Digite o seu nome: ";
 		String input = JOptionPane.showInputDialog(null, nomeJogador, "Informe seu Nick", JOptionPane.PLAIN_MESSAGE);  
-		Ranking janelafim = new Ranking(input);
+		
+		RankingWindow janelafim = new RankingWindow();
 
 	}
 	

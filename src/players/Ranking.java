@@ -8,12 +8,12 @@ package players;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class SerializaRanking {
+public class Ranking {
     ArrayList<Player> players;
     final static private int TAMANHO = 10;
 
-    public SerializaRanking() {
-        this.players = (ArrayList<Player>) ManipuladorSerializaveis.desserializa("ranking.bin");
+    public Ranking() {
+        this.players = (ArrayList<Player>) ManipuladorSerializaveis.desserializa("src/players/ranking.bin");
     }
 
     public void update(Player player) {
@@ -26,9 +26,18 @@ public class SerializaRanking {
             }
         });    // Ordena do menor ao maior
         
-        this.players.remove(SerializaRanking.TAMANHO);     // Remove o jogador que ficou fora do ranking
+        this.players.remove(Ranking.TAMANHO);     // Remove o jogador que ficou fora do ranking
 
         // Salva o ranking de jogadores no arquivo ranking.bin
         ManipuladorSerializaveis.serializa("ranking.bin", players);
+    }
+
+    public String toString() {
+        String ranking = "";
+        
+        for (Player player : this.players)
+            ranking += String.format("%s: %d pts\n", player.getName(), player.getScore());
+
+        return ranking;
     }
 }

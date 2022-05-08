@@ -7,6 +7,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import sounds.SoundPlayer;
+import players.Ranking;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -27,38 +28,16 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
-public class Ranking implements ActionListener{
+public class RankingWindow implements ActionListener{
 
-    private JButton JButtonFechar;
+    private JButton buttonMenu;
     private JFrame janela;
 
-    String nomeJogador;
+    Ranking ranking;
 
-    public Ranking(String nomeJogador){
-        this.nomeJogador=nomeJogador;
-        BuildRanking();
-    }
-    public Ranking(){
-        BuildRanking();
-    }
-
-    public void actionPerformed(ActionEvent e){
-		//Caso o botão clicado seja resetar
-		if (e.getActionCommand().equals("Fechar")) {
-            SoundPlayer.tocarSom("buttonclick.wav");
-            //Finaliza Jogo
-            System.exit(0);
-        }
-        if (e.getActionCommand().equals("Menu")) {
-            SoundPlayer.tocarSom("buttonclick.wav");
-            //Volta ao Menu
-            Menu menu = new Menu();
-            janela.dispose();
-
-        }
-    }
-
-    private void BuildRanking(){
+    public RankingWindow(){
+        this.ranking = new Ranking();
+        
         //Configurações da janela
         janela = new JFrame();
         janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -67,7 +46,6 @@ public class Ranking implements ActionListener{
 		janela.setTitle("Tetris");
         janela.setLayout(new GridLayout(0, 1));
         BufferedImage ImagemdeFundo=null;
-        String StringRanking = "";
 
         try {
             //LABEL
@@ -85,7 +63,7 @@ public class Ranking implements ActionListener{
             TextoRanking.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             TextoRanking.setEditable(false);
             TextoRanking.setOpaque(false);
-            TextoRanking.setText(StringRanking);;
+            TextoRanking.setText(this.ranking.toString());
             TextoRanking.setForeground(Color.white);
             c.gridx = 0;
             c.gridy = 0;
@@ -134,6 +112,18 @@ public class Ranking implements ActionListener{
         }
     }
 
+    public void actionPerformed(ActionEvent e){
+		//Caso o botão clicado seja resetar
+		if (e.getActionCommand().equals("Fechar")) {
+            SoundPlayer.tocarSom("buttonclick.wav");
+            //Finaliza Jogo
+            System.exit(0);
+        }
+        if (e.getActionCommand().equals("Menu")) {
+            SoundPlayer.tocarSom("buttonclick.wav");
+            //Volta ao Menu
+            MenuWindow menu = new MenuWindow();
+            janela.dispose();
+        }
+    }
 }
-
-
