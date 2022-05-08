@@ -109,7 +109,7 @@ public class Tetris {
 		}	
 		//imagem do cubo de fundo
 		try {
-			this.backgroundTile = ImageIO.read(new FileInputStream("src/img/map/cube_map_dark.png"));
+			this.backgroundTile = ImageIO.read(new FileInputStream("src/img/map/cube_map_white.png"));
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -121,7 +121,7 @@ public class Tetris {
 		}
 		//imagem do cubo de fundo de preview
 		try {
-			this.previewBgTile = ImageIO.read(new FileInputStream("src/img/map/cube_map_white.png"));
+			this.previewBgTile = ImageIO.read(new FileInputStream("src/img/background/black.png"));
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -410,14 +410,28 @@ public class Tetris {
 			}
 		}
 		for(int k = 0; k < this.numSorteadas; k++) {
+			int offsetX = 0, offsetY = 0; //offsets para centralizar melhor as pecas no preview
+			switch(pecas[proximaPeca[k]].toChar()) {
+				case 'O':
+					offsetX = 1;
+					offsetY = 1;
+					break;
+				case 'J':
+					offsetY = 0;
+					offsetX = 1;
+					break;
+				default:
+					offsetX = 0;
+					offsetY = 0;
+			}
 			//[numSorteadas] pecas ja sorteadas
 			int ladoMatriz = this.pecas[proximaPeca[k]].getSize();
 			//transfere a matriz da peca para o mapa de preview
 			for(int i = 0; i < ladoMatriz; i++) {
 				for(int j = 0; j < ladoMatriz; j++) {
 					if(this.pecas[proximaPeca[k]].getCube(i, j)) {
-						int x = 1 + i;
-						int y = k*6 + 1 + j;
+						int x = 1 + i + offsetX;
+						int y = k*6 + 1 + j + offsetY;
 						//so salva o que pode de fato aparecer na GUI
 						if(x < this.previewColNum && y < this.previewLinNum && x >= 0 && y >= 0) {
 							preview[y][x] = pecas[proximaPeca[k]].toChar();
@@ -608,7 +622,8 @@ public class Tetris {
 			}
 			//sorteia a ultima
 			this.proximaPeca[this.numSorteadas - 1] = getPecaAleatoria(this.numTiposPecas, this.proximaPeca[this.numSorteadas - 2]);
-			System.err.println("NOVA PECA!");
+			//debug //System.err.println("NOVA PECA!");
+			this.pecas[this.proximaPeca[this.numSorteadas - 1]].reset();
 		}else {
 			//se perdeu, apenas reseta a peca atual
 			this.pecas[this.proximaPeca[0]].reset();

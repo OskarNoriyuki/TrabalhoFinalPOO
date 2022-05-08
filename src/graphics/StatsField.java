@@ -23,14 +23,13 @@ public class StatsField extends JPanel{
 	//ref para o game
 	private Tetris jogo;
 	//elementos graficos
-	private Label titulo, pontuacao, nivel, linhas, dutyCycle;
-	private JLabel previewBorder;
-	private BufferedImage previewBorderImg;
+	private Label titulo, pontuacao, nivel, linhas, dutyCycle, fillerText, prox_0, prox_1, prox_2, prox_3;
 	//diversos
 	String  m, threadCycle;
 	GridBagConstraints c;
-	Font TetrisFont = new Font("Serif", Font.BOLD, 30);
-	Font StatsFont = new Font("Serif", Font.BOLD, 20);
+	Font TitleFont = new Font("SansSerif", Font.BOLD, 30);
+	Font StatsFont = new Font("Monospaced", Font.BOLD, 20);
+	Font IndexFont = new Font("Serif", Font.BOLD, 16);
 	
 	//construtor do painel auxiliar (mostrador de proximas pecas, pontuacao, nivel, etc)
 	public StatsField(Tetris jogo) {
@@ -53,34 +52,71 @@ public class StatsField extends JPanel{
 		this.setDoubleBuffered(true);
         this.setLayout(new GridBagLayout());
         c = new GridBagConstraints();
-        
-        //preview
-		try {
-			this.previewBorderImg = ImageIO.read(new FileInputStream("src/img/map/previewBorder.png"));
-		}catch(IOException e) {
-			e.printStackTrace();
-		}
-		this.previewBorder = new JLabel();
-		previewBorder.setIcon(new ImageIcon(new ImageIcon(previewBorderImg).getImage().getScaledInstance(200, 600, previewBorderImg.SCALE_DEFAULT)));
-		c.gridx = 0;
-		c.gridy = 1;
-		c.anchor = GridBagConstraints.CENTER;
-		this.add(previewBorder, c);
+
 		
-		//labels
-		this.titulo = new Label("TETRIS");
-		this.titulo .setForeground(Color.YELLOW);
-		this.titulo .setFont(StatsFont);
+		this.titulo = new Label(" TETRIS");
+		this.titulo.setForeground(Color.WHITE);
+		this.titulo.setFont(TitleFont);
 		c.gridx = 0;
 		c.gridy = 0;
-		c.anchor = GridBagConstraints.CENTER;
+		c.anchor = GridBagConstraints.PAGE_START;
 		this.add(titulo , c);
+
+		c.weighty = 0.55;
+		
+		this.prox_0 = new Label("Peca atual:      ");
+		this.prox_0.setForeground(Color.WHITE);
+		this.prox_0.setFont(IndexFont);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.anchor = GridBagConstraints.LINE_START;
+		this.add(prox_0 , c);
+		
+		c.weighty = 1;
+		
+		this.prox_1 = new Label("Proxima:      ");
+		this.prox_1.setForeground(Color.WHITE);
+		this.prox_1.setFont(IndexFont);
+		c.gridx = 0;
+		c.gridy = 2;
+		c.anchor = GridBagConstraints.LINE_START;
+		this.add(prox_1 , c);
+		
+		c.weighty = 0.8;
+		
+		this.prox_2 = new Label("2nd:    ");
+		this.prox_2.setForeground(Color.WHITE);
+		this.prox_2.setFont(IndexFont);
+		c.gridx = 0;
+		c.gridy = 3;
+		c.anchor = GridBagConstraints.LINE_START;
+		this.add(prox_2 , c);
+
+
+		
+		this.prox_3 = new Label("3rd:    ");
+		this.prox_3.setForeground(Color.WHITE);
+		this.prox_3.setFont(IndexFont);
+		c.gridx = 0;
+		c.gridy = 4;
+		c.anchor = GridBagConstraints.LINE_START;
+		this.add(prox_3 , c);
+		
+		this.fillerText = new Label("    ");
+		this.fillerText.setForeground(Color.BLACK);
+		this.fillerText.setFont(IndexFont);
+		c.gridx = 0;
+		c.gridy = 5;
+		c.anchor = GridBagConstraints.LINE_START;
+		this.add(fillerText , c);
+
+		c.weighty = 0;
 		
 		this.pontuacao = new Label();
 		this.pontuacao.setForeground(Color.GREEN);
 		this.pontuacao.setFont(StatsFont);
 		c.gridx = 0;
-		c.gridy = 2;
+		c.gridy = 6;
 		c.anchor = GridBagConstraints.LINE_START;
 		this.add(pontuacao, c);
 		
@@ -88,7 +124,7 @@ public class StatsField extends JPanel{
 		this.linhas.setForeground(Color.GREEN);
 		this.linhas.setFont(StatsFont);
 		c.gridx = 0;
-		c.gridy = 3;
+		c.gridy = 7;
 		c.anchor = GridBagConstraints.LINE_START;
 		this.add(linhas, c);
 		
@@ -96,15 +132,17 @@ public class StatsField extends JPanel{
 		this.nivel.setForeground(Color.GREEN);
 		this.nivel.setFont(StatsFont);
 		c.gridx = 0;
-		c.gridy = 4;
+		c.gridy = 8;
 		c.anchor = GridBagConstraints.LINE_START;
 		this.add(nivel, c);
+
+		c.weighty = 0.2;
 	
 		this.dutyCycle = new Label();
 		this.dutyCycle.setForeground(Color.GREEN);
 		this.dutyCycle.setFont(StatsFont);
 		c.gridx = 0;
-		c.gridy = 5 ;
+		c.gridy = 9;
 		c.anchor = GridBagConstraints.LINE_START;
 		this.add(dutyCycle, c);
 	
@@ -127,10 +165,35 @@ public class StatsField extends JPanel{
 			}
 		}
 		
+		//retangulo interno, destaque da peca atual
+		this.fillHollowRect(g2, Color.WHITE, 40, 110, 120, 80, 5);
+		//retangulo externo, destaque da peca atual
+		this.fillHollowRect(g2, Color.GRAY, 36, 106, 128, 88, 4);
+		
+		
+		
 		this.pontuacao.setText("Pontos: " + jogo.getScore()+ "      ");
 		this.nivel.setText("Nivel " + jogo.getLevel()+ "      ");
 		this.linhas.setText("Linhas: " + jogo.getLines()+ "      ");
 		this.dutyCycle.setText("Thread: " + this.threadCycle+" %      ");
 		g2.dispose();	//para não acumular lixo na memória
 	}
+	
+	private void fillHollowRect(Graphics g, Color color, int x, int y, int  width, int  height, int thickness) {
+		int w = width;
+		int h = height;
+		int t = thickness;
+		
+		g.setColor(color);
+		//preeenche 4 retangulos criando um retangulo oco
+		//horizontais
+		g.fillRect(x + t, y, w - 2*t, t);
+		g.fillRect(x + t, y + h - t, w - 2*t, t);
+		//verticais
+		g.fillRect(x, y, t, h);
+		g.fillRect(x + w - t, y, t, h);
+		
+	}
 }
+
+

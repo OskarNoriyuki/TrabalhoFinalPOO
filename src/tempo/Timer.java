@@ -26,7 +26,11 @@ public class Timer implements Runnable{
 	private long loopTime[] = new long[60];
 	private final int debugMessageFreq = 3; //usar apenas divisores perfeitos de fps
 	//a velocidade maxima eh atingida no nivel 23 (stepDownPeriod[23]), 60 casas por segundo, 1 por frame
-	private final int stepDownPeriod[] = {60,60,50,42,35,29,24,20,17,14,12,10,8,7,6,5,4,3,3,2,2,2,1,1,1};
+	//a velocidade inicial depende da dificuldade
+	private final int stepDownPeriod[][] = {
+		{60,60,50,42,35,29,24,20,17,14,12,10,8,7,6,5,4,3,3,2,2,2,1,1,1},
+		{42,35,29,24,20,17,14,12,10,8,7,6,5,4,3,3,2,2,2,1,1,1,1,1,1},
+		{24,20,17,14,12,10,8,7,6,5,4,3,3,2,2,2,1,1,1,1,1,1,1,1,1}};
 	private int periodIndex;
 	private int dropCount;
 	
@@ -84,7 +88,7 @@ public class Timer implements Runnable{
  			//processamento do game
  			//loopCount nao eh adequado para guiar os stepDowns, pois podem ocorrer erros nas trocas de frequencia
  			this.dropCount++;
- 			if(dropCount == stepDownPeriod[periodIndex]) {
+ 			if(dropCount == stepDownPeriod[dificuldade-1][periodIndex]) {
  				//roda uma iteracao do jogo, a peca cai uma casa e testa se perdeu
  				fimdejogo=jogo.updateGame("goDown");
  				//reseta o contador

@@ -44,7 +44,7 @@ public class GameWindow extends JFrame{
 		janela.add(painelAux);
 		Timer gameLoop = new Timer(jogo, 60, painelJogo, painelAux, janela, dificuldade); //60 fps
 		gameLoop.iniciaTetris();
-		
+
 		janela.pack();
 		janela.setLocationRelativeTo(null);
 		janela.setVisible(true);
