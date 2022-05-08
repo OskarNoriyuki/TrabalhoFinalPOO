@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import engine.Tetris;
+import players.Player;
 import sounds.SoundPlayer;
 import teste.Aplicacao;
 import tempo.Timer;
@@ -29,8 +30,9 @@ public class GameWindow extends JFrame{
 	TetrisField painelJogo;
 	StatsField painelAux;
 	int dificuldade;
+	private Player jogador;
 
-    public GameWindow(int dificuldade) {
+    public GameWindow(int dificuldade, String nomeJogador) {
 
 		this.dificuldade=dificuldade;
     	JFrame janela = new JFrame();
@@ -38,7 +40,8 @@ public class GameWindow extends JFrame{
 		janela.setResizable(false);
 		janela.setTitle("Tetris");
 		janela.setLayout(new FlowLayout());
-		this.jogo = new Tetris(20,10, true);
+		this.jogador = new Player(nomeJogador);
+		this.jogo = new Tetris(20,10, true, jogador);
 		painelJogo = new TetrisField(jogo);
 		painelAux = new StatsField(jogo);
 		janela.add(painelJogo);

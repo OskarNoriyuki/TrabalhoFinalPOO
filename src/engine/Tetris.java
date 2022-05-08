@@ -21,6 +21,7 @@ import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import players.Player;
 
 import graphics.GameWindow;
 
@@ -28,6 +29,7 @@ public class Tetris {
 	/**atributos gerais**/
 	private boolean perdeu;
 	private int pontuacao, linhas, nivel;
+	private Player jogador;
 	
 	/**atributos do mapa**/
 	private int maxX, maxY;
@@ -66,12 +68,13 @@ public class Tetris {
 	/**********************************************************************************************/
 	
 	//construtor, recebe um tamanho de mapa, em cubos
-	public Tetris(int lin, int col, boolean lowRes) {
+	public Tetris(int lin, int col, boolean lowRes, Player jogador) {
 		//geral
 		this.perdeu = false;
 		this.pontuacao = 0;
 		this.linhas = 0;
 		this.nivel = 1;
+		this.jogador = jogador;
 		//tamanho das coisas
 		this.lowRes = lowRes;
 		if(lowRes) {
@@ -264,7 +267,7 @@ public class Tetris {
 					//atualiza o mostrador de proximas pecas
 					this.updatePreview();
 				}else {
-					//se a peca bateu e uma parte dela ficou extrapolando o mapa, fim de jogo
+					//acende a flag
 					this.perdeu = true;
 				}
 			}else {
@@ -483,6 +486,8 @@ public class Tetris {
 					break;
 			}
 		}
+		//atualiza o score maximo do jogador
+		this.jogador.setScore(this.pontuacao);
 	}
 	
 	//metodo que testa possiveis colisoes da peca ativa atual com os elementos do mapa, retorna dados sobre a colisao

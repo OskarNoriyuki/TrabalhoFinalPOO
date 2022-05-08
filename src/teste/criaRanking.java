@@ -9,7 +9,6 @@ public class criaRanking {
         ArrayList<Player> jogadores =  new ArrayList<Player>();
         
         Player jogador = new Player("Fulano de tal");        // Instancia novo jogador
-        jogador.setScore(0);
         for (int i = 0; i < 10; i++) {
             jogadores.add(jogador);
         }
