@@ -28,8 +28,8 @@ public class StatsField extends JPanel{
 	String  m, threadCycle;
 	GridBagConstraints c;
 	Font TitleFont = new Font("SansSerif", Font.BOLD, 30);
-	Font StatsFont = new Font("Monospaced", Font.BOLD, 20);
-	Font IndexFont = new Font("Serif", Font.BOLD, 16);
+	Font StatsFont;
+	Font IndexFont;
 	
 	//construtor do painel auxiliar (mostrador de proximas pecas, pontuacao, nivel, etc)
 	public StatsField(Tetris jogo) {
@@ -45,6 +45,14 @@ public class StatsField extends JPanel{
 		this.tamanhoMiniCubo = jogo.getMiniCubeSize();
 		this.numColunasPreview = jogo.getPreviewSizeX();
 		this.numLinhasPreview = jogo.getPreviewSizeY();
+		
+		if(jogo.isLowResMode()) {
+			this.IndexFont = new Font("Serif", Font.BOLD, 12);
+			this.StatsFont = new Font("Monospaced", Font.BOLD, 16);
+		}else {
+			this.IndexFont = new Font("Serif", Font.BOLD, 16);
+			this.StatsFont = new Font("Monospaced", Font.BOLD, 20);
+		}
 		
 		//painel
 		this.setPreferredSize(new Dimension(this.larguraCampo, this.alturaCampo));
@@ -62,9 +70,10 @@ public class StatsField extends JPanel{
 		c.anchor = GridBagConstraints.PAGE_START;
 		this.add(titulo , c);
 
-		c.weighty = 0.55;
+		if(jogo.isLowResMode()) c.weighty = 1;
+			else c.weighty = 0.55;
 		
-		this.prox_0 = new Label("Peca atual:      ");
+		this.prox_0 = new Label("Peca atual:        ");
 		this.prox_0.setForeground(Color.WHITE);
 		this.prox_0.setFont(IndexFont);
 		c.gridx = 0;
@@ -72,9 +81,10 @@ public class StatsField extends JPanel{
 		c.anchor = GridBagConstraints.LINE_START;
 		this.add(prox_0 , c);
 		
-		c.weighty = 1;
+		if(jogo.isLowResMode()) c.weighty = 1.8;
+			else c.weighty = 1;
 		
-		this.prox_1 = new Label("Proxima:      ");
+		this.prox_1 = new Label("Proxima:        ");
 		this.prox_1.setForeground(Color.WHITE);
 		this.prox_1.setFont(IndexFont);
 		c.gridx = 0;
@@ -82,9 +92,10 @@ public class StatsField extends JPanel{
 		c.anchor = GridBagConstraints.LINE_START;
 		this.add(prox_1 , c);
 		
-		c.weighty = 0.8;
+		if(jogo.isLowResMode()) c.weighty = 1;
+		else c.weighty = 0.8;
 		
-		this.prox_2 = new Label("2nd:    ");
+		this.prox_2 = new Label("2nd:       ");
 		this.prox_2.setForeground(Color.WHITE);
 		this.prox_2.setFont(IndexFont);
 		c.gridx = 0;
@@ -94,7 +105,7 @@ public class StatsField extends JPanel{
 
 
 		
-		this.prox_3 = new Label("3rd:    ");
+		this.prox_3 = new Label("3rd:       ");
 		this.prox_3.setForeground(Color.WHITE);
 		this.prox_3.setFont(IndexFont);
 		c.gridx = 0;
@@ -164,11 +175,18 @@ public class StatsField extends JPanel{
 				g2.drawImage(jogo.getPreviewCubeImg(x, y), 40+x*tamanhoMiniCubo, 100+ y*tamanhoMiniCubo, tamanhoMiniCubo, tamanhoMiniCubo, null);
 			}
 		}
-		
-		//retangulo interno, destaque da peca atual
-		this.fillHollowRect(g2, Color.WHITE, 40, 110, 120, 80, 5);
-		//retangulo externo, destaque da peca atual
-		this.fillHollowRect(g2, Color.GRAY, 36, 106, 128, 88, 4);
+		if(jogo.isLowResMode()) {
+			//retangulo interno, destaque da peca atual
+			this.fillHollowRect(g2, Color.WHITE, 40, 105, 90, 65, 4);
+			//retangulo externo, destaque da peca atual
+			this.fillHollowRect(g2, Color.GRAY, 37, 102, 96, 71, 3);
+		}else {
+			//retangulo interno, destaque da peca atual
+			this.fillHollowRect(g2, Color.WHITE, 40, 110, 120, 80, 5);
+			//retangulo externo, destaque da peca atual
+			this.fillHollowRect(g2, Color.GRAY, 36, 106, 128, 88, 4);
+		}
+
 		
 		
 		

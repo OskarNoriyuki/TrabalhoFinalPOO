@@ -38,7 +38,7 @@ public class GameWindow extends JFrame{
 		janela.setResizable(false);
 		janela.setTitle("Tetris");
 		janela.setLayout(new FlowLayout());
-		this.jogo = new Tetris(20,10);
+		this.jogo = new Tetris(20,10, true);
 		painelJogo = new TetrisField(jogo);
 		painelAux = new StatsField(jogo);
 		janela.add(painelJogo);

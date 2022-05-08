@@ -43,13 +43,14 @@ public class Tetris {
 	
 	/**atributos esteticos**/
 	private final static int tamanhoCuboOriginal = 20; //20x20 pixels
-	private final static int upScale = 2;				
-	private final static int tamanhoCubo = tamanhoCuboOriginal*upScale; //40x40 pixels
+	private final static int upScale = 2;
+	private int tamanhoCubo;
 	private final static int previewDownScale = 1; 
-	private final static int tamanhoCuboPreview = tamanhoCuboOriginal/previewDownScale; //20x20 pixels
+	private int tamanhoCuboPreview;
 	private BufferedImage backgroundTile;
 	private BufferedImage debugTile;
 	private BufferedImage previewBgTile;
+	private boolean lowRes;
 	
 	/**atributos de pecas**/
 	private final int numTiposPecas = 7, numSorteadas = 4;
@@ -65,13 +66,21 @@ public class Tetris {
 	/**********************************************************************************************/
 	
 	//construtor, recebe um tamanho de mapa, em cubos
-	public Tetris(int lin, int col) {
+	public Tetris(int lin, int col, boolean lowRes) {
 		//geral
 		this.perdeu = false;
 		this.pontuacao = 0;
 		this.linhas = 0;
 		this.nivel = 1;
-		//tamanho do mapa
+		//tamanho das coisas
+		this.lowRes = lowRes;
+		if(lowRes) {
+			this.tamanhoCubo = 30;
+			this.tamanhoCuboPreview = 15;
+		}else {
+			this.tamanhoCubo = tamanhoCuboOriginal*upScale;
+			this.tamanhoCuboPreview = tamanhoCuboOriginal/previewDownScale;
+		}
 		this.maxX = col;
 		this.maxY = lin;
 		this.map = new char[lin][col];
@@ -128,7 +137,7 @@ public class Tetris {
 		//atualiza o mapa de proximas pecas
 		this.updatePreview();
 	}
-	
+
 	//realiza um movimento/acao, calcula as consequencias e atualiza o jogo. deve ser chamado 1x por frame, e 1x por comando
 	public boolean updateGame(String acao) {
 		Colisao colisao;	//classe que armazena infos da colisao
@@ -317,6 +326,13 @@ public class Tetris {
 	}
 	
 	//getters
+	public boolean isLowResMode() {
+		if(this.lowRes) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 	public int getCubeSize() {
 		return tamanhoCubo;
 	}
