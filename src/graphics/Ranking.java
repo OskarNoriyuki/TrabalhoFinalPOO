@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -76,6 +77,7 @@ public class Ranking implements ActionListener{
             //PANEL DE LEITURA DO RANKING
             JTextArea TextoRanking = new JTextArea();
             TextoRanking.setFont(TextoRanking.getFont().deriveFont(20f));
+            TextoRanking.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             TextoRanking.setEditable(false);
             TextoRanking.setOpaque(false);
             TextoRanking.setText(StringRanking);;

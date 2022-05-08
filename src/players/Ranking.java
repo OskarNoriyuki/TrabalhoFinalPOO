@@ -28,7 +28,7 @@ public class Ranking {
         
         this.players.remove(Ranking.TAMANHO);     // Remove o jogador que ficou fora do ranking
 
-        // Salva o ranking de jogadores no arquivo ranking.poo
+        // Salva o ranking de jogadores no arquivo ranking.bin
         ManipuladorSerializaveis.serializa("ranking.bin", players);
     }
 }

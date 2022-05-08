@@ -123,7 +123,7 @@ public class Timer implements Runnable{
 
 		janela.dispose();
 		String nomeJogador = "Digite o seu nome: ";
-		String input = JOptionPane.showInputDialog(null, nomeJogador);  
+		String input = JOptionPane.showInputDialog(null, nomeJogador, "Informe seu Nick", JOptionPane.PLAIN_MESSAGE);  
 		Ranking janelafim = new Ranking(input);
 
 	}

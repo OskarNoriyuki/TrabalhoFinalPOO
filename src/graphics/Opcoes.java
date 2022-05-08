@@ -21,7 +21,7 @@ public class Opcoes implements ActionListener{
     public Opcoes(){
 
         this.panel = new JPanel();
-
+        
         Dificuldade1 = new JRadioButton("Noob");
         Dificuldade1.setActionCommand("Dificuldade1");
 
@@ -46,7 +46,7 @@ public class Opcoes implements ActionListener{
 
         Dificuldade1.setSelected(true);
 
-        JOptionPane.showMessageDialog(null, panel);
+        JOptionPane.showMessageDialog(null, panel, "Escolha a Dificuldade", JOptionPane.PLAIN_MESSAGE);
 
     }
 
