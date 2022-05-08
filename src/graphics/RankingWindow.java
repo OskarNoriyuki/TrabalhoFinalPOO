@@ -75,51 +75,25 @@ public class RankingWindow implements ActionListener{
             c.insets = new Insets(40,80,0,80);  //top padding
             label.add(TextoRanking, c);
 
-            //Botão para voltar ao Menu
-            JButton menu  = new JButton("Menu");
-            c.gridx = 0;
-            c.gridy = 1;
-            c.weighty = 0;
-            c.weightx = 0.5;
-            c.gridwidth=1;
-            c.gridheight=1;
-            c.insets = new Insets(20,120,20,20);
-            label.add(menu, c);
-            menu.setActionCommand("Menu");
-            menu.addActionListener(this);
-
             // Botão de novo jogo
-            buttonNewGame = new JButton();
+            buttonMenu = new JButton();
             //Posição na Matrix
             c.gridx = 0;
-            c.gridy = 0;
+            c.gridy = 1;
             //Tamanho
             c.gridwidth=2;
             c.weightx=1;
             c.fill = GridBagConstraints.HORIZONTAL;
             //Espaçamento
-            c.insets = new Insets(CABECALHO,MARGENS,0,MARGENS);
-            buttonNewGame.setBackground(Color.GRAY);
-            label.add(buttonNewGame, c);
+            c.insets = new Insets(30,300,0,300);
+            buttonMenu.setBackground(Color.GRAY);
+            label.add(buttonMenu, c);
             // Ícone do botão
-            buttonNewGame.setMargin(new Insets(0,0,0,0));
-            buttonNewGame.setIcon(new ImageIcon("src/img/buttons/NewGameButton.png"));
+            buttonMenu.setMargin(new Insets(0,0,0,0));
+            buttonMenu.setIcon(new ImageIcon("src/img/buttons/MenuButton.png"));
             //Definindo Ações do Botão
-            buttonNewGame.setActionCommand("new game");
-            buttonNewGame.addActionListener(this);
-
-            //Botão para Fechar
-            JButton Fechar  = new JButton("Sair");
-            c.gridx = 1;
-            c.gridy = 1;
-            c.weighty = 0;
-            c.weightx = 0.5;
-            c.gridwidth=1;
-            c.gridheight=1;
-            c.insets = new Insets(20,20,20,120);  //top padding
-            label.add(Fechar, c);
-            Fechar.setActionCommand("Fechar");
-            Fechar.addActionListener(this);
+            buttonMenu.setActionCommand("menu");
+            buttonMenu.addActionListener(this);
 
             janela.pack();
             janela.setLocationRelativeTo(null);
@@ -133,17 +107,10 @@ public class RankingWindow implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent e){
-		//Caso o botão clicado seja resetar
-		if (e.getActionCommand().equals("Fechar")) {
-            SoundPlayer.tocarSom("buttonclick.wav");
-            //Finaliza Jogo
-            System.exit(0);
-        }
-        if (e.getActionCommand().equals("Menu")) {
-            SoundPlayer.tocarSom("buttonclick.wav");
-            //Volta ao Menu
-            MenuWindow menu = new MenuWindow();
-            janela.dispose();
-        }
+        SoundPlayer.tocarSom("buttonclick.wav");
+        
+        MenuWindow menu = new MenuWindow();
+        
+        janela.dispose();
     }
 }

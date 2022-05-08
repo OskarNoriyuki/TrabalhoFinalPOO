@@ -200,14 +200,6 @@ public class MenuWindow implements ActionListener {
             janela.dispose();
         }
 
-        //Caso o botao clicado seja o ranking
-		if (e.getActionCommand().equals("ranking")) {
-
-            //Tocar som
-
-            RankingWindow rank = new RankingWindow();
-            janela.dispose();
-        }
         //Caso o botao clicado seja o opcoes
 		if (e.getActionCommand().equals("options")) {
 
