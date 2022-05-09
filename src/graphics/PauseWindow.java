@@ -10,7 +10,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -18,21 +17,20 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.awt.FlowLayout;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import engine.Tetris;
 import sounds.SoundPlayer;
 import players.SaveLoad;
 
-public class PauseWindow implements ActionListener {
-    // Janela, background e estado do jogo
-    private  JFrame frame;
+public class PauseWindow extends JPanel implements ActionListener {
     private JLabel background;
     private Tetris game;
 
@@ -57,7 +55,7 @@ public class PauseWindow implements ActionListener {
         // Tenta carregar imagem do background, avisando em uma janela nova caso nao consiga
         try {
             image = ImageIO.read(new FileInputStream("src/img/background/TetrisMenu.png"));
-            this.background.setIcon(new ImageIcon(image.getScaledInstance(800, 600, Image.SCALE_DEFAULT)));
+            this.background.setIcon(new ImageIcon(image.getScaledInstance(200, 600, Image.SCALE_DEFAULT)));
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Não foi possível abrir TetrisMenu.png!", "Erro", JOptionPane.ERROR_MESSAGE);
         }
@@ -109,26 +107,19 @@ public class PauseWindow implements ActionListener {
         c.insets = new Insets(30, 300, 0, 300);
         this.background.add(menuButton, c);
         
-        // Instanciacao da janela
-        this.frame = new JFrame();
-        
         // Configuracoes da janela
-        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.frame.setPreferredSize(new Dimension(600, 200));
-        this.frame.setResizable(false);
-		this.frame.setTitle("Tetris");
-        this.frame.setLayout(new GridLayout(0, 1));
+		this.setPreferredSize(new Dimension(200, 500));
+		this.setLayout(new FlowLayout());
+		this.setBackground(Color.black);
+		this.setDoubleBuffered(true);
+		this.setFocusable(true);
 
         // Adiciona o background a janela
-        this.frame.add(background);
-        
-        // Redimensionamento e localizacao da janela
-        this.frame.pack();
-        this.frame.setLocationRelativeTo(null);
+        this.add(background);
     }
 
-    public void togglePauseMenu() {
-        this.frame.setVisible(!this.frame.isVisible());
+    public void toggleMenu() {
+        this.setVisible(false);
     }
 
     public void actionPerformed(ActionEvent e){
@@ -146,7 +137,6 @@ public class PauseWindow implements ActionListener {
         //Caso o botao clicado seja o de voltar ao menu principal
 		if (e.getActionCommand().equals("menu")) {
             this.backToMenu = true; // Avisa que deseja-se voltar ao menu principal
-            this.frame.dispose();   // Destroi a janela atual
         }
     }
 }
