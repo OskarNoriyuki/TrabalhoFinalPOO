@@ -23,44 +23,48 @@ import teste.Aplicacao;
 import tempo.Timer;
 
 public class GameWindow extends JFrame{
-
-    JFrame janela;
+    JFrame frame;
 	Timer gameLoop;
-	Tetris jogo;
+	Tetris game;
 	TetrisField painelJogo;
 	StatsField painelAux;
-	int dificuldade;
-	private Player jogador;
+	private int difficulty;
+	private Player player;
 
-    public GameWindow(int dificuldade, String nomeJogador) {
-
-		this.dificuldade=dificuldade;
-    	JFrame janela = new JFrame();
-        janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		janela.setResizable(false);
-		janela.setTitle("Tetris");
-		janela.setLayout(new FlowLayout());
-		this.jogador = new Player(nomeJogador);
-		this.jogo = new Tetris(20,10, true, jogador);
-		painelJogo = new TetrisField(jogo);
-		painelAux = new StatsField(jogo);
-		janela.add(painelJogo);
-		janela.add(painelAux);
-		Timer gameLoop = new Timer(jogo, 60, painelJogo, painelAux, janela, dificuldade); //60 fps
+    public GameWindow(int difficulty, String playerName) {
+		this.difficulty = difficulty;
+    	JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
+		frame.setTitle("Tetris");
+		frame.setLayout(new FlowLayout());
+		this.player = new Player(playerName);
+		this.game = new Tetris(20,10, true, player);
+		painelJogo = new TetrisField(game);
+		painelAux = new StatsField(game);
+		frame.add(painelJogo);
+		frame.add(painelAux);
+		Timer gameLoop = new Timer(game, 60, painelJogo, painelAux, frame, difficulty); //60 fps
 		gameLoop.iniciaTetris();
 		
 		//tocarMúsicaTema
-		if(dificuldade==1)
+		if(difficulty == 1)
 			SoundPlayer.tocarLoop("themeNoob.wav");
-		else if (dificuldade==2)
+		else if (difficulty == 2)
 			SoundPlayer.tocarLoop("themeIntermediario.wav");
-		else if (dificuldade==3)
+		else if (difficulty == 3)
 			SoundPlayer.tocarLoop("themePro.wav");
 
-		janela.pack();
-		janela.setLocationRelativeTo(null);
-		janela.setVisible(true);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+    }
 
+	public GameWindow(int difficulty, String playerName, boolean load) {
+		this(difficulty, playerName);
+
+		if (load)
+			this.game.load();
     }
     
     public void repaint() {
@@ -69,7 +73,6 @@ public class GameWindow extends JFrame{
     }
 
 	public void fecharJanela(){
-		janela.setVisible(false);
+		frame.setVisible(false);
 	}
-
 }
