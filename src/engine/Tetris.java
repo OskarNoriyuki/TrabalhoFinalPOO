@@ -31,7 +31,6 @@ import pecas.TetrominoeO;
 import pecas.TetrominoeS;
 import pecas.TetrominoeT;
 import pecas.TetrominoeZ;
-import players.Player;
 
 public class Tetris implements Serializable {
 	/**atributos gerais**/

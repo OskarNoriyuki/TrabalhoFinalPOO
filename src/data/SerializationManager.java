@@ -3,7 +3,7 @@
 	Descricao: serializa e deserializa objetos
 	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
 */
-package players;
+package data;
 
 import java.io.*;
 

@@ -28,7 +28,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
-import players.Ranking;
+import engine.Ranking;
 import sounds.SoundPlayer;
 
 public class RankingWindow extends JFrame implements ActionListener {

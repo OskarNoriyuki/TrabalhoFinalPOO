@@ -9,13 +9,12 @@ package tempo;
 import java.io.IOException;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
+import engine.Ranking;
 import engine.Tetris;
 import graphics.RankingWindow;
 import graphics.StatsField;
 import graphics.TetrisField;
-import players.Ranking;
 import sounds.SoundPlayer;
 
 public class Timer implements Runnable {
@@ -133,12 +132,12 @@ public class Timer implements Runnable {
 		SoundPlayer.pararLoop();
 		SoundPlayer.tocarSom("lose.wav");
 
-		janela.dispose();
-
 		Ranking ranking = new Ranking();
 		ranking.update(this.jogo.getPlayer());
-
+		System.out.println(this.jogo.getPlayer().getScore());
 		RankingWindow rankingWindow = new RankingWindow();
+
+		janela.dispose();
 	}
 	
 	//nao usar

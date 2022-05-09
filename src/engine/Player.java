@@ -4,7 +4,7 @@
 	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
 */
 
-package players;
+package engine;
 
 import java.io.Serializable;
 

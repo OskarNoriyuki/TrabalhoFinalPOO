@@ -1,7 +1,9 @@
 package teste;
 
 import java.util.ArrayList;
-import players.*;
+
+import engine.Player;
+import data.*;
 
 public class criaRanking {
     public static void main(String[] args) {
@@ -14,6 +16,6 @@ public class criaRanking {
         }
 
         // Salva o ranking de jogadores no arquivo ranking.poo
-        players.SerializationManager.serialize("ranking.bin", jogadores);
+        SerializationManager.serialize("ranking.bin", jogadores);
     }
 }

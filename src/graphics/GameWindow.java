@@ -10,9 +10,9 @@ import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 
+import data.DataManager;
+import engine.Player;
 import engine.Tetris;
-import players.Player;
-import players.DataManager;
 import sounds.SoundPlayer;
 import tempo.Timer;
 

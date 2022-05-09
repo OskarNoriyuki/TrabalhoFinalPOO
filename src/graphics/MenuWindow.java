@@ -203,7 +203,7 @@ public class MenuWindow extends JFrame implements ActionListener {
             String playerName = JOptionPane.showInputDialog(null, "Digite o nome do jogador: ", "Carregar", JOptionPane.QUESTION_MESSAGE);
             
             if (playerName != null) {
-                File save = new File("src/players/" + playerName + ".sav");
+                File save = new File("src/data/" + playerName + ".sav");
 
                 // Verifica se arquivo de salvamento existe
                 if (save.exists()) {

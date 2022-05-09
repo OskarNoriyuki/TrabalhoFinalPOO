@@ -28,7 +28,7 @@ import javax.swing.JPanel;
 
 import engine.Tetris;
 import sounds.SoundPlayer;
-import players.DataManager;
+import data.DataManager;
 
 public class PauseWindow extends JPanel implements ActionListener {
     private JLabel background;
