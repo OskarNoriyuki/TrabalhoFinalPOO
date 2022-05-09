@@ -41,11 +41,6 @@ public class GameWindow implements KeyListener {
 		else
 			this.game = new Tetris(20,10, true, new Player(playerName));
 		
-		// Instancia timer do jogo
-		Timer gameLoop = new Timer(game, 60, tetrisField, statsField, frame, difficulty); //60 fps
-		
-		gameLoop.iniciaTetris();	// Inicia
-		
 		// Tocar musica tema dependendo da dificuldade
 		switch (difficulty) {
 			case 1:
@@ -78,6 +73,11 @@ public class GameWindow implements KeyListener {
 		frame.setLocationRelativeTo(null);
 
 		frame.setVisible(true);	// Deixa visivel
+
+		// Instancia timer do jogo
+		Timer gameLoop = new Timer(game, 60, tetrisField, statsField, frame, difficulty); //60 fps
+		
+		gameLoop.iniciaTetris();	// Inicia
     }
     
     public void repaint() {
