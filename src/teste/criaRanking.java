@@ -14,6 +14,6 @@ public class criaRanking {
         }
 
         // Salva o ranking de jogadores no arquivo ranking.poo
-        players.ManipuladorSerializaveis.serializa("ranking.bin", jogadores);
+        players.SerializationManager.serialize("ranking.bin", jogadores);
     }
 }

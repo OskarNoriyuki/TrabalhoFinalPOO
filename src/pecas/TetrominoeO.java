@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class TetrominoeO extends Tetrominoe{
+public class TetrominoeO extends Tetrominoe {
 	public TetrominoeO() {
 		this.cor = "amarelo";
 		this.ladoMatriz = 2;

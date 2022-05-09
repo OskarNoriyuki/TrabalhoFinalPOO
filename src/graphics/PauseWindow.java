@@ -28,7 +28,7 @@ import javax.swing.JPanel;
 
 import engine.Tetris;
 import sounds.SoundPlayer;
-import players.SaveLoad;
+import players.DataManager;
 
 public class PauseWindow extends JPanel implements ActionListener {
     private JLabel background;
@@ -128,7 +128,7 @@ public class PauseWindow extends JPanel implements ActionListener {
 
 		//Caso o botao clicado seja o de salvar
 		if (e.getActionCommand().equals("save")) {
-            SaveLoad.saveGame(game);   // Salva o jogo
+            DataManager.saveGame(game);   // Salva o jogo
 
             // Abre uma janela e avisa que o jogo foi salvo
             JOptionPane.showMessageDialog(null, "Jogo salvo!", "Salvar", JOptionPane.INFORMATION_MESSAGE);

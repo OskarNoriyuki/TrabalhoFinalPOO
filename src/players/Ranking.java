@@ -1,6 +1,8 @@
 /*
-    Class Ranking
-    Authors: Allan Ferreira, Pedro Alves e Oskar Akama
+	Classe Ranking
+	Descricao: mantem uma lista de jogadores, que eh construida a partir da leitura de um
+    arquivo. Um jogador eh salvo no ranking caso sua pontuacao seja suficientemente grande
+	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
 */
 
 package players;
@@ -9,29 +11,33 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class Ranking {
-    ArrayList<Player> players;
-    final static private int TAMANHO = 10;
+    private ArrayList<Player> players;      // Lista de jogadore do ranking
+    final static private int TAMANHO = 10;  // Quantidade de jogadores no ranking
 
+    // Construtor
     public Ranking() {
-        this.players = (ArrayList<Player>) ManipuladorSerializaveis.desserializa("src/players/ranking.bin");
+        // Le arquivo contendo jogadores do ranking
+        this.players = (ArrayList<Player>) SerializationManager.deserialize("src/players/ranking.bin");
     }
 
+    // Metodo que insere o jogador no ranking, caso ele consiga entrar
     public void update(Player player) {
-        this.players.add(player);             // Adiciona jogador ao ArrayList
+        this.players.add(player);   // Adiciona jogador a lista
         
+        // Ordena o ranking de maior a menor
         this.players.sort(new Comparator<Player>() {
             public int compare(Player player1, Player player2) {
-                // Double.compare compara doubles
                 return Double.compare(player1.getScore(), player2.getScore());
             }
-        });    // Ordena do menor ao maior
+        });
         
-        this.players.remove(Ranking.TAMANHO);     // Remove o jogador que ficou fora do ranking
+        this.players.remove(Ranking.TAMANHO);   // Remove o jogador que ficou fora do ranking
 
-        // Salva o ranking de jogadores no arquivo ranking.bin
-        ManipuladorSerializaveis.serializa("ranking.bin", players);
+        // Salva o ranking de jogadores
+        SerializationManager.serialize("ranking.bin", players);
     }
 
+    // Metodo que retorna uma string contendo todos jogadores e seus pontos
     public String toString() {
         String ranking = "";
         

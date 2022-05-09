@@ -9,23 +9,14 @@ package graphics;
 import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
-import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
-import java.awt.Dimension;
-
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 import engine.Tetris;
 import players.Player;
-import players.SaveLoad;
+import players.DataManager;
 import sounds.SoundPlayer;
 import tempo.Timer;
 
-public class GameWindow implements KeyListener {
-    JFrame frame;				// Janela do jogo
-	//JLayeredPane layeredPane;
-	//JPanel fieldPanel;
+public class GameWindow extends JFrame {
 	Timer gameLoop;				// Loop do jogo
 	Tetris game;				// Logica do jogo
 	TetrisField tetrisField;	// Painel para desenhar o jogo
@@ -35,9 +26,16 @@ public class GameWindow implements KeyListener {
 
 	// Construtor
     public GameWindow(int difficulty, String playerName, boolean load) {
+		super("Tetris");
+
+		// Configuracoes da janela
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setResizable(false);
+		this.setLayout(new FlowLayout());
+
     	// Verifica se eh preciso carregar um jogo
 		if (load)
-			this.game = SaveLoad.loadGame(playerName);
+			this.game = DataManager.loadGame(playerName);
 		else
 			this.game = new Tetris(20,10, true, new Player(playerName));
 		
@@ -54,42 +52,21 @@ public class GameWindow implements KeyListener {
 		}
 		
 		tetrisField = new TetrisField(game);
-		statsField = new StatsField(game);
-		
-		frame = new JFrame();	// Instancia janela
-
-		// Configuracoes da janela
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
-		frame.setTitle("Tetris");
-		frame.setLayout(new FlowLayout());
+		statsField = new StatsField(game);		
 		
 		// Adiciona paineis
-		frame.add(tetrisField);
-		frame.add(statsField);
+		this.add(tetrisField);
+		this.add(statsField);
 
 		// Redimensionamento e localizacao da janela
-		frame.pack();
-		frame.setLocationRelativeTo(null);
+		this.pack();
+		this.setLocationRelativeTo(null);
 
-		frame.setVisible(true);	// Deixa visivel
+		this.setVisible(true);	// Deixa visivel
 
 		// Instancia timer do jogo
-		Timer gameLoop = new Timer(game, 60, tetrisField, statsField, frame, difficulty); //60 fps
+		Timer gameLoop = new Timer(game, 60, tetrisField, statsField, this, difficulty); //60 fps
 		
 		gameLoop.iniciaTetris();	// Inicia
     }
-    
-    public void repaint() {
-    	tetrisField.repaint();
-    	statsField.repaint();
-    }
-
-	public void keyPressed(KeyEvent e) {
-		//if(e.getKeyCode() == KeyEvent.VK_P)
-
-	}
-
-	public void keyTyped(KeyEvent e) {}
-	public void keyReleased(KeyEvent e) {}
 }

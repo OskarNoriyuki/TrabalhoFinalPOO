@@ -30,11 +30,10 @@ import javax.swing.UIManager;
 
 import sounds.SoundPlayer;
 
-public class MenuWindow implements ActionListener {
+public class MenuWindow extends JFrame implements ActionListener {
     // Janela, background e opcoes do jogo
-    private  JFrame frame;
     private JLabel background;
-    private Options options;
+    private OptionsPanel options;
 
     // Botoes do menu
     private JButton newGameButton;
@@ -45,11 +44,19 @@ public class MenuWindow implements ActionListener {
     
     // Construtor
     public MenuWindow() {
+        super("Tetris");
+
+        // Configuracoes da janela
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setPreferredSize(new Dimension(800, 600));
+        this.setResizable(false);
+        this.setLayout(new GridLayout(0, 1));
+
         // Referencia auxiliar para carregamento das imagens
         BufferedImage image;
 
         // Instancia opcoes do jogo
-        this.options = new Options();
+        this.options = new OptionsPanel();
         
         // Instancia uma label que contem o background e componentes
         this.background = new JLabel();
@@ -151,24 +158,14 @@ public class MenuWindow implements ActionListener {
         this.background.add(optionsButton, c);
         c.gridy = 4;
         this.background.add(exitButton, c);
-        
-        // Instanciacao da janela
-        this.frame = new JFrame();
-        
-        // Configuracoes da janela
-        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.frame.setPreferredSize(new Dimension(800, 600));
-        this.frame.setResizable(false);
-		this.frame.setTitle("Tetris");
-        this.frame.setLayout(new GridLayout(0, 1));
 
         // Adiciona o background a janela
-        this.frame.add(background);
+        this.add(background);
         
         // Deixa visivel
-        this.frame.pack();
-        this.frame.setLocationRelativeTo(null);
-        this.frame.setVisible(true);
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
 
     public void actionPerformed(ActionEvent e){
@@ -190,7 +187,7 @@ public class MenuWindow implements ActionListener {
                 // Chama a janela do jogo
                 game = new GameWindow(options.getDifficulty(), playerName, false);
             
-                this.frame.dispose(); // Destroi a janela atual
+                this.dispose(); // Destroi a janela atual
             }
         }
 
@@ -213,7 +210,7 @@ public class MenuWindow implements ActionListener {
                     // Chama a janela do jogo
                     game = new GameWindow(options.getDifficulty(), playerName, true); 
             
-                    this.frame.dispose(); // Destroi a janela atual
+                    this.dispose(); // Destroi a janela atual
                 }
             }
         }
@@ -223,15 +220,17 @@ public class MenuWindow implements ActionListener {
             // Chama a janela do ranking
             RankingWindow ranking = new RankingWindow();
             
-            this.frame.dispose(); // Destroi a janela atual
+            this.dispose(); // Destroi a janela atual
         }
 
         //Caso o botao clicado seja o de opcoes
-		if (e.getActionCommand().equals("options")) 
-            this.options.showOptions(); // Abre a janela de opcoes
+		if (e.getActionCommand().equals("options")) {
+            UIManager.put("OptionPane.okButtonText", "Ok");
+            JOptionPane.showMessageDialog(null, options,  "Dificuldade", JOptionPane.QUESTION_MESSAGE);
+        }
 
         //Caso o botao clicado seja o de saida
 		if (e.getActionCommand().equals("exit"))
-            this.frame.dispose(); // Destroi a janela atual
+            this.dispose(); // Destroi a janela atual
     }
 }

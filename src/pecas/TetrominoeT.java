@@ -11,7 +11,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class TetrominoeT extends Tetrominoe{
+public class TetrominoeT extends Tetrominoe {
 	public TetrominoeT() {
 		this.cor = "rosa";
 		this.ladoMatriz = 3;

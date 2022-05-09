@@ -1,22 +1,19 @@
 /*
 	Classe Options
-	Descricao:
+	Descricao: painel que agrega as opcoes de dificuldade do jogo
 	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
 */
 
 package graphics;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.ButtonGroup;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.UIManager;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-public class Options implements ActionListener{
-    JPanel panel;   // Painel para conter os botoes
+public class OptionsPanel extends JPanel implements ActionListener{
     int difficulty; // Dificuldade do jogo
 
     // Botoes para selecionar dificuldade
@@ -27,8 +24,8 @@ public class Options implements ActionListener{
     // Agrupamento dos botoes
     private ButtonGroup groupDifficultyButtons;
 
-    public Options() {
-        this.panel = new JPanel();  // Instanciacao do painel
+    public OptionsPanel() {
+        super();
                 
         // Instanciacao dos botoes
         this.Difficulty1RadioButton = new JRadioButton("Noob");
@@ -51,19 +48,13 @@ public class Options implements ActionListener{
         this.groupDifficultyButtons.add(Difficulty3RadioButton);
 
         // Adiciona botoes ao painel
-        this.panel.add(Difficulty1RadioButton);
-        this.panel.add(Difficulty2RadioButton);
-        this.panel.add(Difficulty3RadioButton);
+        this.add(Difficulty1RadioButton);
+        this.add(Difficulty2RadioButton);
+        this.add(Difficulty3RadioButton);
 
         // Dificuldade noob como padrao
         this.difficulty = 1; 
         this.Difficulty1RadioButton.setSelected(true);
-    }
-
-    // Abre uma janela com os botoes para escolher a dificuldade
-    public void showOptions(){
-        UIManager.put("OptionPane.okButtonText", "Ok");
-        JOptionPane.showMessageDialog(null, panel,  "Dificuldade", JOptionPane.QUESTION_MESSAGE);
     }
 
     // Getter

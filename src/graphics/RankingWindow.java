@@ -31,9 +31,8 @@ import javax.swing.JTextArea;
 import players.Ranking;
 import sounds.SoundPlayer;
 
-public class RankingWindow implements ActionListener{
+public class RankingWindow extends JFrame implements ActionListener {
     // Janela, background e ranking do jogo
-    private JFrame frame;
     private JLabel background; 
     private Ranking ranking;    
 
@@ -42,6 +41,14 @@ public class RankingWindow implements ActionListener{
 
     // Construtor
     public RankingWindow() {
+        super("Tetris");
+
+        // Configuracoes da janela
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setPreferredSize(new Dimension(800, 600));
+        this.setResizable(false);
+        this.setLayout(new GridLayout(0, 1));
+
         // Referencia auxiliar para carregamento das imagens
         BufferedImage image;
 
@@ -101,24 +108,14 @@ public class RankingWindow implements ActionListener{
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(30,300,0,300);
         this.background.add(menuButton, c);
-        
-        // Instanciacao da janela
-        this.frame = new JFrame();
-        
-        // Configuracoes da janela
-        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.frame.setPreferredSize(new Dimension(800, 600));
-        this.frame.setResizable(false);
-        this.frame.setTitle("Tetris");
-        this.frame.setLayout(new GridLayout(0, 1));
 
         // Adiciona o background a janela
-        this.frame.add(background);
+        this.add(background);
 
         // Deixa visivel
-        this.frame.pack();
-        this.frame.setLocationRelativeTo(null);
-        this.frame.setVisible(true);
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -128,6 +125,6 @@ public class RankingWindow implements ActionListener{
         // Chama a janela do menu
         MenuWindow menu = new MenuWindow();
         
-        this.frame.dispose(); // Destroi a janela atual
+        this.dispose(); // Destroi a janela atual
     }
 }
