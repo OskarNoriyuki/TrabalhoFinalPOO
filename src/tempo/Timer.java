@@ -15,6 +15,7 @@ import engine.Tetris;
 import graphics.RankingWindow;
 import graphics.StatsField;
 import graphics.TetrisField;
+import players.Ranking;
 import sounds.SoundPlayer;
 
 public class Timer implements Runnable {
@@ -128,14 +129,16 @@ public class Timer implements Runnable {
 			}
 			
 		}
+
 		SoundPlayer.pararLoop();
 		SoundPlayer.tocarSom("lose.wav");
-		janela.dispose();
-		String nomeJogador = "Digite o seu nome: ";
-		String input = JOptionPane.showInputDialog(null, nomeJogador, "Informe seu Nick", JOptionPane.PLAIN_MESSAGE);  
-		
-		RankingWindow janelafim = new RankingWindow();
 
+		janela.dispose();
+
+		Ranking ranking = new Ranking();
+		ranking.update(this.jogo.getPlayer());
+
+		RankingWindow rankingWindow = new RankingWindow();
 	}
 	
 	//nao usar
