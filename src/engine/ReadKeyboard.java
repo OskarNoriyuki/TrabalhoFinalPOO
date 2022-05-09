@@ -37,6 +37,9 @@ public class ReadKeyboard implements KeyListener {
 				break;
 			case KeyEvent.VK_K:
 				game.updateGame("rotateCW");
+				break;
+			case KeyEvent.VK_P:
+				game.updateGame("pause");
 		}
 
 		/*int teclaPressionada = e.getKeyCode();

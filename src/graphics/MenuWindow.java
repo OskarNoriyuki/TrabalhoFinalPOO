@@ -188,7 +188,7 @@ public class MenuWindow implements ActionListener {
             
             if (playerName != null) {
                 // Chama a janela do jogo
-                game = new GameWindow(options.getDifficulty(), playerName);
+                game = new GameWindow(options.getDifficulty(), playerName, false);
             
                 this.frame.dispose(); // Destroi a janela atual
             }
@@ -211,7 +211,7 @@ public class MenuWindow implements ActionListener {
                 // Verifica se arquivo de salvamento existe
                 if (save.exists()) {
                     // Chama a janela do jogo
-                    game = new GameWindow(options.getDifficulty(), playerName); 
+                    game = new GameWindow(options.getDifficulty(), playerName, true); 
             
                     this.frame.dispose(); // Destroi a janela atual
                 }

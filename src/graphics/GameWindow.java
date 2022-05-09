@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 
 import engine.Tetris;
 import players.Player;
+import players.SaveLoad;
 import sounds.SoundPlayer;
 import tempo.Timer;
 
@@ -22,13 +23,18 @@ public class GameWindow extends JFrame {
 	TetrisField tetrisField;	// Painel para desenhar o jogo
 	StatsField statsField;	// Painel para escrever dados do jogo
 
-    public GameWindow(int difficulty, String playerName) {
+    public GameWindow(int difficulty, String playerName, boolean load) {
     	JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.setTitle("Tetris");
 		frame.setLayout(new FlowLayout());
-		this.game = new Tetris(20,10, true, new Player(playerName));
+
+		if (load)
+			this.game = SaveLoad.loadGame(playerName);
+		else
+			this.game = new Tetris(20,10, true, new Player(playerName));
+		
 		tetrisField = new TetrisField(game);
 		statsField = new StatsField(game);
 		frame.add(tetrisField);
@@ -47,13 +53,6 @@ public class GameWindow extends JFrame {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-    }
-
-	public GameWindow(int difficulty, String playerName, boolean load) {
-		this(difficulty, playerName);
-
-		if (load)
-			this.game = this.game.loadGame();
     }
     
     public void repaint() {

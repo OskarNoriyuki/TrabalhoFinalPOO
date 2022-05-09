@@ -32,13 +32,12 @@ import pecas.TetrominoeS;
 import pecas.TetrominoeT;
 import pecas.TetrominoeZ;
 import players.Player;
-import players.ManipuladorSerializaveis;
 
 public class Tetris implements Serializable {
 	/**atributos gerais**/
 	private boolean perdeu;
 	private int pontuacao, linhas, nivel;
-	private Player jogador;
+	private Player player;
 	
 	/**atributos do mapa**/
 	private int maxX, maxY;
@@ -79,13 +78,13 @@ public class Tetris implements Serializable {
 	/**********************************************************************************************/
 	
 	//construtor, recebe um tamanho de mapa, em cubos
-	public Tetris(int lin, int col, boolean lowRes, Player jogador) {
+	public Tetris(int lin, int col, boolean lowRes, Player player) {
 		//geral
 		this.perdeu = false;
 		this.pontuacao = 0;
 		this.linhas = 0;
 		this.nivel = 1;
-		this.jogador = jogador;
+		this.player = player;
 		//tamanho das coisas
 		this.lowRes = lowRes;
 		if(lowRes) {
@@ -160,7 +159,7 @@ public class Tetris implements Serializable {
 			//GameWindow.fecharTetris();
 			System.err.println("PERDEEUUU!");
 			return true;
-		}else if(acao.equals("rotateCW") || acao.equals("rotateCCW")) {
+		} else if(acao.equals("rotateCW") || acao.equals("rotateCCW")) {
 			//faz a rotacao
 			if(acao.equals("rotateCW")){
 				this.pecas[this.proximaPeca[0]].rotacionar("CW");
@@ -258,7 +257,7 @@ public class Tetris implements Serializable {
 				}
 				
 			}
-		}else if(acao.equals("goDown") || acao.equals("goDownExtra")) {
+		} else if(acao.equals("goDown") || acao.equals("goDownExtra")) {
 			//desce uma casa. essa acao pode ocasionar em atualizacoes no mapa (linha formada, peca terminou de cair) ou ate mesmo o fim de jogo
 			this.pecas[this.proximaPeca[0]].y++;
 			//testa colisao, as duas colisoes relevantes sao: colisao com o chao; colisao com pecas
@@ -286,7 +285,7 @@ public class Tetris implements Serializable {
 				if(acao.equals("goDownExtra"))
 					this.pontuacao++;
 			}
-		}else if(acao.equals("goRight")) {
+		} else if(acao.equals("goRight")) {
 			//uma casa para a direita
 			this.pecas[this.proximaPeca[0]].x++;
 			//testa colisao, as duas colisoes relevantes sao: colisao com parede direita; colisao com pecas
@@ -299,7 +298,7 @@ public class Tetris implements Serializable {
 				this.pecas[this.proximaPeca[0]].x--;
 			}
 
-		}else if(acao.equals("goLeft")) {
+		} else if(acao.equals("goLeft")) {
 			//uma casa para a esquerda
 			this.pecas[this.proximaPeca[0]].x--;
 			//testa colisao, as duas colisoes relevantes sao: colisao com parede esquerda; colisao com pecas
@@ -311,13 +310,13 @@ public class Tetris implements Serializable {
 				//desfaz o movimento
 				this.pecas[this.proximaPeca[0]].x++;
 			}
-		}else if(acao.equals("goUp")) {
+		} else if (acao.equals("goUp")) {
 			//funcionalidade que sera desabilitada na versao final, subir a peca vai contra as regras do jogo
 			this.pecas[this.proximaPeca[0]].y--;
 			if(this.pecas[this.proximaPeca[0]].y < 0) {
 				this.pecas[this.proximaPeca[0]].y = 0;
 			}
-		}
+		} 
 		//se chegou aqui, perdeu == false
 		return false;
 	}
@@ -337,14 +336,6 @@ public class Tetris implements Serializable {
 	public BufferedImage getPreviewCubeImg(int posX, int posY) {
 		return this.getMapCubeImg(posX, posY, 1);
 		//return this.previewBgTile;
-	}
-	
-	public void saveGame() {
-		ManipuladorSerializaveis.serializa("src/players/"+ this.jogador.getName() +".sav", this);
-	}
-
-	public Tetris loadGame() {
-		return (Tetris) ManipuladorSerializaveis.desserializa("src/players/"+ this.jogador.getName() +".sav");
 	}
 
 	//getters
@@ -382,6 +373,11 @@ public class Tetris implements Serializable {
 	public int getSizeY() {
 		return this.maxY;
 	}
+
+	public Player getPlayer() {
+		return this.player;
+	}
+
 	/**********************************************************************************************/
 	/******************************METODOS PRIVADOS (AUXILIARES)***********************************/
 	/**********************************************************************************************/
@@ -505,8 +501,8 @@ public class Tetris implements Serializable {
 					break;
 			}
 		}
-		//atualiza o score maximo do jogador
-		this.jogador.setScore(this.pontuacao);
+		//atualiza o score maximo do player
+		this.player.setScore(this.pontuacao);
 	}
 	
 	//metodo que testa possiveis colisoes da peca ativa atual com os elementos do mapa, retorna dados sobre a colisao
