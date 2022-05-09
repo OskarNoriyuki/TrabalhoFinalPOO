@@ -1,50 +1,39 @@
+/*
+	Classe GameWindow
+	Descricao:
+	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
+*/
+
 package graphics;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 import javax.swing.JFrame;
-import javax.swing.JButton;
-import javax.swing.JPanel;
 
 import engine.Tetris;
 import players.Player;
 import sounds.SoundPlayer;
-import teste.Aplicacao;
 import tempo.Timer;
 
-public class GameWindow extends JFrame{
-    JFrame frame;
-	Timer gameLoop;
-	Tetris game;
-	TetrisField painelJogo;
-	StatsField painelAux;
-	private int difficulty;
-	private Player player;
+public class GameWindow extends JFrame {
+    JFrame frame;			// Janela do jogo
+	Timer gameLoop;			// Loop do jogo
+	Tetris game;			// Logica do jogo
+	TetrisField tetrisField;	// Painel para desenhar o jogo
+	StatsField statsField;	// Painel para escrever dados do jogo
 
     public GameWindow(int difficulty, String playerName) {
-		this.difficulty = difficulty;
     	JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.setTitle("Tetris");
 		frame.setLayout(new FlowLayout());
-		this.player = new Player(playerName);
-		this.game = new Tetris(20,10, true, player);
-		painelJogo = new TetrisField(game);
-		painelAux = new StatsField(game);
-		frame.add(painelJogo);
-		frame.add(painelAux);
-		Timer gameLoop = new Timer(game, 60, painelJogo, painelAux, frame, difficulty); //60 fps
+		this.game = new Tetris(20,10, true, new Player(playerName));
+		tetrisField = new TetrisField(game);
+		statsField = new StatsField(game);
+		frame.add(tetrisField);
+		frame.add(statsField);
+		Timer gameLoop = new Timer(game, 60, tetrisField, statsField, frame, difficulty); //60 fps
 		gameLoop.iniciaTetris();
 		
 		//tocarMúsicaTema
@@ -64,12 +53,12 @@ public class GameWindow extends JFrame{
 		this(difficulty, playerName);
 
 		if (load)
-			this.game.load();
+			this.game = this.game.loadGame();
     }
     
     public void repaint() {
-    	painelJogo.repaint();
-    	painelAux.repaint();
+    	tetrisField.repaint();
+    	statsField.repaint();
     }
 
 	public void fecharJanela(){

@@ -1,4 +1,10 @@
 /*
+	Classe Tetris
+	Descricao: classe responsavel pela logica do jogo Tetris.
+	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
+*/
+
+/*
 Programa: Classe reponsavel pela logica do jogo Tetris.
 Objetivos: Exercicio da programacao orientada a objeto.
 Entradas: Tamanho do mapa, Acao/Movimento de cada iteracao.
@@ -6,26 +12,29 @@ Saida: Cubos que compoem o mapa do tetris.
 Autor: Oskar Akama
 Atualizada em 06/05/2022
 */
+
 package engine;
 
-import java.util.Random;
-import pecas.Tetromino;
-import pecas.TetrominoI;
-import pecas.TetrominoJ;
-import pecas.TetrominoL;
-import pecas.TetrominoO;
-import pecas.TetrominoS;
-import pecas.TetrominoT;
-import pecas.TetrominoZ;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.Random;
+
 import javax.imageio.ImageIO;
+
+import pecas.Tetrominoe;
+import pecas.TetrominoeI;
+import pecas.TetrominoeJ;
+import pecas.TetrominoeL;
+import pecas.TetrominoeO;
+import pecas.TetrominoeS;
+import pecas.TetrominoeT;
+import pecas.TetrominoeZ;
 import players.Player;
+import players.ManipuladorSerializaveis;
 
-import graphics.GameWindow;
-
-public class Tetris {
+public class Tetris implements Serializable {
 	/**atributos gerais**/
 	private boolean perdeu;
 	private int pontuacao, linhas, nivel;
@@ -56,12 +65,14 @@ public class Tetris {
 	
 	/**atributos de pecas**/
 	private final int numTiposPecas = 7, numSorteadas = 4;
-	private Tetromino pecas[];
+	private Tetrominoe pecas[];
 	private int proximaPeca[]; 
 	/*
 	 * representadas por 'I', 'J', 'L', 'O', 'S', 'T', 'Z',
 	 * proximaPeca[0] eh a peca ATUAL, e as seguintes sao as proximas a cair.
 	 */
+
+	private static final long serialVersionUID = 123L;
 
 	/**********************************************************************************************/
 	/*************************************METODOS PUBLICOS*****************************************/
@@ -104,14 +115,14 @@ public class Tetris {
 			}
 		}
 		//instancia uma peca de cada
-		pecas = new Tetromino[numTiposPecas];
-		pecas[0] = new TetrominoI();
-		pecas[1] = new TetrominoJ();
-		pecas[2] = new TetrominoL();
-		pecas[3] = new TetrominoO();
-		pecas[4] = new TetrominoS();
-		pecas[5] = new TetrominoT();
-		pecas[6] = new TetrominoZ();
+		pecas = new Tetrominoe[numTiposPecas];
+		pecas[0] = new TetrominoeI();
+		pecas[1] = new TetrominoeJ();
+		pecas[2] = new TetrominoeL();
+		pecas[3] = new TetrominoeO();
+		pecas[4] = new TetrominoeS();
+		pecas[5] = new TetrominoeT();
+		pecas[6] = new TetrominoeZ();
 		//eh possivel ver, fora a peca atual, as proximas 3 a cair. inicializa aleatoriamente
 		this.proximaPeca = new int[numSorteadas];
 		this.proximaPeca[0] = this.getPecaAleatoria(numTiposPecas); //primeira a cair
@@ -143,7 +154,7 @@ public class Tetris {
 
 	//realiza um movimento/acao, calcula as consequencias e atualiza o jogo. deve ser chamado 1x por frame, e 1x por comando
 	public boolean updateGame(String acao) {
-		Colisao colisao;	//classe que armazena infos da colisao
+		Collision colisao;	//classe que armazena infos da colisao
 		if(perdeu) {
 			//chama window de game over
 			//GameWindow.fecharTetris();
@@ -328,6 +339,14 @@ public class Tetris {
 		//return this.previewBgTile;
 	}
 	
+	public void saveGame() {
+		ManipuladorSerializaveis.serializa("src/players/"+ this.jogador.getName() +".sav", this);
+	}
+
+	public Tetris loadGame() {
+		return (Tetris) ManipuladorSerializaveis.desserializa("src/players/"+ this.jogador.getName() +".sav");
+	}
+
 	//getters
 	public boolean isLowResMode() {
 		if(this.lowRes) {
@@ -491,11 +510,11 @@ public class Tetris {
 	}
 	
 	//metodo que testa possiveis colisoes da peca ativa atual com os elementos do mapa, retorna dados sobre a colisao
-	private Colisao testaColisao() {
+	private Collision testaColisao() {
 		//auxiliar, para escrever menos
 		int ladoMatriz = this.pecas[proximaPeca[0]].getSize();
 		//instancia que armazena dados sobre a colisao
-		Colisao retorno = new Colisao();
+		Collision retorno = new Collision();
 		//[FUNCIONALIDADE NAO UTILIZADA] "gaps" na matriz sao calculados para posterior calculo de profundidade de interseccao de colisao
 		int numColVaziaEsq = ladoMatriz, numColVaziaDir = ladoMatriz, numLinVaziaInf = ladoMatriz;
 		for(int i = 0; i < ladoMatriz; i++) {

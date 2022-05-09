@@ -1,3 +1,9 @@
+/*
+	Classe TetrominoeJ
+	Descricao:
+	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
+*/
+
 package pecas;
 
 import java.awt.image.BufferedImage;
@@ -6,19 +12,19 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class TetrominoL extends Tetromino{
-	public TetrominoL() {
-		this.cor = "laranja";
+public class TetrominoeJ extends Tetrominoe{
+	public TetrominoeJ() {
+		this.cor = "azul_escuro";
 		this.ladoMatriz = 3;
 		//todas as pe�as come�am deitadas
 		this.matriz = new boolean[][] 
-				{	{	false, 	false, 	false	},
+				{	{	true, 	false, 	false	},
 					{	true, 	true, 	true	},
-					{	true, 	false, 	false	}};
-					/* Tetromino L:
+					{	false,  false, 	false	}};
+					/* Tetromino J:
 										2| - # -
 										1| - # -
-										0| - # # 
+										0| # # - 
 										y|______
 										 x 0 1 2
 					 */
@@ -30,7 +36,7 @@ public class TetrominoL extends Tetromino{
 	@Override
 	public BufferedImage getImage() {
 		try {
-			this.cube = ImageIO.read(new FileInputStream("src/img/cubes/cube_orange.png"));
+			this.cube = ImageIO.read(new FileInputStream("src/img/cubes/cube_blue.png"));
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -48,6 +54,6 @@ public class TetrominoL extends Tetromino{
 	}
 	
 	public char toChar() {
-		return 'L';
+		return 'J';
 	}
 }

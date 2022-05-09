@@ -1,3 +1,9 @@
+/*
+	Classe TetrominoeI
+	Descricao:
+	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
+*/
+
 package pecas;
 
 import java.awt.image.BufferedImage;
@@ -6,9 +12,9 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class TetrominoI extends Tetromino{
+public class TetrominoeI extends Tetrominoe{
 	
-	public TetrominoI() {
+	public TetrominoeI() {
 		this.cor = "azul_claro";
 		this.ladoMatriz = 4;
 		//todas as pe�as come�am deitadas

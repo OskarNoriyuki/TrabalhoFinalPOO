@@ -1,3 +1,9 @@
+/*
+	Classe Options
+	Descricao:
+	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
+*/
+
 package graphics;
 
 import javax.swing.ButtonGroup;

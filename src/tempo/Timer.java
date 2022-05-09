@@ -1,21 +1,23 @@
+/*
+	Classe Timer
+	Descricao:
+	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
+*/
+
 package tempo;
 
 import java.io.IOException;
 
-import graphics.TetrisField;
-import players.Ranking;
-import sounds.SoundPlayer;
-import graphics.GameWindow;
-import graphics.StatsField;
-import graphics.RankingWindow;
-
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import javax.swing.JFrame;
-
 import engine.Tetris;
+import graphics.RankingWindow;
+import graphics.StatsField;
+import graphics.TetrisField;
+import sounds.SoundPlayer;
 
-public class Timer implements Runnable{
+public class Timer implements Runnable {
 	
 	Thread tetrisThread; //tarefa principal do jogo, atualmente 1 tick = 1 frame (jogo roda junto ao refresh da tela);
 	private final long targetFPS;

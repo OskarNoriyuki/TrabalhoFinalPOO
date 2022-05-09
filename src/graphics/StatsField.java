@@ -1,52 +1,64 @@
+/*
+	Classe StatsField
+	Descricao:
+	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
+*/
+
 package graphics;
 
-import engine.LeTeclado;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Label;
+
+import javax.swing.JPanel;
+
 import engine.Tetris;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
+public class StatsField extends JPanel {
+	// Dimensoes
+	private int sizeCube;
+	private int sizeMiniCube;
+	private int numColumns;
+	private int numRows;
+	private int numColumnsPreview;
+	private int numRowsPreview;
+	private int widthField;
+	private int heightField;
+	
+	// Logica do jogo
+	private Tetris game;
 
-public class StatsField extends JPanel{
-	//dimensoes
-	private int tamanhoCubo;
-	private int tamanhoMiniCubo;
-	private int numColunas;
-	private int numLinhas;
-	private int numColunasPreview;
-	private int numLinhasPreview;
-	private int larguraCampo;
-	private int alturaCampo;
-	//ref para o game
-	private Tetris jogo;
-	//elementos graficos
-	private Label titulo, pontuacao, nivel, linhas, dutyCycle, fillerText, prox_0, prox_1, prox_2, prox_3;
-	//diversos
+	// Elementos graficos
+	private Label title, points, level, rows, dutyCycle, fillerText, next_0, next_1, next_2, next_3;
+	
+	// diversos
 	String  m, threadCycle;
 	GridBagConstraints c;
 	Font TitleFont = new Font("SansSerif", Font.BOLD, 30);
 	Font StatsFont;
 	Font IndexFont;
 	
-	//construtor do painel auxiliar (mostrador de proximas pecas, pontuacao, nivel, etc)
-	public StatsField(Tetris jogo) {
-		//engine 
-		this.jogo = jogo;
+	//construtor do painel auxiliar (mostrador de proximas pecas, points, level, etc)
+	public StatsField(Tetris game) {
+		// Instancia  
+		this.game = game;
 		
 		//dimensoes
-		this.tamanhoCubo = jogo.getCubeSize();
-		this.numColunas = jogo.getSizeX();
-		this.numLinhas = jogo.getSizeY();
-		this.larguraCampo = tamanhoCubo*numColunas/2; //painel auxiliar eh mais fino que o campo do jogo
-		this.alturaCampo = tamanhoCubo*numLinhas;
-		this.tamanhoMiniCubo = jogo.getMiniCubeSize();
-		this.numColunasPreview = jogo.getPreviewSizeX();
-		this.numLinhasPreview = jogo.getPreviewSizeY();
+		this.sizeCube = game.getCubeSize();
+		this.numColumns = game.getSizeX();
+		this.numRows = game.getSizeY();
+		this.widthField = sizeCube*numColumns/2; //painel auxiliar eh mais fino que o campo do jogo
+		this.heightField = sizeCube*numRows;
+		this.sizeMiniCube = game.getMiniCubeSize();
+		this.numColumnsPreview = game.getPreviewSizeX();
+		this.numRowsPreview = game.getPreviewSizeY();
 		
-		if(jogo.isLowResMode()) {
+		if(game.isLowResMode()) {
 			this.IndexFont = new Font("Serif", Font.BOLD, 12);
 			this.StatsFont = new Font("Monospaced", Font.BOLD, 16);
 		}else {
@@ -55,63 +67,63 @@ public class StatsField extends JPanel{
 		}
 		
 		//painel
-		this.setPreferredSize(new Dimension(this.larguraCampo, this.alturaCampo));
+		this.setPreferredSize(new Dimension(this.widthField, this.heightField));
 		this.setBackground(Color.black);
 		this.setDoubleBuffered(true);
         this.setLayout(new GridBagLayout());
         c = new GridBagConstraints();
 
 		
-		this.titulo = new Label(" TETRIS");
-		this.titulo.setForeground(Color.WHITE);
-		this.titulo.setFont(TitleFont);
+		this.title = new Label(" TETRIS");
+		this.title.setForeground(Color.WHITE);
+		this.title.setFont(TitleFont);
 		c.gridx = 0;
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.PAGE_START;
-		this.add(titulo , c);
+		this.add(title , c);
 
-		if(jogo.isLowResMode()) c.weighty = 1;
+		if(game.isLowResMode()) c.weighty = 1;
 			else c.weighty = 0.55;
 		
-		this.prox_0 = new Label("Peca atual:        ");
-		this.prox_0.setForeground(Color.WHITE);
-		this.prox_0.setFont(IndexFont);
+		this.next_0 = new Label("Peca atual:        ");
+		this.next_0.setForeground(Color.WHITE);
+		this.next_0.setFont(IndexFont);
 		c.gridx = 0;
 		c.gridy = 1;
 		c.anchor = GridBagConstraints.LINE_START;
-		this.add(prox_0 , c);
+		this.add(next_0 , c);
 		
-		if(jogo.isLowResMode()) c.weighty = 1.8;
+		if(game.isLowResMode()) c.weighty = 1.8;
 			else c.weighty = 1;
 		
-		this.prox_1 = new Label("Proxima:        ");
-		this.prox_1.setForeground(Color.WHITE);
-		this.prox_1.setFont(IndexFont);
+		this.next_1 = new Label("Proxima:        ");
+		this.next_1.setForeground(Color.WHITE);
+		this.next_1.setFont(IndexFont);
 		c.gridx = 0;
 		c.gridy = 2;
 		c.anchor = GridBagConstraints.LINE_START;
-		this.add(prox_1 , c);
+		this.add(next_1 , c);
 		
-		if(jogo.isLowResMode()) c.weighty = 1;
+		if(game.isLowResMode()) c.weighty = 1;
 		else c.weighty = 0.8;
 		
-		this.prox_2 = new Label("2nd:       ");
-		this.prox_2.setForeground(Color.WHITE);
-		this.prox_2.setFont(IndexFont);
+		this.next_2 = new Label("2nd:       ");
+		this.next_2.setForeground(Color.WHITE);
+		this.next_2.setFont(IndexFont);
 		c.gridx = 0;
 		c.gridy = 3;
 		c.anchor = GridBagConstraints.LINE_START;
-		this.add(prox_2 , c);
+		this.add(next_2 , c);
 
 
 		
-		this.prox_3 = new Label("3rd:       ");
-		this.prox_3.setForeground(Color.WHITE);
-		this.prox_3.setFont(IndexFont);
+		this.next_3 = new Label("3rd:       ");
+		this.next_3.setForeground(Color.WHITE);
+		this.next_3.setFont(IndexFont);
 		c.gridx = 0;
 		c.gridy = 4;
 		c.anchor = GridBagConstraints.LINE_START;
-		this.add(prox_3 , c);
+		this.add(next_3 , c);
 		
 		this.fillerText = new Label("    ");
 		this.fillerText.setForeground(Color.BLACK);
@@ -123,29 +135,29 @@ public class StatsField extends JPanel{
 
 		c.weighty = 0;
 		
-		this.pontuacao = new Label();
-		this.pontuacao.setForeground(Color.GREEN);
-		this.pontuacao.setFont(StatsFont);
+		this.points = new Label();
+		this.points.setForeground(Color.GREEN);
+		this.points.setFont(StatsFont);
 		c.gridx = 0;
 		c.gridy = 6;
 		c.anchor = GridBagConstraints.LINE_START;
-		this.add(pontuacao, c);
+		this.add(points, c);
 		
-		this.linhas = new Label();
-		this.linhas.setForeground(Color.GREEN);
-		this.linhas.setFont(StatsFont);
+		this.rows = new Label();
+		this.rows.setForeground(Color.GREEN);
+		this.rows.setFont(StatsFont);
 		c.gridx = 0;
 		c.gridy = 7;
 		c.anchor = GridBagConstraints.LINE_START;
-		this.add(linhas, c);
+		this.add(rows, c);
 		
-		this.nivel = new Label();
-		this.nivel.setForeground(Color.GREEN);
-		this.nivel.setFont(StatsFont);
+		this.level = new Label();
+		this.level.setForeground(Color.GREEN);
+		this.level.setFont(StatsFont);
 		c.gridx = 0;
 		c.gridy = 8;
 		c.anchor = GridBagConstraints.LINE_START;
-		this.add(nivel, c);
+		this.add(level, c);
 
 		c.weighty = 0.2;
 	
@@ -170,12 +182,12 @@ public class StatsField extends JPanel{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
-		for(int x = 0; x < this.numColunasPreview; x++) {
-			for(int y = 0; y < this.numLinhasPreview; y++) {
-				g2.drawImage(jogo.getPreviewCubeImg(x, y), 40+x*tamanhoMiniCubo, 100+ y*tamanhoMiniCubo, tamanhoMiniCubo, tamanhoMiniCubo, null);
+		for(int x = 0; x < this.numColumnsPreview; x++) {
+			for(int y = 0; y < this.numRowsPreview; y++) {
+				g2.drawImage(game.getPreviewCubeImg(x, y), 40+x*sizeMiniCube, 100+ y*sizeMiniCube, sizeMiniCube, sizeMiniCube, null);
 			}
 		}
-		if(jogo.isLowResMode()) {
+		if(game.isLowResMode()) {
 			//retangulo interno, destaque da peca atual
 			this.fillHollowRect(g2, Color.WHITE, 40, 105, 90, 65, 4);
 			//retangulo externo, destaque da peca atual
@@ -190,11 +202,11 @@ public class StatsField extends JPanel{
 		
 		
 		
-		this.pontuacao.setText("Pontos: " + jogo.getScore()+ "      ");
-		this.nivel.setText("Nivel " + jogo.getLevel()+ "      ");
-		this.linhas.setText("Linhas: " + jogo.getLines()+ "      ");
+		this.points.setText("Pontos: " + game.getScore()+ "      ");
+		this.level.setText("level " + game.getLevel()+ "      ");
+		this.rows.setText("rows: " + game.getLines()+ "      ");
 		this.dutyCycle.setText("Thread: " + this.threadCycle+" %      ");
-		g2.dispose();	//para não acumular lixo na memória
+		g2.dispose();	//para nï¿½o acumular lixo na memï¿½ria
 	}
 	
 	private void fillHollowRect(Graphics g, Color color, int x, int y, int  width, int  height, int thickness) {

@@ -1,6 +1,12 @@
+/*
+	Classe Collision
+	Descricao:
+	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
+*/
+
 package engine;
 
-public class Colisao {
+public class Collision {
 	//armazena quais tipos de colisao aconteceram.
 	//atributos publicos, pois o objetivo da classe eh justamente ser uma estrutura de dados
 	public boolean paredeDir;
@@ -15,7 +21,7 @@ public class Colisao {
 	public int profundidadeInf;
 	
 	//inicializa as variaveis no construtor
-	public Colisao() {
+	public Collision() {
 		this.paredeDir = false;
 		this.paredeEsq = false;
 		this.chao = false;

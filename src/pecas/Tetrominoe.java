@@ -1,10 +1,14 @@
+/*
+	Classe Tetrominoe
+	Descricao:
+	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
+*/
+
 package pecas;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 
-public abstract class Tetromino {
+public abstract class Tetrominoe {
 	protected String cor;
 	protected int ladoMatriz;
 	protected boolean matriz[][]; //[x][y]

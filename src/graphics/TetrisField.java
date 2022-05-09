@@ -1,63 +1,71 @@
+/*
+	Classe TetrisField
+	Descricao:
+	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
+*/
+
 package graphics;
 
-import engine.LeTeclado;
-import engine.Tetris;
-import java.awt.*;
-import java.awt.Dimension;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
-import javax.swing.*;
-import javax.swing.DebugGraphics;
 import javax.swing.JPanel;
 
-public class TetrisField extends JPanel{
-	//dimensoes
-	private int tamanhoCubo;
-	private int numColunas;
-	private int numLinhas;
-	private int larguraCampo;
-	private int alturaCampo;
-	
-	//Thread tetrisThread;
-	LeTeclado comandoTeclado;
-	
-	//engine
-	private Tetris jogo;
-	
-	//construtor do painel principal do jogo
-	public TetrisField(Tetris jogo) {
-		//engine
-		this.jogo = jogo;
-		
-		//dimensoes
-		this.tamanhoCubo = this.jogo.getCubeSize();
-		this.numColunas = this.jogo.getSizeX();
-		this.numLinhas = this.jogo.getSizeY();
-		this.larguraCampo = tamanhoCubo*numColunas;
-		this.alturaCampo = tamanhoCubo*numLinhas;
+import engine.ReadKeyboard;
+import engine.Tetris;
 
-		//painel
-		this.setPreferredSize(new Dimension(this.larguraCampo, this.alturaCampo));
+public class TetrisField extends JPanel {
+	// Dimensoes
+	private int sizeCube;
+	private int numColumns;
+	private int numRows;
+	private int widthField;
+	private int heightField;
+	
+	// Listener;
+	//private ReadKeyboard keyboardCommand;
+	
+	// Logica do jogo
+	private Tetris game;
+	
+	// Construtor
+	public TetrisField(Tetris game) {
+		// Instanciacao do jogo
+		this.game = game;
+		
+		// Instanciacao das dimensoes
+		this.sizeCube = this.game.getCubeSize();
+		this.numColumns = this.game.getSizeX();
+		this.numRows = this.game.getSizeY();
+		this.widthField = sizeCube*numColumns;
+		this.heightField = sizeCube*numRows;
+
+		// Configuracoes da janela
+		this.setPreferredSize(new Dimension(this.widthField, this.heightField));
 		this.setLayout(new FlowLayout());
 		this.setBackground(Color.black);
 		this.setDoubleBuffered(true);
-		
-		//entradas
-		comandoTeclado = new LeTeclado(jogo);
-		this.addKeyListener(comandoTeclado);
 		this.setFocusable(true);
-	
+		
+		// Registra listener
+		//keyboardCommand = new ReadKeyboard(game);
+		//this.addKeyListener(keyboardCommand);
+		this.addKeyListener(new ReadKeyboard(game));
 	}
 	
-	//configs graficas do painel
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+
 		Graphics2D g2 = (Graphics2D)g;
-		for(int x = 0; x < this.numColunas; x++) {
-			for(int y = 0; y < this.numLinhas; y++) {
-				g2.drawImage(jogo.getCubeImg(x, y), x*tamanhoCubo, y*tamanhoCubo, tamanhoCubo, tamanhoCubo, null);
-			}
-		}
-		g2.dispose();	//para não acumular lixo na memória
+		
+		// Desenha o jogo
+		for(int x = 0; x < this.numColumns; x++)
+			for(int y = 0; y < this.numRows; y++)
+				g2.drawImage(game.getCubeImg(x, y), x*sizeCube, y*sizeCube, sizeCube, sizeCube, null);
+
+		g2.dispose(); // Para nao acumular lixo na memoria
 	}
 }

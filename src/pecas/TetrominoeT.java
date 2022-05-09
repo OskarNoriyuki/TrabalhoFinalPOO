@@ -1,24 +1,31 @@
+/*
+	Classe TetrominoeT
+	Descricao:
+	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
+*/
+
 package pecas;
 
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 
-public class TetrominoO extends Tetromino{
-	public TetrominoO() {
-		this.cor = "amarelo";
-		this.ladoMatriz = 2;
+public class TetrominoeT extends Tetrominoe{
+	public TetrominoeT() {
+		this.cor = "rosa";
+		this.ladoMatriz = 3;
 		//todas as pe�as come�am deitadas
 		this.matriz = new boolean[][] 
-				{	{	true, 	true 	},
-					{	true, 	true 	}};
-					/* Tetromino O:
-										1| # #
-										0| # # 
-										y|____
-										 x 0 1 
+				{	{	false, 	true, 	false	},
+					{	true, 	true, 	false	},
+					{	false, 	true, 	false	}};
+					/* Tetromino T:
+										2| - - - 
+										1| # # #
+										0| - # -
+										y|______
+										 x 0 1 2
 					 */
 		this.angle = 0;
 		this.reset();
@@ -28,7 +35,7 @@ public class TetrominoO extends Tetromino{
 	@Override
 	public BufferedImage getImage() {
 		try {
-			this.cube = ImageIO.read(new FileInputStream("src/img/cubes/cube_yellow.png"));
+			this.cube = ImageIO.read(new FileInputStream("src/img/cubes/cube_pink.png"));
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -39,13 +46,13 @@ public class TetrominoO extends Tetromino{
 		while(this.angle > 0) {
 			this.rotacionar("cw");
 		}
-		this.x = default_X + 2;
+		this.x = default_X;
 		this.y = default_Y;
 		this.x_kick = 0;
 		this.y_kick = 0;
 	}
 	
 	public char toChar() {
-		return 'O';
+		return 'T';
 	}
 }
