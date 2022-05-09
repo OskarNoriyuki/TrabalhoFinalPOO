@@ -13,7 +13,7 @@ import tempo.Timer;
 
 import java.awt.event.*;
 
-public class Aplicacao{
+public class Aplicacao {
 	public static void main (String[] args) {
 		MenuWindow menu = new MenuWindow();
 	}
