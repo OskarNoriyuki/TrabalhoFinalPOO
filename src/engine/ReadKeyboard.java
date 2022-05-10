@@ -24,33 +24,43 @@ public class ReadKeyboard implements KeyListener {
 				if(!game.isPaused()) {
 					game.updateGame("goUp");
 				}else {
-					
+					game.moveArrow(false);
 				}
 
 				break;
 			case KeyEvent.VK_S:
 				if(!game.isPaused()) {
 					game.updateGame("goDownExtra");
+				}else {
+					game.moveArrow(true);
 				}
 				break;
 			case KeyEvent.VK_A:
 				if(!game.isPaused()) {
 					game.updateGame("goLeft");
+				}else {
+					game.moveArrow(false);
 				}
 				break;
 			case KeyEvent.VK_D:
 				if(!game.isPaused()) {
 					game.updateGame("goRight");
+				}else {
+					game.moveArrow(true);
 				}
 				break;
 			case KeyEvent.VK_J:
 				if(!game.isPaused()) {
 					game.updateGame("rotateCCW");
+				}else {
+					game.setWhereToGo();
 				}
 				break;
 			case KeyEvent.VK_K:
 				if(!game.isPaused()) {
 					game.updateGame("rotateCW");
+				}else {
+					game.setWhereToGo();
 				}
 				break;
 			case KeyEvent.VK_P:

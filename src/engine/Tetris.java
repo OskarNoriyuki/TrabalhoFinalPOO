@@ -163,8 +163,9 @@ public class Tetris implements Serializable {
 			//GameWindow.fecharTetris();
 			System.err.println("PERDEEUUU!");
 			return true;
-		}
-		else if(acao.equals("rotateCW") || acao.equals("rotateCCW")) {
+		}else if(pause) {
+			return false;
+		}else if(acao.equals("rotateCW") || acao.equals("rotateCCW")) {
 			//faz a rotacao
 			if(acao.equals("rotateCW")){
 				this.pecas[this.proximaPeca[0]].rotacionar("CW");
@@ -365,6 +366,9 @@ public class Tetris implements Serializable {
 	//getters
 	public boolean isPaused() {
 		return this.pause;
+	}
+	public int getOption() {
+		return this.option;
 	}
 	public boolean isLowResMode() {
 		if(this.lowRes) {

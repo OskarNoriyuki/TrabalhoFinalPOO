@@ -43,11 +43,11 @@ public class Timer implements Runnable {
 	private int dificuldade;
 	
 	//construtor da classe gerenciadora do loop do jogo
-	public Timer(Tetris jogo, int fps, TetrisField campoTetris, StatsField campoAux, JFrame janela, int dificuldade) {
+	public Timer(Tetris jogo, int fps, TetrisField campoTetris, StatsField campoAux, JFrame gameWindow, int dificuldade) {
 		//referencias para o painel do jogo
 		this.painelJogo = campoTetris;
 		this.painelAux = campoAux;
-		this.janela=janela;
+		this.janela=gameWindow;
 		this.dificuldade=dificuldade;
 		
 		//referencia do jogo
