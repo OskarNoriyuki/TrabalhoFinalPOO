@@ -1,6 +1,6 @@
 /*
 	Classe TetrisField
-	Descricao:
+	Descricao: painel com o campo do jogo desenhado
 	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
 */
 
@@ -29,13 +29,10 @@ public class TetrisField extends JPanel {
 	private int widthField;
 	private int heightField;
 	
-	// Listener;
-	//private ReadKeyboard keyboardCommand;
-	
 	// Logica do jogo
 	private Tetris game;
 	
-	//atributos importantes para o menu de pausa
+	// Referencias para as imagens do menu de pausa
 	private BufferedImage TitleImg;
 	private BufferedImage Option0Img;
 	private BufferedImage Option1Img;
@@ -46,13 +43,13 @@ public class TetrisField extends JPanel {
 		// Instanciacao do jogo
 		this.game = game;
 		
-		//imagenns do menu de pausa
+		// Imagens do menu de pausa
 		try {
 			this.ArrowImg = ImageIO.read(new FileInputStream("src/img/MenuPause/Arrow.png"));
 			this.TitleImg = ImageIO.read(new FileInputStream("src/img/MenuPause/Title.png"));
 			this.Option0Img = ImageIO.read(new FileInputStream("src/img/buttons/SaveButton.png"));
 			this.Option1Img = ImageIO.read(new FileInputStream("src/img/buttons/MenuButton.png"));
-		}catch(IOException e) {
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 		
@@ -71,11 +68,10 @@ public class TetrisField extends JPanel {
 		this.setFocusable(true);
 		
 		// Registra listener
-		//keyboardCommand = new ReadKeyboard(game);
-		//this.addKeyListener(keyboardCommand);
 		this.addKeyListener(new ReadKeyboard(game));
 	}
-	
+	 
+	// Metodo que desenha o jogo no painel
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
@@ -86,16 +82,18 @@ public class TetrisField extends JPanel {
 			for(int y = 0; y < this.numRows; y++)
 				g2.drawImage(game.getCubeImg(x, y), x*sizeCube, y*sizeCube, sizeCube, sizeCube, null);
 		
+		// Desenha menu de pausa
 		if(game.isPaused()) {
 			g2.drawImage(this.TitleImg, 0, sizeCube*5, sizeCube*10, sizeCube, null);
 			g2.drawImage(this.Option0Img, sizeCube, sizeCube*6, sizeCube*8, sizeCube, null);
 			g2.drawImage(this.Option1Img, sizeCube, sizeCube*7, sizeCube*8, sizeCube, null);
-			if(game.getOption() == 0) {
+			
+			if (game.getOption() == 0)
 				g2.drawImage(this.ArrowImg, 0, sizeCube*6, sizeCube, sizeCube, null);
-			}else if(game.getOption() == 1) {
+			else if(game.getOption() == 1)
 				g2.drawImage(this.ArrowImg, 0, sizeCube*7, sizeCube, sizeCube, null);
-			}
 		}
+
 		g2.dispose(); // Para nao acumular lixo na memoria
 	}
 }

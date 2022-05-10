@@ -1,13 +1,12 @@
 /*
 	Classe Collision
-	Descricao:
+	Descricao: armazena quais tipos de colisao aconteceram
 	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
 */
 
 package engine;
 
 public class Collision {
-	//armazena quais tipos de colisao aconteceram.
 	//atributos publicos, pois o objetivo da classe eh justamente ser uma estrutura de dados
 	public boolean paredeDir;
 	public boolean paredeEsq;
@@ -15,7 +14,7 @@ public class Collision {
 	public boolean peca;
 	public boolean foraDoMapa;
 
-	//inicializa as variaveis no construtor
+	// Inicializa as variaveis no construtor
 	public Collision() {
 		this.paredeDir = false;
 		this.paredeEsq = false;
@@ -24,11 +23,11 @@ public class Collision {
 		this.foraDoMapa = false;
 	}
 	
-	//metodo basico, retorna verdadeiro se uma das flags (exceto colisao no teto) esta acesa
+	// Metodo basico, retorna verdadeiro se uma das flags (exceto colisao no teto) esta acesa
 	public boolean nok() {
-		if(this.paredeDir || this.paredeEsq || this.chao || this.peca) {
+		if (this.paredeDir || this.paredeEsq || this.chao || this.peca) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 	}
