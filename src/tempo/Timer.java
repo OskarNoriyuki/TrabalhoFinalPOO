@@ -12,17 +12,22 @@ import javax.swing.JFrame;
 
 import engine.Ranking;
 import engine.Tetris;
+import graphics.GameWindow;
+import graphics.MenuWindow;
 import graphics.RankingWindow;
 import graphics.StatsField;
 import graphics.TetrisField;
 import sounds.SoundPlayer;
+import data.DataManager;
+import data.SerializationManager;
 
 public class Timer implements Runnable {
 	
-	Thread tetrisThread; //tarefa principal do jogo, atualmente 1 tick = 1 frame (jogo roda junto ao refresh da tela);
+	Thread tetrisThread; //tarefa principal do game, atualmente 1 tick = 1 frame (game roda junto ao refresh da tela);
 	private final long targetFPS;
 	private final long loopInterval_ns; //nanossegundos
-	private Tetris jogo;
+	private GameWindow gameWindow;
+	private Tetris game;
 	private TetrisField painelJogo;
 	private StatsField painelAux;
 	private double dutyCycle;
@@ -38,20 +43,21 @@ public class Timer implements Runnable {
 	private int periodIndex;
 	private int dropCount;
 	
-	private boolean fimdejogo = false;
-	private JFrame janela;
+	private boolean fimdejogo = false, voltar;
 	private int dificuldade;
 	
-	//construtor da classe gerenciadora do loop do jogo
-	public Timer(Tetris jogo, int fps, TetrisField campoTetris, StatsField campoAux, JFrame gameWindow, int dificuldade) {
-		//referencias para o painel do jogo
+	//construtor da classe gerenciadora do loop do game
+	public Timer(Tetris game, int fps, TetrisField campoTetris, StatsField campoAux, GameWindow gameWindow, int dificuldade) {
+		this.voltar = false;
+		
+		//referencias para o painel do game
 		this.painelJogo = campoTetris;
 		this.painelAux = campoAux;
-		this.janela=gameWindow;
+		this.gameWindow=gameWindow;
 		this.dificuldade=dificuldade;
 		
-		//referencia do jogo
-		this.jogo = jogo;
+		//referencia do game
+		this.game = game;
 		
 		//inicializa variaveis
 		this.dutyCycle = 0.0;
@@ -70,14 +76,10 @@ public class Timer implements Runnable {
 		tetrisThread.start();
 	}
 
-	//Finaliza a Thread do game
-	public void finalizaTetris() {
-		janela.dispose();
-	}
 
 	public void run() {
 		//while(tetrisThread != null) {
-		while(!fimdejogo){
+		while(!(fimdejogo||voltar)){
 			
 			long startTime = System.nanoTime();
 			//*************************************trabalho util do loop aqui**********************************************
@@ -85,20 +87,35 @@ public class Timer implements Runnable {
 			String dutyCyclePerc = String.format("%.2f", this.dutyCycle*100.0);
  			if(loopCount%(targetFPS/debugMessageFreq) == 0) {
  				//System.out.println("Use W,S,A,D para mover. Use J, K para rotacionar. \nCiclo ativo medio nos ultimos "+(this.targetFPS/this.debugMessageFreq)+" frames: "+dutyCyclePerc+"%");
- 				//System.out.println("Nivel: "+jogo.getLevel()+" Linhas: "+jogo.getLines()+" Pontos: "+jogo.getScore());
+ 				//System.out.println("Nivel: "+game.getLevel()+" Linhas: "+game.getLines()+" Pontos: "+game.getScore());
  				this.painelAux.setThreadCycleIndicator(dutyCyclePerc);
  			}
  			
+ 	    	if(game.getEscape()) {
+ 	    		switch(game.getOption()) {
+ 	    			case 0:
+ 	    				DataManager.saveGame(this.game);
+ 	    				game.setEscape(false);
+ 	    				break;
+ 	    			case 1:
+ 	    				this.voltar = true;
+ 	    				MenuWindow novoMenu = new MenuWindow();
+ 	    				this.gameWindow.dispose();
+ 	    				break;
+ 	    			default:
+ 	    				break;
+ 	    		}
+ 	    	}
  			//processamento do game
  			//loopCount nao eh adequado para guiar os stepDowns, pois podem ocorrer erros nas trocas de frequencia
  			this.dropCount++;
  			if(dropCount == stepDownPeriod[dificuldade-1][periodIndex]) {
- 				//roda uma iteracao do jogo, a peca cai uma casa e testa se perdeu
- 				fimdejogo=jogo.updateGame("goDown");
+ 				//roda uma iteracao do game, a peca cai uma casa e testa se perdeu
+ 				fimdejogo=game.updateGame("goDown");
  				//reseta o contador
  				this.dropCount = 0;
  				//atualiza a frequencia de acordo com o nivel
- 				periodIndex= jogo.getLevel();
+ 				periodIndex= game.getLevel();
  	 			if(periodIndex > 23)
  	 				periodIndex = 23;
  			}
@@ -123,34 +140,22 @@ public class Timer implements Runnable {
 			try {
 				Thread.sleep(sleepTime);
 			} catch (InterruptedException | IllegalArgumentException e) {
-				System.out.println("Nao consigo dormir!");
-				//e.printStackTrace();
+				System.err.println("Nao consigo dormir!");
 			}
 			
 		}
 
+		//se saiu do loop principal, deve finalizar o jogo ou voltar ao menu
 		SoundPlayer.pararLoop();
 		SoundPlayer.tocarSom("lose.wav");
-
-		Ranking ranking = new Ranking();
-		ranking.update(this.jogo.getPlayer());
-		
-		RankingWindow rankingWindow = new RankingWindow();
-
-		janela.dispose();
+		if(this.fimdejogo) {
+			Ranking ranking = new Ranking();
+			ranking.update(this.game.getPlayer());
+			RankingWindow rankingWindow = new RankingWindow();
+			this.gameWindow.dispose();
+		}else if(this.voltar){
+			this.gameWindow.dispose();
+		}
 	}
-	
-	//nao usar
-	public void clearConsole() {
-		try{
-			if(System.getProperty("os.name").contains("Windows")) {
-				new ProcessBuilder("cmd","/c","cls").inheritIO().start().waitFor();
-			}else {
-				System.out.print("\033\143");
-			}
-		} catch(IOException eio) {}
-		catch(InterruptedException ei) {}
-	}
-	
 
 }

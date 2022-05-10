@@ -19,10 +19,11 @@ public class ReadKeyboard implements KeyListener {
 
 	public void keyPressed(KeyEvent e) {
 		// Comandos para cada tecla pressionada
+		//cada tecla responde de forma diferente de acordo com o estado do jogo (pausado ou nao)
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_W:
 				if(!game.isPaused()) {
-					game.updateGame("goUp");
+					//game.updateGame("goUp");
 				}else {
 					game.moveArrow(false);
 				}
@@ -53,14 +54,14 @@ public class ReadKeyboard implements KeyListener {
 				if(!game.isPaused()) {
 					game.updateGame("rotateCCW");
 				}else {
-					game.setWhereToGo();
+					game.setEscape(true);
 				}
 				break;
 			case KeyEvent.VK_K:
 				if(!game.isPaused()) {
 					game.updateGame("rotateCW");
 				}else {
-					game.setWhereToGo();
+					game.setEscape(true);
 				}
 				break;
 			case KeyEvent.VK_P:
@@ -72,24 +73,10 @@ public class ReadKeyboard implements KeyListener {
 				break;
 			case KeyEvent.VK_SPACE:
 				if(game.isPaused()) {
-					game.setWhereToGo();;
+					game.setEscape(true);
 				}
 				break;
 		}
-
-		/*int teclaPressionada = e.getKeyCode();
-		if(teclaPressionada == KeyEvent.VK_W)
-			game.updateGame("goUp");
-		if(teclaPressionada == KeyEvent.VK_S)
-			game.updateGame("goDownExtra");
-		if(teclaPressionada == KeyEvent.VK_A)
-			game.updateGame("goLeft");
-		if(teclaPressionada == KeyEvent.VK_D)
-			game.updateGame("goRight");
-		if(teclaPressionada == KeyEvent.VK_J)
-			game.updateGame("rotateCCW");
-		if(teclaPressionada == KeyEvent.VK_K)
-			game.updateGame("rotateCW");*/
 	}
 
 	public void keyTyped(KeyEvent e) {}

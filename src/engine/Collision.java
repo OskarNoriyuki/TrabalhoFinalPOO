@@ -14,12 +14,7 @@ public class Collision {
 	public boolean chao;
 	public boolean peca;
 	public boolean foraDoMapa;
-	
-	//armazena a profundidade de colisao referenciada nos extremos da regiao solida da peca
-	public int profundidadeEsq;
-	public int profundidadeDir;
-	public int profundidadeInf;
-	
+
 	//inicializa as variaveis no construtor
 	public Collision() {
 		this.paredeDir = false;
@@ -27,9 +22,6 @@ public class Collision {
 		this.chao = false;
 		this.peca = false;
 		this.foraDoMapa = false;
-		this.profundidadeDir = 0;
-		this.profundidadeEsq = 0;
-		this.profundidadeInf = 0;
 	}
 	
 	//metodo basico, retorna verdadeiro se uma das flags (exceto colisao no teto) esta acesa
