@@ -37,6 +37,9 @@ public class Tetris implements Serializable {
 	private boolean perdeu;
 	private int pontuacao, linhas, nivel;
 	private Player player;
+	private boolean pause, voltar, salvar;
+	private int option; //1->menu, 0->salvar
+	private final int numOptions = 2; // 2 opcoes
 	
 	/**atributos do mapa**/
 	private int maxX, maxY;
@@ -84,6 +87,8 @@ public class Tetris implements Serializable {
 		this.linhas = 0;
 		this.nivel = 1;
 		this.player = player;
+		this.pause = false;
+		this.option = 0;
 		//tamanho das coisas
 		this.lowRes = lowRes;
 		if(lowRes) {
@@ -158,7 +163,8 @@ public class Tetris implements Serializable {
 			//GameWindow.fecharTetris();
 			System.err.println("PERDEEUUU!");
 			return true;
-		} else if(acao.equals("rotateCW") || acao.equals("rotateCCW")) {
+		}
+		else if(acao.equals("rotateCW") || acao.equals("rotateCCW")) {
 			//faz a rotacao
 			if(acao.equals("rotateCW")){
 				this.pecas[this.proximaPeca[0]].rotacionar("CW");
@@ -337,7 +343,29 @@ public class Tetris implements Serializable {
 		//return this.previewBgTile;
 	}
 
+	//metodos importantes para o menu de pausa
+	public void moveArrow(boolean direction) {
+		if(direction) {
+			//incremento
+			this.option++;
+			//saturacao
+			if(this.option == this.numOptions) {
+				this.option = this.numOptions - 1;
+			}
+		}else {
+			//decremento
+			this.option--;
+			//saturacao
+			if(this.option == -1) {
+				this.option = 0;
+			}
+		}
+	}
+	
 	//getters
+	public boolean isPaused() {
+		return this.pause;
+	}
 	public boolean isLowResMode() {
 		if(this.lowRes) {
 			return true;
@@ -377,6 +405,33 @@ public class Tetris implements Serializable {
 		return this.player;
 	}
 
+	//setters
+	public void setPause(boolean pause) {
+		this.pause = pause;
+	}
+	public void setWhereToGo(boolean erase) {
+		if(erase) {
+			this.voltar = false;
+			this.salvar = false;
+		}else {
+			switch(this.option) {
+				case 0:
+					this.salvar = true;
+					break;
+				case 1:
+					this.voltar = true;
+					break;
+				default:
+					break;
+			}
+		}
+	}
+	public void setWhereToGo() {
+		this.setWhereToGo(false);
+	}
+	public void goToMenu(boolean menu) {
+		this.voltar = menu;
+	}
 	/**********************************************************************************************/
 	/******************************METODOS PRIVADOS (AUXILIARES)***********************************/
 	/**********************************************************************************************/

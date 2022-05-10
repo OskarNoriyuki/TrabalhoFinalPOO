@@ -21,22 +21,50 @@ public class ReadKeyboard implements KeyListener {
 		// Comandos para cada tecla pressionada
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_W:
-				game.updateGame("goUp");
+				if(!game.isPaused()) {
+					game.updateGame("goUp");
+				}else {
+					
+				}
+
 				break;
 			case KeyEvent.VK_S:
-				game.updateGame("goDownExtra");
+				if(!game.isPaused()) {
+					game.updateGame("goDownExtra");
+				}
 				break;
 			case KeyEvent.VK_A:
-				game.updateGame("goLeft");
+				if(!game.isPaused()) {
+					game.updateGame("goLeft");
+				}
 				break;
 			case KeyEvent.VK_D:
-				game.updateGame("goRight");
+				if(!game.isPaused()) {
+					game.updateGame("goRight");
+				}
 				break;
 			case KeyEvent.VK_J:
-				game.updateGame("rotateCCW");
+				if(!game.isPaused()) {
+					game.updateGame("rotateCCW");
+				}
 				break;
 			case KeyEvent.VK_K:
-				game.updateGame("rotateCW");
+				if(!game.isPaused()) {
+					game.updateGame("rotateCW");
+				}
+				break;
+			case KeyEvent.VK_P:
+				if(game.isPaused()) {
+					game.setPause(false);
+				}else {
+					game.setPause(true);
+				}
+				break;
+			case KeyEvent.VK_SPACE:
+				if(game.isPaused()) {
+					game.setWhereToGo();;
+				}
+				break;
 		}
 
 		/*int teclaPressionada = e.getKeyCode();
