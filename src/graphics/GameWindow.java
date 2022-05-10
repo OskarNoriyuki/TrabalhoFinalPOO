@@ -35,7 +35,7 @@ public class GameWindow extends JFrame {
 
     	// Verifica se eh preciso carregar um jogo
 		if (load)
-			this.game = DataManager.loadGame(playerName);
+			this.game = new Tetris(DataManager.loadGame(playerName));
 		else
 			this.game = new Tetris(20,10, true, new Player(playerName));
 		

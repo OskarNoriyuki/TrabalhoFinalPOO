@@ -21,6 +21,7 @@ public class ReadKeyboard implements KeyListener {
 		// Comandos para cada tecla pressionada
 		//cada tecla responde de forma diferente de acordo com o estado do jogo (pausado ou nao)
 		switch (e.getKeyCode()) {
+			case KeyEvent.VK_UP:
 			case KeyEvent.VK_W:
 				if(!game.isPaused()) {
 					//game.updateGame("goUp");
@@ -29,6 +30,7 @@ public class ReadKeyboard implements KeyListener {
 				}
 
 				break;
+			case KeyEvent.VK_DOWN:
 			case KeyEvent.VK_S:
 				if(!game.isPaused()) {
 					game.updateGame("goDownExtra");
@@ -36,6 +38,7 @@ public class ReadKeyboard implements KeyListener {
 					game.moveArrow(true);
 				}
 				break;
+			case KeyEvent.VK_LEFT:
 			case KeyEvent.VK_A:
 				if(!game.isPaused()) {
 					game.updateGame("goLeft");
@@ -43,6 +46,7 @@ public class ReadKeyboard implements KeyListener {
 					game.moveArrow(false);
 				}
 				break;
+			case KeyEvent.VK_RIGHT:
 			case KeyEvent.VK_D:
 				if(!game.isPaused()) {
 					game.updateGame("goRight");
@@ -50,20 +54,18 @@ public class ReadKeyboard implements KeyListener {
 					game.moveArrow(true);
 				}
 				break;
+			case KeyEvent.VK_BACK_SPACE:
 			case KeyEvent.VK_J:
 				if(!game.isPaused()) {
 					game.updateGame("rotateCCW");
-				}else {
-					game.setEscape(true);
 				}
 				break;
 			case KeyEvent.VK_K:
 				if(!game.isPaused()) {
 					game.updateGame("rotateCW");
-				}else {
-					game.setEscape(true);
 				}
 				break;
+			case KeyEvent.VK_ESCAPE:
 			case KeyEvent.VK_P:
 				if(game.isPaused()) {
 					game.setPause(false);
@@ -72,8 +74,11 @@ public class ReadKeyboard implements KeyListener {
 				}
 				break;
 			case KeyEvent.VK_SPACE:
+			case KeyEvent.VK_ENTER:
 				if(game.isPaused()) {
 					game.setEscape(true);
+				}else {
+					game.updateGame("rotateCW");
 				}
 				break;
 		}
