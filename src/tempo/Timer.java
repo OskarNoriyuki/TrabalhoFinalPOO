@@ -6,10 +6,7 @@
 
 package tempo;
 
-import java.io.IOException;
-
-import javax.swing.JFrame;
-
+import data.DataManager;
 import engine.Ranking;
 import engine.Tetris;
 import graphics.GameWindow;
@@ -18,8 +15,6 @@ import graphics.RankingWindow;
 import graphics.StatsField;
 import graphics.TetrisField;
 import sounds.SoundPlayer;
-import data.DataManager;
-import data.SerializationManager;
 
 public class Timer implements Runnable {
 	
