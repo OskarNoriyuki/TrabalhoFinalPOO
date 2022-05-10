@@ -4,15 +4,6 @@
 	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
 */
 
-/*
-Programa: Classe reponsavel pela logica do jogo Tetris.
-Objetivos: Exercicio da programacao orientada a objeto.
-Entradas: Tamanho do mapa, Acao/Movimento de cada iteracao.
-Saida: Cubos que compoem o mapa do tetris.
-Autor: Oskar Akama
-Atualizada em 06/05/2022
-*/
-
 package engine;
 
 import java.awt.image.BufferedImage;
@@ -159,11 +150,12 @@ public class Tetris implements Serializable {
 	}
 
 	//construtor que recebe um jogo salvo
-	public Tetris(TetrisInfo backup) {
-		this(backup.maxX, backup.maxY,backup.lowRes, backup.player);
+	public Tetris(TetrisInfo backup) {	
+		this(backup.maxY, backup.maxX, backup.lowRes, backup.player);
+		
 		//retoma o mapa
 		for(int i = 0; i<this.maxY; i++) {
-			for(int j = 0; j<this.maxY; j++) { 
+			for(int j = 0; j<this.maxX; j++) { 
 				this.map[i][j] = backup.map[i][j];
 			}
 		}
@@ -183,8 +175,14 @@ public class Tetris implements Serializable {
 		
 	}
 	
+	//salva os valores de atributos determinantes para a condicao atual do jogo em uma instancia TetrisInfo
 	public TetrisInfo salvaJogo() {
+		
 		this.backupLocal = new TetrisInfo(this.maxY, this.maxX, this.lowRes, this.player);
+		
+		//salva a proporcao de cubos
+		this.backupLocal.maxX = this.maxX;
+		this.backupLocal.maxY = this.maxY;
 		
 		//grava o mapa
 		for(int i = 0; i<this.maxY; i++) {
@@ -207,6 +205,7 @@ public class Tetris implements Serializable {
 		
 		return this.backupLocal;
 	}
+	
 	//realiza um movimento/acao, calcula as consequencias e atualiza o jogo. deve ser chamado 1x por frame, e 1x por comando
 	public boolean updateGame(String acao) {
 		Collision colisao;	//classe que armazena infos da colisao

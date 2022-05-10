@@ -1,3 +1,9 @@
+/*
+	Classe Tetris
+	Descricao: classe responsavel por armazenar alguns atributos da classe Tetris, a fim de reproduzir condicoes de um jogoa anterior
+	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
+*/
+
 package data;
 
 import java.io.Serializable;
@@ -19,6 +25,7 @@ public class TetrisInfo implements Serializable{
 		this.lowRes = lowRes;
 		this.player = player;
 		this.proximaPeca = new int[7];
-
+		this.maxX = 10;
+		this.maxY = 20;
 	}
 }
