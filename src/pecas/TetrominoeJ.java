@@ -1,6 +1,6 @@
 /*
 	Classe TetrominoeJ
-	Descricao:
+	Descricao: Classe que contem as especificacoes do tetrominoe formato J
 	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
 */
 

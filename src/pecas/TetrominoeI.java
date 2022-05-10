@@ -1,6 +1,6 @@
 /*
 	Classe TetrominoeI
-	Descricao:
+	Descricao: Classe que contem as especificacoes do tetrominoe formato I
 	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
 */
 

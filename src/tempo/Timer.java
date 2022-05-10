@@ -1,6 +1,6 @@
 /*
 	Classe Timer
-	Descricao:
+	Descricao: Classe que estabelece a base de tempo e controla as funcionalidades sincronas do programa
 	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
 */
 

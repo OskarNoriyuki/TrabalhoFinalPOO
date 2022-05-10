@@ -1,6 +1,6 @@
 /*
 	Classe TetrominoeS
-	Descricao:
+	Descricao: Classe que contem as especificacoes do tetrominoe formato S
 	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
 */
 

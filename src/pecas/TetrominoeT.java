@@ -1,6 +1,6 @@
 /*
 	Classe TetrominoeT
-	Descricao:
+	Descricao: Classe que contem as especificacoes do tetrominoe formato T
 	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
 */
 

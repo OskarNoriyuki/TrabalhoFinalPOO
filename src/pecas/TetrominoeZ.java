@@ -1,6 +1,6 @@
 /*
 	Classe TetrominoeZ
-	Descricao:
+	Descricao: Classe que contem as especificacoes do tetrominoe formato Z
 	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
 */
 

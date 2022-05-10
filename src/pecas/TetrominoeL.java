@@ -1,6 +1,6 @@
 /*
 	Classe TetrominoeL
-	Descricao:
+	Descricao: Classe que contem as especificacoes do tetrominoe formato L
 	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
 */
 

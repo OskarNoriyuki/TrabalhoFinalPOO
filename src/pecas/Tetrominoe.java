@@ -1,6 +1,6 @@
 /*
 	Classe Tetrominoe
-	Descricao:
+	Descricao: Classe abstrata das pecas do jogo
 	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
 */
 

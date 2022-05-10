@@ -22,8 +22,6 @@ public class GameWindow extends JFrame {
 	TetrisField tetrisField;	// Painel para desenhar o jogo
 	StatsField statsField;		// Painel para escrever dados do jogo
 
-	PauseWindow pause;
-
 	// Construtor
     public GameWindow(int difficulty, String playerName, boolean load) {
 		super("Tetris");
