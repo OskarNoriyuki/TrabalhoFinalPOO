@@ -37,7 +37,7 @@ public class Tetris implements Serializable {
 	private boolean perdeu;
 	private int pontuacao, linhas, nivel;
 	private Player player;
-	private boolean pause, voltar, salvar;
+	private boolean pause, escape;
 	private int option; //1->menu, 0->salvar
 	private final int numOptions = 2; // 2 opcoes
 	
@@ -88,6 +88,7 @@ public class Tetris implements Serializable {
 		this.nivel = 1;
 		this.player = player;
 		this.pause = false;
+		this.escape = false;
 		this.option = 0;
 		//tamanho das coisas
 		this.lowRes = lowRes;
@@ -163,8 +164,9 @@ public class Tetris implements Serializable {
 			//GameWindow.fecharTetris();
 			System.err.println("PERDEEUUU!");
 			return true;
-		}
-		else if(acao.equals("rotateCW") || acao.equals("rotateCCW")) {
+		}else if(pause) {
+			return false;
+		}else if(acao.equals("rotateCW") || acao.equals("rotateCCW")) {
 			//faz a rotacao
 			if(acao.equals("rotateCW")){
 				this.pecas[this.proximaPeca[0]].rotacionar("CW");
@@ -175,11 +177,6 @@ public class Tetris implements Serializable {
 			colisao = this.testaColisao();
 			//se sim, verifica se eh possivel adaptar a posicao da peca, a fim de permitir a rotacao sem colisoes. se nao, desfaz a rotacao 
 			if(colisao.paredeEsq || colisao.paredeDir ||colisao.peca ||colisao.chao) {
-				//print debug
-				if(colisao.peca) System.err.println("BATEU NOUTRA PECA! DEPTH_R="+colisao.profundidadeDir+" DEPTH_L="+colisao.profundidadeEsq+" DEPTH_INF="+colisao.profundidadeInf);
-				if(colisao.chao) System.err.println("BATEU NO CHAO! DEPTH="+colisao.profundidadeInf);
-				if(colisao.paredeDir) System.err.println("BATEU NA PAREDE DIREITA! DEPTH_R="+colisao.profundidadeDir);
-				if(colisao.paredeEsq) System.err.println("BATEU NA PAREDE ESQUERDA! DEPTH_L="+colisao.profundidadeEsq);
 
 				boolean desistir = false;
 				//enquanto nao colide com outras pecas mas colide com alguma parede, tenta "chutar" a peca para esquerda, direita ou para cima a fim de permitir rotacao
@@ -268,9 +265,6 @@ public class Tetris implements Serializable {
 			//testa colisao, as duas colisoes relevantes sao: colisao com o chao; colisao com pecas
 			colisao = this.testaColisao();
 			if(colisao.chao || colisao.peca) {
-				//print debug
-				if(colisao.chao) System.err.println("BATEU NO CHAO! DEPTH="+colisao.profundidadeInf);
-				if(colisao.peca) System.err.println("BATEU NOUTRA PECA! DEPTH_R="+colisao.profundidadeDir+" DEPTH_L="+colisao.profundidadeEsq+" DEPTH_INF="+colisao.profundidadeInf);
 				//desfaz o movimento
 				this.pecas[this.proximaPeca[0]].y--;
 				//salva os cubos no mapa
@@ -296,9 +290,6 @@ public class Tetris implements Serializable {
 			//testa colisao, as duas colisoes relevantes sao: colisao com parede direita; colisao com pecas
 			colisao = this.testaColisao();
 			if(colisao.paredeDir || colisao.peca) {
-				//print debug
-				if(colisao.paredeDir) System.err.println("BATEU NA PAREDE DIREITA! DEPTH_R="+colisao.profundidadeDir);
-				if(colisao.peca) System.err.println("BATEU NOUTRA PECA! DEPTH_R="+colisao.profundidadeDir+" DEPTH_L="+colisao.profundidadeEsq+" DEPTH_INF="+colisao.profundidadeInf);
 				//desfaz o movimento
 				this.pecas[this.proximaPeca[0]].x--;
 			}
@@ -309,9 +300,6 @@ public class Tetris implements Serializable {
 			//testa colisao, as duas colisoes relevantes sao: colisao com parede esquerda; colisao com pecas
 			colisao = this.testaColisao();
 			if(colisao.paredeEsq || colisao.peca) {
-				//print debug
-				if(colisao.paredeEsq) System.err.println("BATEU NA PAREDE ESQUERDA! DEPTH_L="+colisao.profundidadeEsq);
-				if(colisao.peca) System.err.println("BATEU NOUTRA PECA! DEPTH_R="+colisao.profundidadeDir+" DEPTH_L="+colisao.profundidadeEsq+" DEPTH_INF="+colisao.profundidadeInf);
 				//desfaz o movimento
 				this.pecas[this.proximaPeca[0]].x++;
 			}
@@ -366,6 +354,12 @@ public class Tetris implements Serializable {
 	public boolean isPaused() {
 		return this.pause;
 	}
+	public int getOption() {
+		return this.option;
+	}
+	public boolean getEscape() {
+		return this.escape;
+	}
 	public boolean isLowResMode() {
 		if(this.lowRes) {
 			return true;
@@ -409,28 +403,8 @@ public class Tetris implements Serializable {
 	public void setPause(boolean pause) {
 		this.pause = pause;
 	}
-	public void setWhereToGo(boolean erase) {
-		if(erase) {
-			this.voltar = false;
-			this.salvar = false;
-		}else {
-			switch(this.option) {
-				case 0:
-					this.salvar = true;
-					break;
-				case 1:
-					this.voltar = true;
-					break;
-				default:
-					break;
-			}
-		}
-	}
-	public void setWhereToGo() {
-		this.setWhereToGo(false);
-	}
-	public void goToMenu(boolean menu) {
-		this.voltar = menu;
+	public void setEscape(boolean escape) {
+		this.escape = escape;
 	}
 	/**********************************************************************************************/
 	/******************************METODOS PRIVADOS (AUXILIARES)***********************************/
@@ -565,19 +539,10 @@ public class Tetris implements Serializable {
 		int ladoMatriz = this.pecas[proximaPeca[0]].getSize();
 		//instancia que armazena dados sobre a colisao
 		Collision retorno = new Collision();
-		//[FUNCIONALIDADE NAO UTILIZADA] "gaps" na matriz sao calculados para posterior calculo de profundidade de interseccao de colisao
-		int numColVaziaEsq = ladoMatriz, numColVaziaDir = ladoMatriz, numLinVaziaInf = ladoMatriz;
 		for(int i = 0; i < ladoMatriz; i++) {
 			for(int j = 0; j < ladoMatriz; j++) {
 				//se for um cubo ocupado, na matriz da peca
 				if(this.pecas[proximaPeca[0]].getCube(i, j)) {
-					//[FUNCIONALIDADE NAO UTILIZADA] calcula as bordas vazias de cada lado, exceto superior
-					if(numColVaziaEsq > i)
-						numColVaziaEsq = i;
-					if(numColVaziaDir > (ladoMatriz - i - 1))
-						numColVaziaDir = (ladoMatriz - i - 1);
-					if(numLinVaziaInf > (ladoMatriz - j - 1))
-						numLinVaziaInf = (ladoMatriz - j - 1);	
 					//enquanto i e j coordenadas referenciadas na matriz da PECA, x e y sao referenciadas na matriz do MAPA
 					int x = pecas[proximaPeca[0]].x + i;
 					int y = pecas[proximaPeca[0]].y + j;
@@ -586,33 +551,17 @@ public class Tetris implements Serializable {
 						//se coincide com algo no mapa que nao seja o fundo vazio, eh colisao com pecas acumuladas
 						if(map[y][x] != 'B') {
 							retorno.peca = true;
-							//[FUNCIONALIDADE NAO UTILIZADA] calcula a profundidade de colisao referenciada nos extremos da matriz
-							if(retorno.profundidadeDir < (ladoMatriz - i))
-								retorno.profundidadeDir = (ladoMatriz - i);
-							if(retorno.profundidadeEsq < (i+1))
-								retorno.profundidadeEsq = (i+1);
-							if(retorno.profundidadeInf < (ladoMatriz - j))
-								retorno.profundidadeInf = (ladoMatriz - j);
 						}
 					}else { //se nao, ainda pode ser colisao com as paredes ou o chao
 						if(x < 0){
 							//colisao com a parede esquerda
 							retorno.paredeEsq = true;
-							//[FUNCIONALIDADE NAO UTILIZADA] calcula a profundidade de colisao referenciada nos extremos da matriz
-							if(retorno.profundidadeEsq < (i+1))
-								retorno.profundidadeEsq = (i+1);
 						}else if(x >= maxX){
 							//colisao com a parede direita
 							retorno.paredeDir = true;
-							//[FUNCIONALIDADE NAO UTILIZADA] calcula a profundidade de colisao referenciada nos extremos da matriz
-							if(retorno.profundidadeDir < (ladoMatriz - i))
-								retorno.profundidadeDir = (ladoMatriz - i);
 						}else if(y >= maxY){
 							//colisao com o chao
 							retorno.chao = true;
-							//[FUNCIONALIDADE NAO UTILIZADA] calcula a profundidade de colisao referenciada nos extremos da matriz
-							if(retorno.profundidadeInf < (ladoMatriz - j))
-								retorno.profundidadeInf = (ladoMatriz - j);
 						}else if(y < 0) {
 							//colisao com o teto
 							retorno.foraDoMapa = true;
@@ -621,10 +570,6 @@ public class Tetris implements Serializable {
 				}
 			}
 		}
-		//[FUNCIONALIDADE NAO UTILIZADA] calcula a profundidade de colisao referenciada nos extremos da regiao solida da peca
-		retorno.profundidadeDir -= numColVaziaDir;
-		retorno.profundidadeEsq -= numColVaziaEsq;
-		retorno.profundidadeInf -= numLinVaziaInf;	
 		//retorna os dados sobre a colisao
 		return retorno;
 	}

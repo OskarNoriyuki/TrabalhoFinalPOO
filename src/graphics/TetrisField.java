@@ -85,10 +85,17 @@ public class TetrisField extends JPanel {
 		for(int x = 0; x < this.numColumns; x++)
 			for(int y = 0; y < this.numRows; y++)
 				g2.drawImage(game.getCubeImg(x, y), x*sizeCube, y*sizeCube, sizeCube, sizeCube, null);
-		/*
+		
 		if(game.isPaused()) {
-			g2.drawImage(game.getCubeImg(x, y), x*sizeCube, y*sizeCube, sizeCube, sizeCube, null);
-		}*/
+			g2.drawImage(this.TitleImg, 0, sizeCube*5, sizeCube*10, sizeCube, null);
+			g2.drawImage(this.Option0Img, sizeCube, sizeCube*6, sizeCube*8, sizeCube, null);
+			g2.drawImage(this.Option1Img, sizeCube, sizeCube*7, sizeCube*8, sizeCube, null);
+			if(game.getOption() == 0) {
+				g2.drawImage(this.ArrowImg, 0, sizeCube*6, sizeCube, sizeCube, null);
+			}else if(game.getOption() == 1) {
+				g2.drawImage(this.ArrowImg, 0, sizeCube*7, sizeCube, sizeCube, null);
+			}
+		}
 		g2.dispose(); // Para nao acumular lixo na memoria
 	}
 }

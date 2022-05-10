@@ -69,4 +69,5 @@ public class GameWindow extends JFrame {
 		
 		gameLoop.iniciaTetris();	// Inicia
     }
+ 
 }
