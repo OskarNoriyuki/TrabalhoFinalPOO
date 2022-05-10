@@ -1,6 +1,6 @@
 /*
 	Classe StatsField
-	Descricao:
+	Descricao: painel com informacoes do jogo desenhado
 	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
 */
 
@@ -36,19 +36,19 @@ public class StatsField extends JPanel {
 	// Elementos graficos
 	private Label title, points, level, rows, dutyCycle, fillerText, next_0, next_1, next_2, next_3;
 	
-	// diversos
-	String  m, threadCycle;
-	GridBagConstraints c;
 	Font TitleFont = new Font("SansSerif", Font.BOLD, 30);
 	Font StatsFont;
 	Font IndexFont;
+
+	// Ciclo da thread
+	String threadCycle;
 	
-	//construtor do painel auxiliar (mostrador de proximas pecas, points, level, etc)
+	// Construtor do painel auxiliar (mostrador de proximas pecas, points, level, etc)
 	public StatsField(Tetris game) {
-		// Instancia  
+		// Instancia logica do jogo
 		this.game = game;
 		
-		//dimensoes
+		// Dimensoes
 		this.sizeCube = game.getCubeSize();
 		this.numColumns = game.getSizeX();
 		this.numRows = game.getSizeY();
@@ -58,7 +58,8 @@ public class StatsField extends JPanel {
 		this.numColumnsPreview = game.getPreviewSizeX();
 		this.numRowsPreview = game.getPreviewSizeY();
 		
-		if(game.isLowResMode()) {
+		// Muda fonte conforme resolucao
+		if (game.isLowResMode()) {
 			this.IndexFont = new Font("Serif", Font.BOLD, 12);
 			this.StatsFont = new Font("Monospaced", Font.BOLD, 16);
 		}else {
@@ -66,14 +67,16 @@ public class StatsField extends JPanel {
 			this.StatsFont = new Font("Monospaced", Font.BOLD, 20);
 		}
 		
-		//painel
+		// Configuracoes do painel
 		this.setPreferredSize(new Dimension(this.widthField, this.heightField));
 		this.setBackground(Color.black);
 		this.setDoubleBuffered(true);
         this.setLayout(new GridBagLayout());
-        c = new GridBagConstraints();
-
 		
+		// Organizador
+		GridBagConstraints c = new GridBagConstraints();
+		
+		// Distribui componentes
 		this.title = new Label(" TETRIS");
 		this.title.setForeground(Color.WHITE);
 		this.title.setFont(TitleFont);
@@ -114,8 +117,6 @@ public class StatsField extends JPanel {
 		c.gridy = 3;
 		c.anchor = GridBagConstraints.LINE_START;
 		this.add(next_2 , c);
-
-
 		
 		this.next_3 = new Label("3rd:       ");
 		this.next_3.setForeground(Color.WHITE);
@@ -168,61 +169,60 @@ public class StatsField extends JPanel {
 		c.gridy = 9;
 		c.anchor = GridBagConstraints.LINE_START;
 		this.add(dutyCycle, c);
-	
-		
 	}
 	
-	//setters
+	// Setter
 	public void setThreadCycleIndicator(String dutyCycle) {
 		this.threadCycle = dutyCycle;
 	}
 	
 	
-	//configs graficas do painel
+	// Metodo que desenha o painel
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+
 		Graphics2D g2 = (Graphics2D)g;
+
 		for(int x = 0; x < this.numColumnsPreview; x++) {
 			for(int y = 0; y < this.numRowsPreview; y++) {
 				g2.drawImage(game.getPreviewCubeImg(x, y), 40+x*sizeMiniCube, 100+ y*sizeMiniCube, sizeMiniCube, sizeMiniCube, null);
 			}
 		}
+
 		if(game.isLowResMode()) {
-			//retangulo interno, destaque da peca atual
+			// Retangulo interno, destaque da peca atual
 			this.fillHollowRect(g2, Color.WHITE, 40, 105, 90, 65, 4);
-			//retangulo externo, destaque da peca atual
+			// Retangulo externo, destaque da peca atual
 			this.fillHollowRect(g2, Color.GRAY, 37, 102, 96, 71, 3);
-		}else {
-			//retangulo interno, destaque da peca atual
+		} else {
+			// Retangulo interno, destaque da peca atual
 			this.fillHollowRect(g2, Color.WHITE, 40, 110, 120, 80, 5);
-			//retangulo externo, destaque da peca atual
+			// Retangulo externo, destaque da peca atual
 			this.fillHollowRect(g2, Color.GRAY, 36, 106, 128, 88, 4);
 		}
 
-		
-		
-		
 		this.points.setText("Pontos: " + game.getScore()+ "      ");
 		this.level.setText("level " + game.getLevel()+ "      ");
 		this.rows.setText("rows: " + game.getLines()+ "      ");
 		this.dutyCycle.setText("Thread: " + this.threadCycle+" %      ");
-		g2.dispose();	//para n�o acumular lixo na mem�ria
+
+		g2.dispose(); // Para nao acumular lixo na memoria
 	}
 	
+	// Metodo auxiliar que preeenche 4 retangulos, criando um retangulo oco
 	private void fillHollowRect(Graphics g, Color color, int x, int y, int  width, int  height, int thickness) {
 		int w = width;
 		int h = height;
 		int t = thickness;
 		
 		g.setColor(color);
-		//preeenche 4 retangulos criando um retangulo oco
-		//horizontais
+
+		// Horizontais
 		g.fillRect(x + t, y, w - 2*t, t);
 		g.fillRect(x + t, y + h - t, w - 2*t, t);
-		//verticais
+		// Verticais
 		g.fillRect(x, y, t, h);
 		g.fillRect(x + w - t, y, t, h);
-		
 	}
 }
 
