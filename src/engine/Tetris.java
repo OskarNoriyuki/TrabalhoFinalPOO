@@ -23,6 +23,7 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
+import data.TetrisInfo;
 import pecas.Tetrominoe;
 import pecas.TetrominoeI;
 import pecas.TetrominoeJ;
@@ -40,6 +41,7 @@ public class Tetris implements Serializable {
 	private boolean pause, escape;
 	private int option; //1->menu, 0->salvar
 	private final int numOptions = 2; // 2 opcoes
+	private TetrisInfo backupLocal;
 	
 	/**atributos do mapa**/
 	private int maxX, maxY;
@@ -156,6 +158,55 @@ public class Tetris implements Serializable {
 		this.updatePreview();
 	}
 
+	//construtor que recebe um jogo salvo
+	public Tetris(TetrisInfo backup) {
+		this(backup.maxX, backup.maxY,backup.lowRes, backup.player);
+		//retoma o mapa
+		for(int i = 0; i<this.maxY; i++) {
+			for(int j = 0; j<this.maxY; j++) { 
+				this.map[i][j] = backup.map[i][j];
+			}
+		}
+		//retoma as pecas
+		for(int i = 0; i<this.numSorteadas; i++) {
+			this.proximaPeca[i] = backup.proximaPeca[i];
+		}
+		
+		//retoma a posicao da peca ativa
+		this.pecas[this.proximaPeca[0]].x = backup.pecaX;
+		this.pecas[this.proximaPeca[0]].y = backup.pecaY;
+		
+		//retoma pontos, nivel e linhas
+		this.pontuacao = backup.pontuacao;
+		this.linhas = backup.linhas;
+		this.nivel = backup.nivel;
+		
+	}
+	
+	public TetrisInfo salvaJogo() {
+		this.backupLocal = new TetrisInfo();
+		
+		//grava o mapa
+		for(int i = 0; i<this.maxY; i++) {
+			for(int j = 0; j<this.maxY; j++) { 
+				this.backupLocal.map[i][j] = this.map[i][j];
+			}
+		}
+		//grava as pecas
+		for(int i = 0; i<this.numSorteadas; i++) {
+			this.backupLocal.proximaPeca[i] = this.proximaPeca[i];
+		}
+		//grava a posicao da peca ativa
+		this.backupLocal.pecaX = this.pecas[this.proximaPeca[0]].x;
+		this.backupLocal.pecaY = this.pecas[this.proximaPeca[0]].y;
+		
+		//grava a pontuacao, linhas e nivel
+		this.backupLocal.pontuacao = this.pontuacao;
+		this.backupLocal.linhas = this.linhas;
+		this.backupLocal.nivel = this.nivel;
+		
+		return this.backupLocal;
+	}
 	//realiza um movimento/acao, calcula as consequencias e atualiza o jogo. deve ser chamado 1x por frame, e 1x por comando
 	public boolean updateGame(String acao) {
 		Collision colisao;	//classe que armazena infos da colisao
