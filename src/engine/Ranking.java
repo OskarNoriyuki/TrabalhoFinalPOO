@@ -41,11 +41,12 @@ public class Ranking {
 
     // Metodo que retorna uma string contendo todos jogadores e seus pontos
     public String toString() {
-        String ranking = "";
+        String ranking = "<html>";
         
         for (Player player : this.players)
-            ranking += String.format("%s: %d pts\n", player.getName(), player.getScore());
+            ranking += String.format("%s: %d pts<br/>", player.getName(), player.getScore());
 
+        ranking += "<html>";
         return ranking;
     }
 }
