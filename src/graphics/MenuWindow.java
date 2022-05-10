@@ -1,6 +1,12 @@
 /*
 	Classe MenuWindow
-	Descricao:
+	Descricao: herda JFrame e implementa ActionListener para perceber cliques nos botoes. 
+    Janela que contem componentes do menu principal. 
+    Permite abrir a janela de jogo, especificando se deseja-se iniciar novo jogo ou
+    carregar um existe. Em ambos os casos requisita nome do jogador.
+    Permite tambem abrir a janela de ranking e um painel em formato JOptionPane para escolha da
+    dificuldade.
+    Quando uma janela nova eh aberta ou sair do jogo, destroi essa janela.
 	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
 */
 
@@ -31,7 +37,7 @@ import javax.swing.UIManager;
 import sounds.SoundPlayer;
 
 public class MenuWindow extends JFrame implements ActionListener {
-    // Janela, background e opcoes do jogo
+    // Background e painel com opcoes do jogo
     private JLabel background;
     private OptionsPanel options;
 
@@ -162,17 +168,17 @@ public class MenuWindow extends JFrame implements ActionListener {
         // Adiciona o background a janela
         this.add(background);
         
-        // Deixa visivel
-        this.pack();
-        this.setLocationRelativeTo(null);
-        this.setVisible(true);
+        
+        this.pack();                           // Redimensionamento
+        this.setLocationRelativeTo(null);   // Localizacao
+        this.setVisible(true);              // Deixa visivel
     }
 
     public void actionPerformed(ActionEvent e){
-        //Tocar som ao clicar
+        // Toca som ao clicar
         SoundPlayer.tocarSom("buttonclick.wav");
 
-		//Caso o botao clicado seja o de novo jogo
+		// Caso o botao clicado seja o de novo jogo
 		if (e.getActionCommand().equals("new game")) {
             GameWindow game; // Janela do jogo
 
@@ -225,7 +231,10 @@ public class MenuWindow extends JFrame implements ActionListener {
 
         //Caso o botao clicado seja o de opcoes
 		if (e.getActionCommand().equals("options")) {
+            // Trocar texto do botoe na janela de opcoes
             UIManager.put("OptionPane.okButtonText", "Ok");
+
+            // Abre janela com opcoes
             JOptionPane.showMessageDialog(null, options,  "Dificuldade", JOptionPane.QUESTION_MESSAGE);
         }
 

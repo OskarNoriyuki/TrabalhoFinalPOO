@@ -1,6 +1,9 @@
 /*
 	Classe RankingWindow
-	Descricao:
+	Descricao: herda JFrame e implementa ActionListener para perceber cliques nos botoes. 
+    Janela que contem componentes do menu de ranking. 
+    Apresenta o ranking em um campo de texto.
+    Permite abrir a janela do menu principal, seguido da destruicao da janela atual.
 	Autores: Allan Ferreira, Pedro Alves e Oskar Akama
 */
 
@@ -26,17 +29,18 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 
 import engine.Ranking;
 import sounds.SoundPlayer;
 
 public class RankingWindow extends JFrame implements ActionListener {
-    // Janela, background e ranking do jogo
+    // Background e ranking do jogo
     private JLabel background; 
     private Ranking ranking;    
 
-    JTextArea textAreaRanking; // Area de texto com o ranking
+    //JTextArea textAreaRanking;  // Area de texto com o ranking
+    JLabel textRanking;
     private JButton menuButton; // Botao para voltar ao menu
 
     // Construtor
@@ -67,17 +71,15 @@ public class RankingWindow extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(null, "Não foi possível abrir TetrisMenu.png!", "Erro", JOptionPane.ERROR_MESSAGE);
         }
 
-        // Instanciacao da area de texto do ranking
-        this.textAreaRanking = new JTextArea();
-
-        // Configuracoes da area de texto do ranking
-        this.textAreaRanking.setFont(textAreaRanking.getFont().deriveFont(20f));
-        this.textAreaRanking.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        this.textAreaRanking.setEditable(false);
-        this.textAreaRanking.setOpaque(true);
-        this.textAreaRanking.setText(this.ranking.toString());
-        this.textAreaRanking.setForeground(Color.BLACK);
-        this.textAreaRanking.setBackground(Color.WHITE);
+        // Instanciacao da texto do ranking
+        textRanking = new JLabel(this.ranking.toString());
+        this.textRanking.setFont(textRanking.getFont().deriveFont(20f));
+        this.textRanking.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        this.textRanking.setHorizontalAlignment(SwingConstants.CENTER);
+        this.textRanking.setOpaque(true);
+        this.textRanking.setText(this.ranking.toString());
+        this.textRanking.setForeground(Color.BLACK);
+        this.textRanking.setBackground(Color.WHITE);
 
         // Instanciacao do botão
         this.menuButton = new JButton();
@@ -103,7 +105,7 @@ public class RankingWindow extends JFrame implements ActionListener {
         // Define o espacamento e posicao da area de texto e do botao, seguido da adicao ao label
         c.fill = GridBagConstraints.BOTH; // Redimensionamento
         c.insets = new Insets(130,80,0,80); // Espacamento
-        background.add(textAreaRanking, c);
+        background.add(textRanking, c);
         c.gridy = 1; // Localizacao
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(30,300,0,300);
