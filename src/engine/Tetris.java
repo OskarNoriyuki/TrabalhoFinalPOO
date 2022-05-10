@@ -184,11 +184,11 @@ public class Tetris implements Serializable {
 	}
 	
 	public TetrisInfo salvaJogo() {
-		this.backupLocal = new TetrisInfo();
+		this.backupLocal = new TetrisInfo(this.maxY, this.maxX, this.lowRes, this.player);
 		
 		//grava o mapa
 		for(int i = 0; i<this.maxY; i++) {
-			for(int j = 0; j<this.maxY; j++) { 
+			for(int j = 0; j<this.maxX; j++) { 
 				this.backupLocal.map[i][j] = this.map[i][j];
 			}
 		}

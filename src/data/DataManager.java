@@ -10,10 +10,11 @@ import engine.Tetris;
 
 public class DataManager {
     public static void saveGame(Tetris game) {
-        SerializationManager.serialize("src/data/"+ game.getPlayer().getName() +".sav", game);
+    	TetrisInfo info = game.salvaJogo();
+    	SerializationManager.serialize("src/data/"+ game.getPlayer().getName() +".sav", info);
     }
 
-    public static Tetris loadGame(String playerName) {
-        return (Tetris) SerializationManager.deserialize("src/data/"+ playerName +".sav");
+    public static TetrisInfo loadGame(String playerName) {
+        return (TetrisInfo) SerializationManager.deserialize("src/data/"+ playerName +".sav");
     }
 }

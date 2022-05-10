@@ -96,6 +96,7 @@ public class Timer implements Runnable {
  	    			case 0:
  	    				DataManager.saveGame(this.game);
  	    				game.setEscape(false);
+ 	    				game.setPause(false);
  	    				break;
  	    			case 1:
  	    				this.voltar = true;
