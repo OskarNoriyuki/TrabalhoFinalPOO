@@ -16,13 +16,6 @@ public class Ranking {
     private ArrayList<Player> players;      // Lista de jogadore do ranking
     final static private int TAMANHO = 10;  // Quantidade de jogadores no ranking
 
-    public static class Ordenador implements Comparator<Player> {
-        public int compare(Player jogador1, Player jogador2) {
-            // Double.compare compara doubles
-            return Integer.compare(jogador1.getScore(), jogador2.getScore());
-        }
-    }
-
     // Construtor
     public Ranking() {
         // Le arquivo contendo jogadores do ranking
@@ -34,12 +27,12 @@ public class Ranking {
         this.players.add(player);   // Adiciona jogador a lista
         
         // Ordena o ranking de maior a menor
-        /*this.players.sort(new Comparator<Player>() {
+        this.players.sort(new Comparator<Player>() {
             public int compare(Player player1, Player player2) {
-                return Double.compare(player1.getScore(), player2.getScore());
+                return Double.compare(player1.getScore(), player2.getScore())*-1;
             }
-        });*/
-        this.players.sort(new Ordenador());
+        });
+        //this.players.sort(new Ordenador());
         this.players.remove(Ranking.TAMANHO);   // Remove o jogador que ficou fora do ranking
 
         // Salva o ranking de jogadores

@@ -134,7 +134,7 @@ public class Timer implements Runnable {
 
 		Ranking ranking = new Ranking();
 		ranking.update(this.jogo.getPlayer());
-		System.out.println(this.jogo.getPlayer().getScore());
+		
 		RankingWindow rankingWindow = new RankingWindow();
 
 		janela.dispose();
